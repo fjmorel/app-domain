@@ -1,0 +1,51 @@
+
+CREATE TABLE Account_Types(
+	id int IDENTITY(1,1) PRIMARY KEY,
+	name ntext NOT NULL,
+	descript ntext NOT NULL,
+	debitispositive bit DEFAULT 1);
+
+CREATE TABLE Chart_of_Accounts(
+	id int IDENTITY(1,1) PRIMARY KEY,
+	accountnum int UNIQUE NOT NULL,
+	descript ntext NOT NULL,
+	active bit NOT NULL,
+	typeid int NOT NULL,
+	datecreated DATETIME DEFAULT GETDATE());
+
+CREATE TABLE Journal(
+	id int IDENTITY(1,1) PRIMARY KEY,
+	accountnum int NOT NULL,
+	dammount float,
+	cammount float,
+	postdate DATETIME DEFAULT GETDATE());
+
+CREATE TABLE Account_Changes(
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	accountnumber int NOT NULL,
+	action NTEXT NOT NULL, 
+	dateofchange DATETIME DEFAULT GETDATE(),
+	userid int NOT NULL
+	);
+
+CREATE TABLE Users(
+	id int IDENTITY(1,1) PRIMARY KEY,
+	name ntext NOT NULL
+	);
+
+INSERT INTO Users (name) VALUES('admin');
+INSERT INTO Account_Types (name, descript, debitispositive) VALUES('Assets', 'Assets',1);
+INSERT INTO Account_Types (name, descript, debitispositive) VALUES('Expenses', 'Expenses',1);
+INSERT INTO Account_Types (name, descript, debitispositive) VALUES('Liabilities', 'Liabilities',0);
+INSERT INTO Account_Types (name, descript, debitispositive) VALUES('Revenue', 'Revenue',0);
+INSERT INTO Account_Types (name, descript, debitispositive) VALUES('Equity', 'Equity',0);
+
+--INSERT INTO Chart_of_Accounts (descript, active, typeid) VALUES('test', 1, 1)
+
+--SELECT CAST(DATEPART(month, datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(day, datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(year, datecreated) AS NVARCHAR(4)) AS [Date Created] FROM Chart_of_Accounts
+
+--INSERT INTO Journal (accountnum, transtype, ammount) VALUES(101, 0, 9.1)
+
+--SELECT j.accountnum AS [Account Number], ca.descript AS [Account Description], j.dammount AS [Debit], j.cammount AS [Credit] FROM Journal as j
+--JOIN Chart_of_Accounts AS ca on (j.accountnum = ca.accountnum)
+

@@ -153,7 +153,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetAccountTypes() {
-			return ExecuteQuery("SELECT name AS [Name], descript AS [Description], debitispositive AS [Positive Side] FROM Account_Types");
+			return ExecuteQuery("SELECT name AS [Name], descript AS [Description], CASE debitispositive WHEN 1 THEN 'Debit' WHEN 0 THEN 'Credit' END AS [Positive Side] FROM Account_Types");
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets the debit total for a specific account
+		/// Gets the accountIsDebit total for a specific account
 		/// </summary>
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
@@ -216,6 +216,40 @@ namespace App_Domain {
 		/// <returns>DataTable with a single row or no row if the account does no exists</returns>
 		public DataTable GetAccountByNumber(int accountnum) {
 			return ExecuteQuery(String.Format("SELECT id, accountnum, active, descript FROM Chart_of_Accounts WHERE accountnum = {0}", accountnum));
+		}
+
+		public int getTotalCredit() {
+			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 0");
+			if (dt == null) { MessageBox.Show("dt is null"); }
+			//DataTable dt = ExecuteQuery("SELECT ca.accountnum FROM Chart_of_Accounts");
+			int total = 0;
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					int a = Convert.ToInt32(each["accountnum"]);
+					total += GetAccountCreditTotal(a) - GetAccountDebitTotal(a);
+				}
+			}
+			return total;
+		}
+
+		public int getTotalDebit() {
+			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 1");
+			if (dt == null) { MessageBox.Show("dt is null"); }
+			int total = 0;
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					int a = Convert.ToInt32(each["accountnum"]);
+					total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
+				}
+			}
+			return total;
+		}
+
+		public int IsDebitThePositiveSide(int accountnum) {
+			DataTable dt = ExecuteQuery("SELECT at.debitispositive FROM Account_Types AS at JOIN Chart_of_Accounts AS ca ON ca.typeid = at.id WHERE ca.accountnum = "+accountnum);
+			if (dt != null)
+				return Convert.ToInt32(dt.Rows[0]["debitispositive"]) == 1 ? 1 : 0;
+			return -1;
 		}
 
 		/// <summary>
@@ -347,5 +381,7 @@ namespace App_Domain {
 		~SQL() { Close(); }
 
 		#endregion
+
+
 	}//end SQL class
 }//end namespace

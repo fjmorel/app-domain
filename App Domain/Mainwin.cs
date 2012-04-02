@@ -50,7 +50,7 @@ namespace App_Domain {
 			//if (tabMain.SelectedTab != tpAccountInfo) {
 				//tabMain.TabPages.Remove(tpAccountInfo);
 			//}
-			if (tabMain.SelectedTab == tabTrialBalance) {
+			if (tabMain.SelectedTab == tpTrialBalance) {
 				
 			}
 		}
@@ -91,6 +91,8 @@ namespace App_Domain {
 
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
+			lblTotalCredit.Text = "Total Credits: " + Program.sqlcon.getTotalCredit();
+			lblTotalDebit.Text = "Total Debits: " + Program.sqlcon.getTotalDebit();
 		}
 
 		public void OnFillAccountChanges() {
@@ -109,7 +111,7 @@ namespace App_Domain {
 			dgvAccountLedger.ClearSelection();
 			int balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
 			lblBalance.Text = "Balance: ";
-			if(balance > 0){lblBalance.Text+= balance.ToString() + " on the debit side";}
+			if(balance > 0){lblBalance.Text+= balance.ToString() + " on the accountIsDebit side";}
 			else if (balance < 0) { lblBalance.Text += (balance*-1).ToString() + " on the credit side"; }
 			else if (balance == 0) { lblBalance.Text += "0"; }
 		}

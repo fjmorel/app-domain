@@ -35,7 +35,6 @@ D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.Mainwin.resources
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.Properties.Resources.resources
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App Domain.csproj.GenerateResource.Cache
-D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.Experiments.resources
 C:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App Domain.exe
 C:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App Domain.pdb
 C:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\bin\Debug\App Domain.exe

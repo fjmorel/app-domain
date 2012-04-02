@@ -42,7 +42,7 @@ namespace App_Domain {
 		/// <param name="AccountNum"></param>
 		/// <param name="descript"></param>
 		/// <param name="Amount"></param>
-		/// <param name="isDebitNotCredit"></param>
+		/// <param name="transIsDebit"></param>
 		public void AddEntry(int AccountNum, string descript, double Amount, bool isDebitNotCredit) {
 			Entry en = new Entry();
 			en.AccountNumber = AccountNum;

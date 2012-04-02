@@ -39,7 +39,7 @@
 			this.bCancel = new System.Windows.Forms.Button();
 			this.bAdd = new System.Windows.Forms.Button();
 			this.txtAccount = new App_Domain.AutoCompleteTextbox();
-			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+			this.dateTransaction = new System.Windows.Forms.DateTimePicker();
 			this.label1 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.dgEntries)).BeginInit();
 			this.SuspendLayout();
@@ -156,12 +156,12 @@
 			this.txtAccount.Size = new System.Drawing.Size(452, 20);
 			this.txtAccount.TabIndex = 1;
 			// 
-			// dateTimePicker1
+			// dateTransaction
 			// 
-			this.dateTimePicker1.Location = new System.Drawing.Point(131, 92);
-			this.dateTimePicker1.Name = "dateTimePicker1";
-			this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-			this.dateTimePicker1.TabIndex = 8;
+			this.dateTransaction.Location = new System.Drawing.Point(131, 92);
+			this.dateTransaction.Name = "dateTransaction";
+			this.dateTransaction.Size = new System.Drawing.Size(200, 20);
+			this.dateTransaction.TabIndex = 8;
 			// 
 			// label1
 			// 
@@ -180,7 +180,7 @@
 			this.CancelButton = this.bCancel;
 			this.ClientSize = new System.Drawing.Size(595, 497);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.dateTimePicker1);
+			this.Controls.Add(this.dateTransaction);
 			this.Controls.Add(this.txtAccount);
 			this.Controls.Add(this.bAdd);
 			this.Controls.Add(this.bCancel);
@@ -216,7 +216,7 @@
         private System.Windows.Forms.Button bCancel;
 		private System.Windows.Forms.Button bAdd;
 		private AutoCompleteTextbox txtAccount;
-		private System.Windows.Forms.DateTimePicker dateTimePicker1;
+		private System.Windows.Forms.DateTimePicker dateTransaction;
 		private System.Windows.Forms.Label label1;
     }
 }

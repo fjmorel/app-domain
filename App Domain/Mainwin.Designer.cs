@@ -50,14 +50,16 @@
 			this.dgJournal = new System.Windows.Forms.DataGridView();
 			this.tpChanges = new System.Windows.Forms.TabPage();
 			this.dgAccountChanges = new System.Windows.Forms.DataGridView();
+			this.tpTrialBalance = new System.Windows.Forms.TabPage();
+			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.menuAccounts = new System.Windows.Forms.ToolStripDropDownButton();
 			this.miAddAccount = new System.Windows.Forms.ToolStripMenuItem();
 			this.miAddAccountType = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuJournal = new System.Windows.Forms.ToolStripDropDownButton();
 			this.addJournalEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.tabTrialBalance = new System.Windows.Forms.TabPage();
-			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
+			this.lblTotalDebit = new System.Windows.Forms.Label();
+			this.lblTotalCredit = new System.Windows.Forms.Label();
 			this.tabMain.SuspendLayout();
 			this.tpAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -70,9 +72,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).BeginInit();
 			this.tpChanges.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountChanges)).BeginInit();
-			this.toolbarMain.SuspendLayout();
-			this.tabTrialBalance.SuspendLayout();
+			this.tpTrialBalance.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).BeginInit();
+			this.toolbarMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabMain
@@ -86,7 +88,7 @@
 			this.tabMain.Controls.Add(this.tpAccoutTypes);
 			this.tabMain.Controls.Add(this.tpJournal);
 			this.tabMain.Controls.Add(this.tpChanges);
-			this.tabMain.Controls.Add(this.tabTrialBalance);
+			this.tabMain.Controls.Add(this.tpTrialBalance);
 			this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.tabMain.ItemSize = new System.Drawing.Size(13, 100);
 			this.tabMain.Location = new System.Drawing.Point(0, 28);
@@ -374,6 +376,33 @@
 			this.dgAccountChanges.Size = new System.Drawing.Size(787, 441);
 			this.dgAccountChanges.TabIndex = 1;
 			// 
+			// tpTrialBalance
+			// 
+			this.tpTrialBalance.Controls.Add(this.lblTotalCredit);
+			this.tpTrialBalance.Controls.Add(this.lblTotalDebit);
+			this.tpTrialBalance.Controls.Add(this.dgTrialBalance);
+			this.tpTrialBalance.Location = new System.Drawing.Point(104, 4);
+			this.tpTrialBalance.Name = "tpTrialBalance";
+			this.tpTrialBalance.Padding = new System.Windows.Forms.Padding(3);
+			this.tpTrialBalance.Size = new System.Drawing.Size(793, 450);
+			this.tpTrialBalance.TabIndex = 5;
+			this.tpTrialBalance.Text = "Trial Balance";
+			this.tpTrialBalance.UseVisualStyleBackColor = true;
+			// 
+			// dgTrialBalance
+			// 
+			this.dgTrialBalance.AllowUserToAddRows = false;
+			this.dgTrialBalance.AllowUserToDeleteRows = false;
+			this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgTrialBalance.Location = new System.Drawing.Point(0, 34);
+			this.dgTrialBalance.Name = "dgTrialBalance";
+			this.dgTrialBalance.ReadOnly = true;
+			this.dgTrialBalance.Size = new System.Drawing.Size(776, 398);
+			this.dgTrialBalance.TabIndex = 0;
+			// 
 			// toolbarMain
 			// 
 			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -429,30 +458,23 @@
 			this.addJournalEntryToolStripMenuItem.Text = "&Add Journal Entry";
 			this.addJournalEntryToolStripMenuItem.Click += new System.EventHandler(this.addJournalEntryToolStripMenuItem_Click);
 			// 
-			// tabTrialBalance
+			// lblTotalDebit
 			// 
-			this.tabTrialBalance.Controls.Add(this.dgTrialBalance);
-			this.tabTrialBalance.Location = new System.Drawing.Point(4, 22);
-			this.tabTrialBalance.Name = "tabTrialBalance";
-			this.tabTrialBalance.Padding = new System.Windows.Forms.Padding(3);
-			this.tabTrialBalance.Size = new System.Drawing.Size(776, 432);
-			this.tabTrialBalance.TabIndex = 5;
-			this.tabTrialBalance.Text = "Trial Balance";
-			this.tabTrialBalance.UseVisualStyleBackColor = true;
+			this.lblTotalDebit.AutoSize = true;
+			this.lblTotalDebit.Location = new System.Drawing.Point(7, 7);
+			this.lblTotalDebit.Name = "lblTotalDebit";
+			this.lblTotalDebit.Size = new System.Drawing.Size(70, 13);
+			this.lblTotalDebit.TabIndex = 1;
+			this.lblTotalDebit.Text = "Total Debits: ";
 			// 
-			// dgTrialBalance
+			// lblTotalCredit
 			// 
-			this.dgTrialBalance.AllowUserToAddRows = false;
-			this.dgTrialBalance.AllowUserToDeleteRows = false;
-			this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-			| System.Windows.Forms.AnchorStyles.Left)
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgTrialBalance.Location = new System.Drawing.Point(0, 0);
-			this.dgTrialBalance.Name = "dgTrialBalance";
-			this.dgTrialBalance.ReadOnly = true;
-			this.dgTrialBalance.Size = new System.Drawing.Size(776, 432);
-			this.dgTrialBalance.TabIndex = 0;
+			this.lblTotalCredit.AutoSize = true;
+			this.lblTotalCredit.Location = new System.Drawing.Point(189, 7);
+			this.lblTotalCredit.Name = "lblTotalCredit";
+			this.lblTotalCredit.Size = new System.Drawing.Size(72, 13);
+			this.lblTotalCredit.TabIndex = 2;
+			this.lblTotalCredit.Text = "Total Credits: ";
 			// 
 			// Mainwin
 			// 
@@ -482,10 +504,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).EndInit();
 			this.tpChanges.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountChanges)).EndInit();
+			this.tpTrialBalance.ResumeLayout(false);
+			this.tpTrialBalance.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
 			this.toolbarMain.ResumeLayout(false);
 			this.toolbarMain.PerformLayout();
-			this.tabTrialBalance.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -520,8 +543,10 @@
 		private System.Windows.Forms.Label lblName;
 		private System.Windows.Forms.DataGridView dgvAccountLedger;
 		private System.Windows.Forms.Label lblBalance;
-		private System.Windows.Forms.TabPage tabTrialBalance;
+		private System.Windows.Forms.TabPage tpTrialBalance;
 		private System.Windows.Forms.DataGridView dgTrialBalance;
+		private System.Windows.Forms.Label lblTotalCredit;
+		private System.Windows.Forms.Label lblTotalDebit;
 
 	}
 }

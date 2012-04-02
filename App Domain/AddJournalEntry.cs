@@ -44,9 +44,23 @@ namespace App_Domain {
 			try {
 				int i = Convert.ToInt32(txtAccount.Text.IndexOf(" "));
 				Account temp = new Account(Convert.ToInt32(txtAccount.Text.Substring(0, i)), txtAccount.Text.Substring(i + 3, txtAccount.Text.Length - i - 3));
-				bool isDebitNotCredit = cbTransType.SelectedIndex == 0 ? true : false;
-				je.AddEntry(temp.AccountNumber, temp.AccountDescription, Convert.ToDouble(txtAmmount.Text), isDebitNotCredit);
-				updateEntries();
+				double amount = Convert.ToDouble(txtAmmount.Text);
+				bool transIsDebit = cbTransType.SelectedIndex == 0 ? true : false;
+				bool accountIsDebit = Program.sqlcon.IsDebitThePositiveSide(temp.AccountNumber) == 1 ? true : false;
+				bool fine = false;
+				if (accountIsDebit == transIsDebit)
+					fine = true;
+				else if (accountIsDebit && !transIsDebit)
+					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) - amount > 0 ? true : false;
+				else if (!accountIsDebit && transIsDebit)
+					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) + amount < 0 ? true : false;
+				
+				if (fine) {
+					je.AddEntry(temp.AccountNumber, temp.AccountDescription, Convert.ToDouble(txtAmmount.Text), transIsDebit);
+					updateEntries();
+				} else {
+					MessageBox.Show("This transaction would bring the account below 0. Please fix it.");
+				}
 			} catch {
 				MessageBox.Show("I couldn't add the transaction. Make sure you've picked an account and typed an amount.");
 			}
@@ -63,17 +77,17 @@ namespace App_Domain {
 		private void bPost_Click(object sender, EventArgs e) {
 			double debits = 0;
 			double credits = 0;
-			je.time = dateTimePicker1.Value;
+			je.time = dateTransaction.Value;
 
 			foreach (Entry ent in je.Transactions) {
 				debits += (ent.IsDebitNotCredit) ? ent.Amount : 0;
 				credits += (!ent.IsDebitNotCredit) ? ent.Amount : 0;
 			}
-
+			
 			if (debits > credits) {
-				MessageBox.Show("Debits are higher than credits by $" + (debits - credits).ToString());
+				MessageBox.Show("Debits are higher than credits by $" + Math.Abs(debits - credits));
 			} else if (debits < credits) {
-				MessageBox.Show("Credits are higher than debits by $" + (debits - credits).ToString());
+				MessageBox.Show("Credits are higher than debits by $" + Math.Abs(debits - credits));
 			} else if (debits == 0 && credits == 0){
 				MessageBox.Show("No money is being debited or credited. Please enter transactions before posting.");
 			} else {

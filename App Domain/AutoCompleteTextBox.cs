@@ -36,9 +36,9 @@ namespace App_Domain {
 			lboxSuggestions.KeyDown += new KeyEventHandler(listBox_KeyDown);
 			lboxSuggestions.MouseClick += new MouseEventHandler(listBox_MouseClick);
 			lboxSuggestions.DataSource = matchingList;// Bind matchingList as DataSource to the listbox
-			
+
 			this.GotFocus += new EventHandler(AutoCompleteTextbox_GotFocus);
-			
+
 			//Will hold listbox
 			panel = new Panel();
 			panel.Visible = false;
@@ -115,35 +115,21 @@ namespace App_Domain {
 
 				matchingList.Clear();//Refill AutoComplete list
 
-				/*Trying to allow writing 2nd word before 1st word in account name
-				List<int> spaceIndexes = new List<int>();
-				spaceIndexes.Add(-1);
-				while (spaceIndexes[spaceIndexes.Count - 1] > -1) {
-					spaceIndexes.Add(this.Text.IndexOf(" "));
-				}
-				List<string> desiredStrings = new List<string>();
-				if (spaceIndexes.Count > 1) {
-					for (int i = 1; i == spaceIndexes.Count -1; i++) {
-						desiredStrings.Add(this.Text.Substring(spaceIndexes[i], spaceIndexes[i + 1] - spaceIndexes[1]));
-					}
-				} else {
-					desiredStrings.Add(this.Text);
-				}
-				foreach (string Str in entireList) {
-					foreach (string each in desiredStrings) {
-						if (Str.ToLower().IndexOf(each) > -1) {
-							matchingList.Add(Str);//put everything in lowercase and add matching strings to list
+				
+				string[] words = this.Text.Trim().Split(' ');
+
+				foreach(string Str in entireList){
+					int count = 0;
+					foreach (string each in words) {
+						if (Str.ToLower().IndexOf(each.ToLower()) > -1){
+							count++;
 						}
 					}
-				}
-				*/
-				
-				foreach (string Str in entireList) {
-					if (Str.ToLower().IndexOf(this.Text.ToLower()) > -1) {
-						matchingList.Add(Str);//put everything in lowercase and add matching strings to list
+					if (count == words.Length) {
+						matchingList.Add(Str);
 					}
 				}
-				
+
 				//Add items to listbox
 				if ((ParentForm != null)) {
 					panel.Width = this.Width;

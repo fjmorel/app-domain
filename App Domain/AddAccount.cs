@@ -26,6 +26,13 @@ namespace App_Domain {
 			txtType.entireList = strings;
 
 			this.FillAccount += callback;
+			this.KeyDown += new KeyEventHandler(AddAccount_KeyDown);
+		}
+
+		void AddAccount_KeyDown(object sender, KeyEventArgs e) {
+			if (e.KeyCode == Keys.Enter) {
+					bAdd.PerformClick();
+			}
 		}
 
 		/// <summary>

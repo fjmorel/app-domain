@@ -18,6 +18,7 @@ namespace App_Domain {
 			InitializeComponent();
 			this.FillJournal += callback;
 			this.FillTB += callback2;
+			this.KeyDown += new KeyEventHandler(frmAddJournalEntry_KeyDown);
 			
 
 			List<Account> accounts = Program.sqlcon.GetFilteredAccountList(true, true, 0);//Active accounts of all types
@@ -33,6 +34,12 @@ namespace App_Domain {
 			dgEntries.DataSource = entries;
 
 			cbTransType.SelectedIndex = 0;
+		}
+
+		void frmAddJournalEntry_KeyDown(object sender, KeyEventArgs e) {
+			if (e.KeyCode == Keys.Enter) {
+				if (this.Focused) { bPost.PerformClick(); }
+			}
 		}
 
 		private void bCancel_Click(object sender, EventArgs e) {
@@ -58,6 +65,8 @@ namespace App_Domain {
 				if (fine) {
 					je.AddEntry(temp.AccountNumber, temp.AccountDescription, Convert.ToDouble(txtAmmount.Text), transIsDebit);
 					updateEntries();
+					txtAccount.Clear();
+					this.Focus();
 				} else {
 					MessageBox.Show("This transaction would bring the account below 0. Please fix it.");
 				}

@@ -109,11 +109,22 @@ namespace App_Domain {
 		private void FillLedger(int accountnum) {
 			dgvAccountLedger.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgvAccountLedger.ClearSelection();
-			int balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
-			lblBalance.Text = "Balance: ";
-			if(balance > 0){lblBalance.Text+= balance.ToString() + " on the accountIsDebit side";}
-			else if (balance < 0) { lblBalance.Text += (balance*-1).ToString() + " on the credit side"; }
-			else if (balance == 0) { lblBalance.Text += "0"; }
+			int balance;
+			bool debitIsPositive = Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1 ? true : false;
+			if(debitIsPositive)
+				balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
+			else
+				balance = Program.sqlcon.GetAccountCreditTotal(accountnum) - Program.sqlcon.GetAccountDebitTotal(accountnum);
+
+			lblBalance.Text = "Balance: $";
+			if (balance > 0 || balance == 0)
+				lblBalance.Text += balance;
+			else if (balance < 0)
+				lblBalance.Text += "(" + balance + ")";
+
+			//if(balance > 0){lblBalance.Text+= balance.ToString() + " on the debit side";}
+			//else if (balance < 0) { lblBalance.Text += (balance*-1).ToString() + " on the credit side"; }
+			//else if (balance == 0) { lblBalance.Text += "0"; }
 		}
 
 		private void Mainwin_Resize(object sender, EventArgs e) {

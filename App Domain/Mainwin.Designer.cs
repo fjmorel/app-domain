@@ -51,6 +51,8 @@
 			this.tpChanges = new System.Windows.Forms.TabPage();
 			this.dgAccountChanges = new System.Windows.Forms.DataGridView();
 			this.tpTrialBalance = new System.Windows.Forms.TabPage();
+			this.lblTotalCredit = new System.Windows.Forms.Label();
+			this.lblTotalDebit = new System.Windows.Forms.Label();
 			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.menuAccounts = new System.Windows.Forms.ToolStripDropDownButton();
@@ -58,8 +60,6 @@
 			this.miAddAccountType = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuJournal = new System.Windows.Forms.ToolStripDropDownButton();
 			this.addJournalEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.lblTotalDebit = new System.Windows.Forms.Label();
-			this.lblTotalCredit = new System.Windows.Forms.Label();
 			this.tabMain.SuspendLayout();
 			this.tpAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -96,7 +96,7 @@
 			this.tabMain.Name = "tabMain";
 			this.tabMain.Padding = new System.Drawing.Point(0, 0);
 			this.tabMain.SelectedIndex = 0;
-			this.tabMain.Size = new System.Drawing.Size(901, 458);
+			this.tabMain.Size = new System.Drawing.Size(887, 434);
 			this.tabMain.TabIndex = 1;
 			this.tabMain.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabMain_DrawItem);
 			this.tabMain.SelectedIndexChanged += new System.EventHandler(this.Mainwin_Resize);
@@ -113,7 +113,7 @@
 			this.tpAccounts.Location = new System.Drawing.Point(104, 4);
 			this.tpAccounts.Name = "tpAccounts";
 			this.tpAccounts.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAccounts.Size = new System.Drawing.Size(793, 450);
+			this.tpAccounts.Size = new System.Drawing.Size(779, 426);
 			this.tpAccounts.TabIndex = 0;
 			this.tpAccounts.Text = "Accounts";
 			this.tpAccounts.UseVisualStyleBackColor = true;
@@ -122,7 +122,7 @@
 			// 
 			this.txtAccountName.Location = new System.Drawing.Point(92, 6);
 			this.txtAccountName.Name = "txtAccountName";
-			this.txtAccountName.Size = new System.Drawing.Size(145, 20);
+			this.txtAccountName.Size = new System.Drawing.Size(124, 20);
 			this.txtAccountName.TabIndex = 6;
 			this.txtAccountName.TextChanged += new System.EventHandler(this.txtAccountName_TextChanged);
 			// 
@@ -140,16 +140,16 @@
 			this.cbxTypes.FormattingEnabled = true;
 			this.cbxTypes.Items.AddRange(new object[] {
             "All"});
-			this.cbxTypes.Location = new System.Drawing.Point(328, 6);
+			this.cbxTypes.Location = new System.Drawing.Point(307, 6);
 			this.cbxTypes.Name = "cbxTypes";
-			this.cbxTypes.Size = new System.Drawing.Size(252, 21);
+			this.cbxTypes.Size = new System.Drawing.Size(276, 21);
 			this.cbxTypes.TabIndex = 4;
 			this.cbxTypes.SelectedIndexChanged += new System.EventHandler(this.cbxTypes_SelectedIndexChanged);
 			// 
 			// lblAccountTypes
 			// 
 			this.lblAccountTypes.AutoSize = true;
-			this.lblAccountTypes.Location = new System.Drawing.Point(243, 7);
+			this.lblAccountTypes.Location = new System.Drawing.Point(222, 7);
 			this.lblAccountTypes.Name = "lblAccountTypes";
 			this.lblAccountTypes.Size = new System.Drawing.Size(79, 13);
 			this.lblAccountTypes.TabIndex = 3;
@@ -160,7 +160,7 @@
 			this.lblSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSortBy.AutoSize = true;
 			this.lblSortBy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSortBy.Location = new System.Drawing.Point(603, 7);
+			this.lblSortBy.Location = new System.Drawing.Point(589, 7);
 			this.lblSortBy.Name = "lblSortBy";
 			this.lblSortBy.Size = new System.Drawing.Size(41, 15);
 			this.lblSortBy.TabIndex = 2;
@@ -175,7 +175,7 @@
             "Active and Inactive",
             "Active Only",
             "Inactive Only"});
-			this.cbSortBy.Location = new System.Drawing.Point(650, 6);
+			this.cbSortBy.Location = new System.Drawing.Point(636, 6);
 			this.cbSortBy.Name = "cbSortBy";
 			this.cbSortBy.Size = new System.Drawing.Size(135, 21);
 			this.cbSortBy.TabIndex = 1;
@@ -198,7 +198,7 @@
 			this.dgChartAccounts.ReadOnly = true;
 			this.dgChartAccounts.RowHeadersVisible = false;
 			this.dgChartAccounts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgChartAccounts.Size = new System.Drawing.Size(787, 414);
+			this.dgChartAccounts.Size = new System.Drawing.Size(773, 390);
 			this.dgChartAccounts.TabIndex = 0;
 			this.dgChartAccounts.DoubleClick += new System.EventHandler(this.dgChartAccounts_DoubleClick);
 			// 
@@ -389,6 +389,24 @@
 			this.tpTrialBalance.Text = "Trial Balance";
 			this.tpTrialBalance.UseVisualStyleBackColor = true;
 			// 
+			// lblTotalCredit
+			// 
+			this.lblTotalCredit.AutoSize = true;
+			this.lblTotalCredit.Location = new System.Drawing.Point(189, 7);
+			this.lblTotalCredit.Name = "lblTotalCredit";
+			this.lblTotalCredit.Size = new System.Drawing.Size(72, 13);
+			this.lblTotalCredit.TabIndex = 2;
+			this.lblTotalCredit.Text = "Total Credits: ";
+			// 
+			// lblTotalDebit
+			// 
+			this.lblTotalDebit.AutoSize = true;
+			this.lblTotalDebit.Location = new System.Drawing.Point(7, 7);
+			this.lblTotalDebit.Name = "lblTotalDebit";
+			this.lblTotalDebit.Size = new System.Drawing.Size(70, 13);
+			this.lblTotalDebit.TabIndex = 1;
+			this.lblTotalDebit.Text = "Total Debits: ";
+			// 
 			// dgTrialBalance
 			// 
 			this.dgTrialBalance.AllowUserToAddRows = false;
@@ -412,7 +430,7 @@
 			this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.toolbarMain.Location = new System.Drawing.Point(0, 0);
 			this.toolbarMain.Name = "toolbarMain";
-			this.toolbarMain.Size = new System.Drawing.Size(901, 25);
+			this.toolbarMain.Size = new System.Drawing.Size(887, 25);
 			this.toolbarMain.TabIndex = 2;
 			this.toolbarMain.Text = "Toolbar";
 			// 
@@ -458,33 +476,15 @@
 			this.addJournalEntryToolStripMenuItem.Text = "&Add Journal Entry";
 			this.addJournalEntryToolStripMenuItem.Click += new System.EventHandler(this.addJournalEntryToolStripMenuItem_Click);
 			// 
-			// lblTotalDebit
-			// 
-			this.lblTotalDebit.AutoSize = true;
-			this.lblTotalDebit.Location = new System.Drawing.Point(7, 7);
-			this.lblTotalDebit.Name = "lblTotalDebit";
-			this.lblTotalDebit.Size = new System.Drawing.Size(70, 13);
-			this.lblTotalDebit.TabIndex = 1;
-			this.lblTotalDebit.Text = "Total Debits: ";
-			// 
-			// lblTotalCredit
-			// 
-			this.lblTotalCredit.AutoSize = true;
-			this.lblTotalCredit.Location = new System.Drawing.Point(189, 7);
-			this.lblTotalCredit.Name = "lblTotalCredit";
-			this.lblTotalCredit.Size = new System.Drawing.Size(72, 13);
-			this.lblTotalCredit.TabIndex = 2;
-			this.lblTotalCredit.Text = "Total Credits: ";
-			// 
 			// Mainwin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(901, 486);
+			this.ClientSize = new System.Drawing.Size(887, 462);
 			this.Controls.Add(this.toolbarMain);
 			this.Controls.Add(this.tabMain);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(700, 450);
+			this.MinimumSize = new System.Drawing.Size(903, 500);
 			this.Name = "Mainwin";
 			this.Text = "Fastbooks";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mainwin_FormClosed);

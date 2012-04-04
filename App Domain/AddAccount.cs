@@ -19,18 +19,14 @@ namespace App_Domain {
 		public AddAccount(FillChartOfAccountsHandler callback) {
 			InitializeComponent();
 
-			List<AccountType> list = Program.sqlcon.GetAccountTypesList();
-			List<string> strings = new List<string>();
-			foreach (AccountType each in list)
-				strings.Add(each.Name);
-			txtType.entireList = strings;
+			txtType.entireList = Program.sqlcon.GetAccountTypesList();
 
 			this.FillAccount += callback;
-			this.KeyDown += new KeyEventHandler(AddAccount_KeyDown);
 		}
 
 		void AddAccount_KeyDown(object sender, KeyEventArgs e) {
 			if (e.KeyCode == Keys.Enter) {
+				if(txtAccountnum.Focused || txtDescription.Focused)
 					bAdd.PerformClick();
 			}
 		}

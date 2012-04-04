@@ -10,43 +10,76 @@ using System.Windows.Forms;
 namespace App_Domain {
 	public partial class frmAddJournalEntry : Form {
 		private event FillJournalHandler FillJournal;
-		private event FillTrialBalanceHandler FillTB;
+		private event FillTrialBalanceHandler FillTrialBalance;
 		private JournalEntry je = new JournalEntry();
-		private DataTable entries = new DataTable();
+		private DataTable entries;
 
-		public frmAddJournalEntry(FillJournalHandler callback, FillTrialBalanceHandler callback2) {
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="callback"></param>
+		/// <param name="callback2"></param>
+		public frmAddJournalEntry(FillJournalHandler callback) {
 			InitializeComponent();
 			this.FillJournal += callback;
-			this.FillTB += callback2;
 			this.KeyDown += new KeyEventHandler(frmAddJournalEntry_KeyDown);
-			
 
-			List<Account> accounts = Program.sqlcon.GetFilteredAccountList(true, true, 0);//Active accounts of all types
-			List<string> activeAccounts = new List<string>();
-			foreach (Account each in accounts)
-				activeAccounts.Add(each.ToString());
-			txtAccount.entireList = activeAccounts;
+			//Add all active accounts as strings to the autocomplete textbox
+			foreach (Account each in Program.sqlcon.GetFilteredAccountList(true, true, 0))
+				txtAccount.entireList.Add(each.ToString());
 
-			entries.Columns.Add("Account Number", typeof(int));
+			//Style datagridview
+			DataGridViewCellStyle cs = new DataGridViewCellStyle();
+			cs.BackColor = Color.LightBlue;
+			dgEntries.AlternatingRowsDefaultCellStyle = cs;
+			dgEntries.ScrollBars = ScrollBars.Vertical;
+			//Set up columns for datagridview			
+			entries = new DataTable();
+			entries.Columns.Add("Account", typeof(int));
 			entries.Columns.Add("Description", typeof(string));
-			entries.Columns.Add("Debit", typeof(double));
-			entries.Columns.Add("Credit", typeof(double));
+			entries.Columns.Add("Debit", typeof(string));
+			entries.Columns.Add("Credit", typeof(string));
 			dgEntries.DataSource = entries;
+			dgEntries.Columns[0].Width = 100;
+			dgEntries.Columns[2].Width = 100;
+			dgEntries.Columns[3].Width = 100;
+			dgEntries.Columns[1].Width = dgEntries.Width - dgEntries.Columns[0].Width - dgEntries.Columns[2].Width - dgEntries.Columns[3].Width;
+			
 
 			cbTransType.SelectedIndex = 0;
 		}
 
+		/// <summary>
+		/// Process Enter and Escape keys properly
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void frmAddJournalEntry_KeyDown(object sender, KeyEventArgs e) {
 			if (e.KeyCode == Keys.Enter) {
-				if (this.Focused) { bPost.PerformClick(); }
+				if (this.Focused || dgEntries.Focused) {//Form or datagrid is focused, post Journal Entry
+					bPost.PerformClick();
+				} else if (cbTransType.Focused || txtAmmount.Focused) {//Fields are focused, add transaction to Journal Entry
+					bAdd.PerformClick();
+				}
+			} else if (e.KeyCode == Keys.Escape) {
+				if (this.Focused || dgEntries.Focused) {//Pressing cancel when fields don't have focus
+					bCancel.PerformClick();
+				}
 			}
 		}
 
-		private void bCancel_Click(object sender, EventArgs e) {
-			FillJournal();
-			this.Close();
-		}
+		/// <summary>
+		/// Cancel adding journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void bCancel_Click(object sender, EventArgs e) { this.Close(); }
 
+		/// <summary>
+		/// Add transaction to Journal Entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void bAdd_Click(object sender, EventArgs e) {
 			try {
 				int i = Convert.ToInt32(txtAccount.Text.IndexOf(" "));
@@ -61,28 +94,31 @@ namespace App_Domain {
 					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) - amount > 0 ? true : false;
 				else if (!accountIsDebit && transIsDebit)
 					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) + amount < 0 ? true : false;
-				
-				if (fine) {
-					je.AddEntry(temp.AccountNumber, temp.AccountDescription, Convert.ToDouble(txtAmmount.Text), transIsDebit);
-					updateEntries();
+
+				if (!fine) {//Confirm the user wants to continue if the transaction brings balance below 0.
+					DialogResult result = MessageBox.Show("This transaction would bring the account below 0. Continue anyway?", "cap", MessageBoxButtons.YesNo);
+					if(result.Equals(DialogResult.Yes))
+						fine = true;
+				}
+
+				if (fine) {//Add transaction if everything's fine
+					je.AddEntry(temp.AccountNumber, temp.AccountDescription, amount, transIsDebit);
+					Entry ent = je.Transactions[je.Transactions.Count - 1];
+					entries.Rows.Add(ent.AccountNumber, ent.Description, (ent.IsDebitNotCredit) ? String.Format("{0:C}", ent.Amount) : "", (!ent.IsDebitNotCredit) ? String.Format("{0:C}", ent.Amount) : "");
 					txtAccount.Clear();
-					this.Focus();
-				} else {
-					MessageBox.Show("This transaction would bring the account below 0. Please fix it.");
+					bPost.Enabled = true;
+					dgEntries.Focus();
 				}
 			} catch {
 				MessageBox.Show("I couldn't add the transaction. Make sure you've picked an account and typed an amount.");
 			}
 		}
 
-		private void updateEntries() {
-			entries.Clear();
-
-			foreach (Entry ent in je.Transactions) {
-				entries.Rows.Add(ent.AccountNumber, ent.Description, (ent.IsDebitNotCredit) ? ent.Amount : 0, (!ent.IsDebitNotCredit) ? ent.Amount : 0);
-			}
-		}
-
+		/// <summary>
+		/// Save Journal Entry and update tables in main window
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void bPost_Click(object sender, EventArgs e) {
 			double debits = 0;
 			double credits = 0;
@@ -92,17 +128,16 @@ namespace App_Domain {
 				debits += (ent.IsDebitNotCredit) ? ent.Amount : 0;
 				credits += (!ent.IsDebitNotCredit) ? ent.Amount : 0;
 			}
-			
+
 			if (debits > credits) {
-				MessageBox.Show("Debits are higher than credits by $" + Math.Abs(debits - credits));
+				MessageBox.Show("Debits are higher than credits by $" + (debits - credits));
 			} else if (debits < credits) {
-				MessageBox.Show("Credits are higher than debits by $" + Math.Abs(debits - credits));
-			} else if (debits == 0 && credits == 0){
+				MessageBox.Show("Credits are higher than debits by $" + (credits - debits));
+			} else if (debits == 0 && credits == 0) {
 				MessageBox.Show("No money is being debited or credited. Please enter transactions before posting.");
 			} else {
 				Program.sqlcon.PostJournalEntry(je);
 				FillJournal();
-				FillTB();
 				this.Close();
 			}
 		}

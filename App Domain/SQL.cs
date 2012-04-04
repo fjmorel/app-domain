@@ -77,16 +77,18 @@ namespace App_Domain {
 
 
 		/// <summary>
-		/// Retrieves a subset of all accounts.
+		/// Retrieves a subset of all activeAccounts.
 		/// </summary>
-		/// <param name="careAboutActive">False means get both active and inactive accounts, ignoring bool active</param>
+		/// <param name="careAboutActive">False means get both active and inactive activeAccounts, ignoring bool active</param>
 		/// <param name="active">Active = true, Inactive = false</param>
 		/// <param name="type">ID of the type of account to get</param>
-		/// <param name="name">String wanted in name of accounts</param>
+		/// <param name="name">String wanted in name of activeAccounts</param>
 		/// <returns></returns>
 		public DataTable GetFilteredChartOfAccounts(bool careAboutActive, bool active, int type, string name) {
-			string query = "SELECT ca.accountnum AS [Account Number], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type], CAST(DATEPART(month, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(day, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(year, ca.datecreated) AS NVARCHAR(4)) AS [Created] FROM Chart_of_Accounts AS ca " +
+			string query = "SELECT ca.accountnum AS [Account Number], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
 				"JOIN Account_Types AS at ON (ca.typeid = at.id)";
+			//To get date of account
+			//CAST(DATEPART(month, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(day, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(year, ca.datecreated) AS NVARCHAR(4)) AS [Created]
 			string whereParam = "";
 			if (careAboutActive) {//Filter active status only if we care about it
 				whereParam += " WHERE ";
@@ -116,26 +118,26 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets a list of account types and stores them in a list of AccoutType
+		/// Gets a list of account types and stores their name in a List<string>
 		/// </summary>
 		/// <returns> list of AccountTypes</returns>
-		public List<AccountType> GetAccountTypesList() {
-			List<AccountType> types = new List<AccountType>();
-			DataTable accounts = ExecuteQuery("SELECT id, name, debitispositive FROM Account_Types");
-
-			foreach (DataRow row in accounts.Rows) {
-				types.Add(new AccountType(Convert.ToInt32(row["id"]), Convert.ToString(row["name"]), Convert.ToBoolean(row["debitispositive"])));
+		public List<String> GetAccountTypesList() {
+			List<String> types = new List<String>();
+			DataTable accounts = ExecuteQuery("SELECT name FROM Account_Types");
+			if (accounts != null) {
+				foreach (DataRow row in accounts.Rows) {
+					types.Add(row["name"].ToString());
+				}
 			}
-
 			return types;
 		}
 
 		/// <summary>
-		/// Gets a list of a subset of accounts
+		/// Gets a list of a subset of activeAccounts
 		/// </summary>
 		/// <param name="careAboutActive">Whether the second bool is relevant</param>
-		/// <param name="active">true = active accounts, false = inactive accounts</param>
-		/// <param name="type">ID of the type of accounts to get</param>
+		/// <param name="active">true = active activeAccounts, false = inactive activeAccounts</param>
+		/// <param name="type">ID of the type of activeAccounts to get</param>
 		/// <returns>Accounts that match criteria in a list</returns>
 		public List<Account> GetFilteredAccountList(bool careAboutActive, bool active, int type) {
 			List<Account> accounts = new List<Account>();
@@ -157,7 +159,7 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets changes to accounts from database
+		/// Gets changes to activeAccounts from database
 		/// </summary>
 		/// <returns>DataTable with account changes</returns>
 		public DataTable GetAccountChanges() {
@@ -171,8 +173,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public DataTable GetAccountLedger(int accountnum) {
-			string an = Convert.ToString(accountnum);
-			return ExecuteQuery("SELECT c.accountnum AS [Account Number], c.descript AS [Account], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount], j.postdate AS [Date] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) WHERE c.accountnum = " + an);
+			return ExecuteQuery("SELECT j.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) WHERE c.accountnum = " + accountnum);
 		}
 
 		/// <summary>

@@ -48,6 +48,7 @@
 			this.txtDescription.Name = "txtDescription";
 			this.txtDescription.Size = new System.Drawing.Size(238, 20);
 			this.txtDescription.TabIndex = 1;
+			this.txtDescription.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddAccount_KeyDown);
 			// 
 			// txtOwner
 			// 
@@ -115,6 +116,7 @@
 			this.txtAccountnum.Name = "txtAccountnum";
 			this.txtAccountnum.Size = new System.Drawing.Size(238, 20);
 			this.txtAccountnum.TabIndex = 0;
+			this.txtAccountnum.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddAccount_KeyDown);
 			this.txtAccountnum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAccountnum_KeyPress);
 			// 
 			// lblAccountnum
@@ -174,6 +176,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AddAccount";
 			this.Load += new System.EventHandler(this.AddAccount_Load);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddAccount_KeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

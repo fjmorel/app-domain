@@ -114,6 +114,7 @@
 			// bPost
 			// 
 			this.bPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.bPost.Enabled = false;
 			this.bPost.Location = new System.Drawing.Point(508, 462);
 			this.bPost.Name = "bPost";
 			this.bPost.Size = new System.Drawing.Size(75, 23);

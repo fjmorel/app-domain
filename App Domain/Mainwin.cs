@@ -12,33 +12,35 @@ namespace App_Domain {
 
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
+			tabMain.TabPages.Remove(tpAccountInfo);
 
 			//Create SQL connection
 			Program.sqlcon = new SQL();
-			
-			//Populate datagridviews
-			OnFillAccountTypes();
-			OnFillAccountCharts();
-			OnFillAccountChanges();
-			OnFillJournal();
-			OnFillTrialBalance();
 
+			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
 			cs.BackColor = Color.LightBlue;
-			dgAccountTypes.AlternatingRowsDefaultCellStyle = cs;
 			dgChartAccounts.AlternatingRowsDefaultCellStyle = cs;
-			dgAccountChanges.AlternatingRowsDefaultCellStyle = cs;
+			dgAccountTransactions.AlternatingRowsDefaultCellStyle = cs;
+			dgAccountTypes.AlternatingRowsDefaultCellStyle = cs;
+			dgChanges.AlternatingRowsDefaultCellStyle = cs;
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
-			dgvAccountLedger.AlternatingRowsDefaultCellStyle = cs;
-			dgAccountTypes.ScrollBars = ScrollBars.Vertical;
+			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
-			dgAccountChanges.ScrollBars = ScrollBars.Vertical;
+			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
+			dgAccountTypes.ScrollBars = ScrollBars.Vertical;
+			dgChanges.ScrollBars = ScrollBars.Vertical;
 			dgJournal.ScrollBars = ScrollBars.Vertical;
-			dgvAccountLedger.ScrollBars = ScrollBars.Vertical;
+			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 
-			Mainwin_Resize(this, new EventArgs());
-			tabMain.SelectedIndexChanged += new EventHandler(tabMain_SelectedIndexChanged);
-			tabMain.TabPages.Remove(tpAccountInfo);
+			//Populate datagridviews
+			OnFillAccountCharts();
+			OnFillAccountTypes();
+			OnFillJournal();//will refresh changes and trial balance
+
+			//Resize columns of main window
+			tabMain_SelectedIndexChanged(this, new EventArgs());
+			
 		}
 
 		/// <summary>
@@ -47,19 +49,50 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void tabMain_SelectedIndexChanged(object sender, EventArgs e) {
-			//if (tabMain.SelectedTab != tpAccountInfo) {
-				//tabMain.TabPages.Remove(tpAccountInfo);
-			//}
-			if (tabMain.SelectedTab == tpTrialBalance) {
-				
+			if (tabMain.SelectedTab == tpChartOfAccounts) {
+				dgChartAccounts.Columns[0].Width = 120;
+				dgChartAccounts.Columns[2].Width = 80;
+				dgChartAccounts.Columns[3].Width = 200;
+				dgChartAccounts.Columns[1].Width = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width;
+			} else if (tabMain.SelectedTab == tpAccountInfo) {
+				dgAccountTransactions.Columns[1].Width = 120;
+				dgAccountTransactions.Columns[2].Width = 120;
+				dgAccountTransactions.Columns[0].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[1].Width;
+			} else if (tabMain.SelectedTab == tpAccountTypes) {
+				dgAccountTypes.Columns[0].Width = 120;
+				dgAccountTypes.Columns[2].Width = 120;
+				dgAccountTypes.Columns[1].Width = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width;
+			} else if (tabMain.SelectedTab == tpJournal) {
+				dgJournal.Columns[0].Width = 120;
+				dgJournal.Columns[2].Width = 120;
+				dgJournal.Columns[3].Width = 120;
+				dgJournal.Columns[4].Width = 150;
+				dgJournal.Columns[1].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[2].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width;
+			} else if (tabMain.SelectedTab == tpChanges) {
+				dgChanges.Columns[0].Width = 120;
+				dgChanges.Columns[2].Width = 120;
+				dgChanges.Columns[3].Width = 150;
+				dgChanges.Columns[1].Width = dgChanges.Width - dgChanges.Columns[0].Width - dgChanges.Columns[2].Width - dgChanges.Columns[3].Width;
+			} else if (tabMain.SelectedTab == tpTrialBalance) {
+				dgTrialBalance.Columns[0].Width = 120;
+				dgTrialBalance.Columns[2].Width = 120;
+				dgTrialBalance.Columns[3].Width = 120;
+				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width; ;
 			}
 		}
 
-
+		/// <summary>
+		/// Close application
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Mainwin_FormClosed(object sender, FormClosedEventArgs e) {
 			Application.Exit();
 		}
 
+		/// <summary>
+		/// Refresh chart of accounts based upon filters
+		/// </summary>
 		public void OnFillAccountCharts() {
 			if (cbxTypes.SelectedIndex > -1 && cbSortBy.SelectedIndex > -1) {
 				bool care = false;
@@ -76,16 +109,18 @@ namespace App_Domain {
 			dgChartAccounts.ClearSelection();
 		}
 
+		/// <summary>
+		/// Refresh account types
+		/// </summary>
 		public void OnFillAccountTypes() {
 			dgAccountTypes.DataSource = Program.sqlcon.GetAccountTypes();
 			dgAccountTypes.ClearSelection();
 
-			//Populate account type dropdown
+			//Populate account type dropdown on chart of accounts view
 			cbxTypes.Items.Clear();
 			cbxTypes.Items.Add("All");
-			List<AccountType> at = Program.sqlcon.GetAccountTypesList();
-			foreach (AccountType each in at)
-				cbxTypes.Items.Add(each.ToString());
+			foreach(String each in Program.sqlcon.GetAccountTypesList())
+				cbxTypes.Items.Add(each);
 			cbxTypes.SelectedIndex = 0;
 		}
 
@@ -96,136 +131,112 @@ namespace App_Domain {
 		}
 
 		public void OnFillAccountChanges() {
-			dgAccountChanges.DataSource = Program.sqlcon.GetAccountChanges();
-			dgAccountChanges.ClearSelection();
+			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
+			dgChanges.ClearSelection();
 		}
 
+		/// <summary>
+		/// Refresh journal as well as changes and trial balance
+		/// </summary>
 		public void OnFillJournal() {
 			dgJournal.DataSource = Program.sqlcon.GetJournal();
 			dgJournal.ClearSelection();
 			OnFillAccountChanges();
+			OnFillTrialBalance();
 		}
 
-		private void FillLedger(int accountnum) {
-			dgvAccountLedger.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
-			dgvAccountLedger.ClearSelection();
+		private void OnFillAccountTransactions(int accountnum) {
+			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
+			dgAccountTransactions.ClearSelection();
 			int balance;
-			bool debitIsPositive = Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1 ? true : false;
-			if(debitIsPositive)
+			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
 				balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
 			else
 				balance = Program.sqlcon.GetAccountCreditTotal(accountnum) - Program.sqlcon.GetAccountDebitTotal(accountnum);
 
-			lblBalance.Text = "Balance: $";
-			if (balance > 0 || balance == 0)
-				lblBalance.Text += balance;
-			else if (balance < 0)
-				lblBalance.Text += "(" + balance + ")";
-
-			//if(balance > 0){lblBalance.Text+= balance.ToString() + " on the debit side";}
-			//else if (balance < 0) { lblBalance.Text += (balance*-1).ToString() + " on the credit side"; }
-			//else if (balance == 0) { lblBalance.Text += "0"; }
+			lblBalance.Text = String.Format("Balance: {0:C}", balance);
 		}
 
-		private void Mainwin_Resize(object sender, EventArgs e) {
-			int temp;
+		/// <summary>
+		/// Filter chart of accounts by active status
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void cbSortBy_SelectedIndexChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
+		/// <summary>
+		/// Filter chart of accounts by account type
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void cbxTypes_SelectedIndexChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
+		/// <summary>
+		/// Filter chart of accounts by account name
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void txtAccountName_TextChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
 
-			dgChartAccounts.Columns[0].Width = 120;
-			dgChartAccounts.Columns[2].Width = 100;
-			dgChartAccounts.Columns[3].Width = 100;
-			dgChartAccounts.Columns[4].Width = 120;
-			temp = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width - dgChartAccounts.Columns[4].Width;
-			dgChartAccounts.Columns[1].Width = temp < 100 ? 100 : temp;//100+ only
-
-			dgAccountTypes.Columns[0].Width = 120;
-			dgAccountTypes.Columns[2].Width = 120;
-			temp = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width;
-			dgAccountTypes.Columns[1].Width = temp < 120 ? 120 : temp;
-
-			dgAccountChanges.Columns[0].Width = 120;
-			dgAccountChanges.Columns[2].Width = 120;
-			dgAccountChanges.Columns[3].Width = 150;
-			temp = dgAccountChanges.Width - dgAccountChanges.Columns[0].Width - dgAccountChanges.Columns[2].Width - dgAccountChanges.Columns[3].Width;
-			dgAccountChanges.Columns[1].Width = temp < 120 ? 120 : temp;
-
-			dgJournal.Columns[0].Width = 120;
-			dgJournal.Columns[2].Width = 120;
-			dgJournal.Columns[3].Width = 120;
-			dgJournal.Columns[4].Width = 150;
-			temp = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[2].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width;
-			dgJournal.Columns[1].Width = temp < 120 ? 120 : temp;
-
-			if (this.Width < 550) {
-				dgChartAccounts.ScrollBars = ScrollBars.Both;
-				dgAccountTypes.ScrollBars = ScrollBars.Both;
-				dgAccountChanges.ScrollBars = ScrollBars.Both;
-				dgJournal.ScrollBars = ScrollBars.Both;
-				dgvAccountLedger.ScrollBars = ScrollBars.Both;
-
-			} else {
-				dgChartAccounts.ScrollBars = ScrollBars.Vertical;
-				dgAccountTypes.ScrollBars = ScrollBars.Vertical;
-				dgAccountChanges.ScrollBars = ScrollBars.Vertical;
-				dgJournal.ScrollBars = ScrollBars.Vertical;
-				dgvAccountLedger.ScrollBars = ScrollBars.Vertical;
-			}
-		}
-
-		private void cbSortBy_SelectedIndexChanged(object sender, EventArgs e) {
-			OnFillAccountCharts();
-		}
-
-		private void bSave_Click(object sender, EventArgs e) {
-			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
-			Program.sqlcon.ChangeAccountStatusByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), cbAccountActive.Checked);
-			OnFillAccountCharts();
-		}
-
+		/// <summary>
+		/// Add account
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void miAddAccount_Click(object sender, EventArgs e) {
 			new AddAccount(this.OnFillAccountCharts).ShowDialog();
 		}
 
+		/// <summary>
+		/// Add account type
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void miAddAccountType_Click(object sender, EventArgs e) {
 			new AddAccountType(this.OnFillAccountTypes).ShowDialog();
 		}
 
+		/// <summary>
+		/// Select an account to view information
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void dgChartAccounts_DoubleClick(object sender, EventArgs e) {
 			if (dgChartAccounts.SelectedRows.Count > 0) {
 				DataTable dt = Program.sqlcon.GetAccountByNumber(Convert.ToInt32(dgChartAccounts.SelectedRows[0].Cells[0].Value.ToString()));
 
-				if (dt != null || dt.Rows.Count > 0) {
+				if (dt != null && dt.Rows.Count > 0) {
+					//Show name in groupbox
+					gbAccount.Text = dt.Rows[0]["accountnum"] + " - " + dt.Rows[0]["descript"];
+					//Show account's transactions
+					OnFillAccountTransactions(Convert.ToInt32(dt.Rows[0]["accountnum"]));
+					//Show active status and only allow changes if balance is 0
 					int active = Convert.ToInt32(dt.Rows[0]["active"]);
-					cbAccountActive.Enabled = true;
+					cbAccountActive.CheckedChanged -= cbAccountActive_CheckedChanged;//So loading the state is added as a change
 					cbAccountActive.Checked = active == 1 ? true : false;//If active == 1, check the txtAccounts
-					gbAccount.Text = dt.Rows[0]["accountnum"].ToString() + " - " + dt.Rows[0]["descript"].ToString();
-					FillLedger(Convert.ToInt32(dt.Rows[0]["accountnum"]));
+					cbAccountActive.CheckedChanged += cbAccountActive_CheckedChanged;//So changes to it will be added as a change
+					if (Program.sqlcon.GetAccountBalance(Convert.ToInt32(dt.Rows[0]["accountnum"])) != 0)
+						cbAccountActive.Enabled = false;
+					else
+						cbAccountActive.Enabled = true;
+					//Show tab
 					if (!tabMain.TabPages.Contains(tpAccountInfo)) {
 						tabMain.TabPages.Insert(1, tpAccountInfo);
 					}
 					tabMain.SelectedTab = tpAccountInfo;
-					int temp = 0;
-					dgvAccountLedger.Columns[0].Width = 120;
-					dgvAccountLedger.Columns[2].Width = 120;
-					dgvAccountLedger.Columns[3].Width = 120;
-					dgvAccountLedger.Columns[4].Width = 150;
-					temp = dgvAccountLedger.Width - dgvAccountLedger.Columns[0].Width - dgvAccountLedger.Columns[2].Width - dgvAccountLedger.Columns[3].Width - dgvAccountLedger.Columns[4].Width;
-					dgvAccountLedger.Columns[1].Width = temp < 120 ? 120 : temp;
 				}
 				dgChartAccounts.ClearSelection();
 			}
 		}
 
+		/// <summary>
+		/// Add journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void addJournalEntryToolStripMenuItem_Click(object sender, EventArgs e) {
-			new frmAddJournalEntry(this.OnFillJournal,this.OnFillTrialBalance).ShowDialog();
+			new frmAddJournalEntry(this.OnFillJournal).ShowDialog();
 		}
 
-		private void cbxTypes_SelectedIndexChanged(object sender, EventArgs e) {
-			OnFillAccountCharts();
-		}
 
-		private void txtAccountName_TextChanged(object sender, EventArgs e) {
-			OnFillAccountCharts();
-		}
 
 		private void tabMain_DrawItem(object sender, DrawItemEventArgs e) {
 			Graphics g = e.Graphics;
@@ -255,6 +266,12 @@ namespace App_Domain {
 			_stringFlags.Alignment = StringAlignment.Center;
 			_stringFlags.LineAlignment = StringAlignment.Center;
 			g.DrawString(_tabPage.Text, _tabFont, _textBrush, _tabBounds, new StringFormat(_stringFlags));
+		}
+
+		private void cbAccountActive_CheckedChanged(object sender, EventArgs e) {
+			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
+			Program.sqlcon.ChangeAccountStatusByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), cbAccountActive.Checked);
+			OnFillAccountCharts();
 		}
 
 	}//end Mainwin class

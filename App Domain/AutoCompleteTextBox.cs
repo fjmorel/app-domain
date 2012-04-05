@@ -137,7 +137,7 @@ namespace App_Domain {
 					panel.Location = this.Location + new Size(0, this.Height);
 
 					// Panel and ListBox have to be added to ParentForm.Controls before calling BindingContext
-					if (!this.ParentForm.Controls.Contains(panel)) { this.ParentForm.Controls.Add(panel); }
+					if (!this.ParentForm.Controls.Contains(panel)) {this.ParentForm.Controls.Add(panel); }
 
 					// Update the lboxSuggestions manually - List<string> dosn't support change events
 					((CurrencyManager)lboxSuggestions.BindingContext[matchingList]).Refresh();

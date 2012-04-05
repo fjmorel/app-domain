@@ -5,11 +5,11 @@ namespace App_Domain {
 	public delegate void FillChartOfAccountsHandler();
 	public delegate void FillAccountTypesHandler();
     public delegate void FillJournalHandler();
-	public delegate void FillChangesHandler();
-	public delegate void FillLedgerHandler();
-	public delegate void FillTrialBalanceHandler();
 
 	static class Program {
+
+		public static SQL sqlcon = new SQL("appdomain.sdf", "admin");
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -20,7 +20,6 @@ namespace App_Domain {
 			Application.Run(new Login());
 		}
 
-		public static SQL sqlcon = null;
-		public static string databaseName = "App_Domain";
+		
 	}
 }

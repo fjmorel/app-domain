@@ -53,7 +53,6 @@ C:\Users\Josh\Documents\projects\app-domain\App Domain\bin\Debug\App Domain.exe
 C:\Users\Josh\Documents\projects\app-domain\App Domain\bin\Debug\App Domain.pdb
 C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\App_Domain.AddAccount.resources
-C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\App_Domain.AddAccountType.resources
 C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\App_Domain.frmAddJournalEntry.resources
 C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\App_Domain.Login.resources
 C:\Users\Josh\Documents\projects\app-domain\App Domain\obj\x86\Debug\App_Domain.Mainwin.resources

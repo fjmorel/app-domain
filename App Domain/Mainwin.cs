@@ -14,11 +14,12 @@ namespace App_Domain {
 
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
+			cbAccountTypeDebitIsPositive.SelectedItem = "Debit";
 			tabMain.TabPages.Remove(tpAccountInfo);
 
 			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
-			cs.BackColor = Color.LightBlue;
+			cs.BackColor = Color.FromArgb(255, 239, 239, 239);
 			dgChartAccounts.AlternatingRowsDefaultCellStyle = cs;
 			dgAccountTransactions.AlternatingRowsDefaultCellStyle = cs;
 			dgAccountTypes.AlternatingRowsDefaultCellStyle = cs;
@@ -168,7 +169,12 @@ namespace App_Domain {
 			OnFillUnpostedJournalEntries();
 		}
 
+		/// <summary>
+		/// Show a specific accounts' transaction in the info tab
+		/// </summary>
+		/// <param name="accountnum"></param>
 		private void OnFillAccountTransactions(int accountnum) {
+			//TODO: Ref number for journal entry
 			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgAccountTransactions.ClearSelection();
 			double balance;
@@ -185,19 +191,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void cbSortBy_SelectedIndexChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
-		/// <summary>
-		/// Filter chart of accounts by account type
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void cbxTypes_SelectedIndexChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
-		/// <summary>
-		/// Filter chart of accounts by account name
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void txtAccountName_TextChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
+		private void ChartOfAccounts_FilterChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
 
 		/// <summary>
 		/// Add account
@@ -206,15 +200,6 @@ namespace App_Domain {
 		/// <param name="e"></param>
 		private void miAddAccount_Click(object sender, EventArgs e) {
 			new AddAccount(this.OnFillAccountCharts, this.OnFillAccountChanges).ShowDialog();
-		}
-
-		/// <summary>
-		/// Add account type
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void miAddAccountType_Click(object sender, EventArgs e) {
-			new AddAccountType(this.OnFillAccountTypes).ShowDialog();
 		}
 
 		/// <summary>
@@ -240,6 +225,11 @@ namespace App_Domain {
 						cbAccountActive.Enabled = false;
 					else
 						cbAccountActive.Enabled = true;
+					DataTable isEmpty = Program.sqlcon.GetAccountLedger(Convert.ToInt32(dt.Rows[0]["accountnum"]));
+					if (isEmpty != null && isEmpty.Rows.Count < 1)
+						btnDeleteAccount.Visible = true;
+					else
+						btnDeleteAccount.Visible = false;
 					//Show tab
 					if (!tabMain.TabPages.Contains(tpAccountInfo)) {
 						tabMain.TabPages.Insert(1, tpAccountInfo);
@@ -249,17 +239,6 @@ namespace App_Domain {
 				dgChartAccounts.ClearSelection();
 			}
 		}
-
-		/// <summary>
-		/// Add journal entry
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void addJournalEntryToolStripMenuItem_Click(object sender, EventArgs e) {
-			new frmAddJournalEntry(this.OnFillTransactions).ShowDialog();
-		}
-
-
 
 		private void tabMain_DrawItem(object sender, DrawItemEventArgs e) {
 			Graphics g = e.Graphics;
@@ -304,7 +283,7 @@ namespace App_Domain {
 				string[] split = item.Split(' ');
 				refnum = Convert.ToInt32(split[split.Length - 1]);
 				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetUnpostedJournalEntryTransactions(refnum);
-				txtNotes.Text = Program.sqlcon.GetJournalNote(refnum);
+				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
 				tabMain_SelectedIndexChanged(this, new EventArgs());
 				btnPostTransaction.Enabled = true;
 				btnRemoveTransaction.Enabled = true;
@@ -338,6 +317,39 @@ namespace App_Domain {
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 				tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
+		}
+
+		/// <summary>
+		/// Add journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btnAddJournalEntry_Click(object sender, EventArgs e) {
+			new frmAddJournalEntry(this.OnFillTransactions).ShowDialog();
+		}
+
+		private void btnAddAccountType_Click(object sender, EventArgs e) {
+			if (txtAccountTypeName.Text != "" && txtAccountTypeDescription.Text != "") {
+				DataTable dt = Program.sqlcon.GetAccountTypeByName(txtAccountTypeName.Text);
+				if (dt != null && dt.Rows.Count < 1) {//Check for existing type of that name
+					bool debitIsPositive = cbAccountTypeDebitIsPositive.SelectedText == "Debit" ? true : false;
+					Program.sqlcon.AddAccountType(txtAccountTypeName.Text, txtAccountTypeDescription.Text, debitIsPositive);
+					OnFillAccountTypes();
+				} else {
+					MessageBox.Show("This account type already exists. Please enter something else.");
+				}
+			} else
+				MessageBox.Show("Please enter a name and description for this new account type.");
+		}
+
+		private void btnDeleteAccount_Click(object sender, EventArgs e) {
+			//Delete Account
+			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
+			Program.sqlcon.DeleteAccount(Convert.ToInt32(gbAccount.Text.Substring(0, i)));
+			OnFillAccountCharts();
+			//Go back to main and hide tab
+			tabMain.SelectTab(tpChartOfAccounts);
+			tabMain.TabPages.Remove(tpAccountInfo);
 		}
 
 	}//end Mainwin class

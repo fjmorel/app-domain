@@ -175,7 +175,6 @@
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AddAccount";
-			this.Load += new System.EventHandler(this.AddAccount_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddAccount_KeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();

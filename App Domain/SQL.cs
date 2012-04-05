@@ -158,7 +158,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="refnum"></param>
 		/// <returns></returns>
-		public string GetJournalNote(int refnum) {
+		public string GetJournalEntryNote(int refnum) {
 			return Convert.ToString(ExecuteQuery("SELECT notes FROM Journal_Transactions WHERE id = " + refnum.ToString()).Rows[0][0]);
 		}
 
@@ -171,7 +171,7 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets changes to activeAccounts from database
+		/// Gets changes to Accounts from database
 		/// </summary>
 		/// <returns>DataTable with account changes</returns>
 		public DataTable GetAccountChanges() {
@@ -188,7 +188,7 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets the accountIsDebit total for a specific account
+		/// Gets the debit total for a specific account
 		/// </summary>
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
@@ -228,6 +228,10 @@ namespace App_Domain {
 			return ExecuteQuery(String.Format("SELECT id, accountnum, active, descript FROM Chart_of_Accounts WHERE accountnum = {0}", accountnum));
 		}
 
+		/// <summary>
+		/// Get total credit amount (from accounts where credit is positive)
+		/// </summary>
+		/// <returns></returns>
 		public double getTotalCredit() {
 			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 0");
 			double total = 0;
@@ -240,6 +244,10 @@ namespace App_Domain {
 			return total;
 		}
 
+		/// <summary>
+		/// Get total debit amount (from accounts where debit is positive)
+		/// </summary>
+		/// <returns></returns>
 		public double getTotalDebit() {
 			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 1");
 			double total = 0;
@@ -252,6 +260,11 @@ namespace App_Domain {
 			return total;
 		}
 
+		/// <summary>
+		/// Finds whether an account increases on debit or credit side
+		/// </summary>
+		/// <param name="accountnum"></param>
+		/// <returns></returns>
 		public int IsDebitThePositiveSide(int accountnum) {
 			DataTable dt = ExecuteQuery("SELECT at.debitispositive FROM Account_Types AS at JOIN Chart_of_Accounts AS ca ON ca.typeid = at.id WHERE ca.accountnum = " + accountnum);
 			if (dt != null)
@@ -302,7 +315,6 @@ namespace App_Domain {
 
 		/// <summary>
 		/// Enters a balanced set of journal entries
-		/// 
 		/// updated this function to take care of adding a ref id and notes
 		/// </summary>
 		/// <param name="j"></param>
@@ -319,8 +331,8 @@ namespace App_Domain {
 				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Journal (accountnum," + DorC[0] + "ammount, ref) VALUES (" + e.AccountNumber + "," + e.Amount + ", " + refnum.ToString() + ")", con);
 				//cmd.Parameters.AddWithValue("@datePost", journal.time);
 				cmd.ExecuteNonQuery();
-				//TODO: Move this to posting method
-				AddAccountChange(e.AccountNumber, String.Format(DorC[1] + "ted account by {0:C} on " + journal.time.ToString("M/d/yyyy"), e.Amount));
+				//Transactions show in their own table, only journal entries will show up in changelog
+				//AddAccountChange(e.AccountNumber, String.Format(DorC[1] + "ted account by {0:C} on " + journal.time.ToString("M/d/yyyy"), e.Amount));
 			}
 		}
 
@@ -339,9 +351,17 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="refnum"></param>
 		public void DeleteJournalEntry(int refnum) {
-			ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum.ToString());
-			ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum.ToString());
+			ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum);
+			ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum);
 			AddAccountChange(refnum, "Deleted unposted journal entry");
+		}
+
+		/// <summary>
+		/// Delete an account
+		/// </summary>
+		/// <param name="accountNum"></param>
+		public void DeleteAccount(int accountNum) {
+			ExecuteNonQuery("DELETE FROM Chart_Of_Accounts WHERE accountnum = " + accountNum);
 		}
 
 		/// <summary>

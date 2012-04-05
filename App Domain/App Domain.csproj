@@ -59,12 +59,6 @@
     <Compile Include="AddAccount.Designer.cs">
       <DependentUpon>AddAccount.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddAccountType.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddAccountType.Designer.cs">
-      <DependentUpon>AddAccountType.cs</DependentUpon>
-    </Compile>
     <Compile Include="AutoCompleteTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -93,9 +87,6 @@
     <EmbeddedResource Include="AddAccount.resx">
       <DependentUpon>AddAccount.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddAccountType.resx">
-      <DependentUpon>AddAccountType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddJournalEntry.resx">
       <DependentUpon>AddJournalEntry.cs</DependentUpon>

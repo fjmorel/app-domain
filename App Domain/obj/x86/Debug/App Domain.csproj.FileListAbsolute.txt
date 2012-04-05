@@ -29,7 +29,6 @@ D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\bin\Debug\App Domain.pdb
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App Domain.csprojResolveAssemblyReference.cache
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.AddAccount.resources
-D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.AddAccountType.resources
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.frmAddJournalEntry.resources
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.Login.resources
 D:\Users\Frederic\Documents\School\5 App Domain\Project\working copy\App Domain\obj\x86\Debug\App_Domain.Mainwin.resources

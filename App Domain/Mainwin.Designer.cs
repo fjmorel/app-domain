@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpChartOfAccounts = new System.Windows.Forms.TabPage();
+			this.label4 = new System.Windows.Forms.Label();
 			this.txtAccountName = new System.Windows.Forms.TextBox();
 			this.lblName = new System.Windows.Forms.Label();
 			this.cbxTypes = new System.Windows.Forms.ComboBox();
@@ -39,6 +40,13 @@
 			this.cbSortBy = new System.Windows.Forms.ComboBox();
 			this.dgChartAccounts = new System.Windows.Forms.DataGridView();
 			this.tpAccountTypes = new System.Windows.Forms.TabPage();
+			this.btnAddAccountType = new System.Windows.Forms.Button();
+			this.cbAccountTypeDebitIsPositive = new System.Windows.Forms.ComboBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.txtAccountTypeDescription = new System.Windows.Forms.TextBox();
+			this.txtAccountTypeName = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
 			this.dgAccountTypes = new System.Windows.Forms.DataGridView();
 			this.tpJournal = new System.Windows.Forms.TabPage();
 			this.dgJournal = new System.Windows.Forms.DataGridView();
@@ -49,6 +57,7 @@
 			this.lblTotalDebit = new System.Windows.Forms.Label();
 			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.tabPosting = new System.Windows.Forms.TabPage();
+			this.btnAddJournalEntry = new System.Windows.Forms.Button();
 			this.btnRemoveTransaction = new System.Windows.Forms.Button();
 			this.lblNotes = new System.Windows.Forms.Label();
 			this.btnPostTransaction = new System.Windows.Forms.Button();
@@ -63,11 +72,8 @@
 			this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
 			this.cbAccountActive = new System.Windows.Forms.CheckBox();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
-			this.menuAccounts = new System.Windows.Forms.ToolStripDropDownButton();
-			this.miAddAccount = new System.Windows.Forms.ToolStripMenuItem();
-			this.miAddAccountType = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuJournal = new System.Windows.Forms.ToolStripDropDownButton();
-			this.addJournalEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
+			this.btnDeleteAccount = new System.Windows.Forms.Button();
 			this.tabMain.SuspendLayout();
 			this.tpChartOfAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -116,6 +122,7 @@
 			// 
 			// tpChartOfAccounts
 			// 
+			this.tpChartOfAccounts.Controls.Add(this.label4);
 			this.tpChartOfAccounts.Controls.Add(this.txtAccountName);
 			this.tpChartOfAccounts.Controls.Add(this.lblName);
 			this.tpChartOfAccounts.Controls.Add(this.cbxTypes);
@@ -131,49 +138,63 @@
 			this.tpChartOfAccounts.Text = "Accounts";
 			this.tpChartOfAccounts.UseVisualStyleBackColor = true;
 			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(6, 9);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(47, 13);
+			this.label4.TabIndex = 7;
+			this.label4.Text = "Filter By:";
+			// 
 			// txtAccountName
 			// 
-			this.txtAccountName.Location = new System.Drawing.Point(92, 6);
+			this.txtAccountName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.txtAccountName.Location = new System.Drawing.Point(117, 6);
 			this.txtAccountName.Name = "txtAccountName";
-			this.txtAccountName.Size = new System.Drawing.Size(124, 20);
+			this.txtAccountName.Size = new System.Drawing.Size(164, 20);
 			this.txtAccountName.TabIndex = 6;
-			this.txtAccountName.TextChanged += new System.EventHandler(this.txtAccountName_TextChanged);
+			this.txtAccountName.TextChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
 			// lblName
 			// 
+			this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblName.AutoSize = true;
-			this.lblName.Location = new System.Drawing.Point(7, 7);
+			this.lblName.Location = new System.Drawing.Point(76, 9);
 			this.lblName.Name = "lblName";
-			this.lblName.Size = new System.Drawing.Size(78, 13);
+			this.lblName.Size = new System.Drawing.Size(35, 13);
 			this.lblName.TabIndex = 5;
-			this.lblName.Text = "Account Name";
+			this.lblName.Text = "Name";
 			// 
 			// cbxTypes
 			// 
+			this.cbxTypes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxTypes.FormattingEnabled = true;
 			this.cbxTypes.Items.AddRange(new object[] {
             "All"});
-			this.cbxTypes.Location = new System.Drawing.Point(307, 6);
+			this.cbxTypes.Location = new System.Drawing.Point(329, 6);
 			this.cbxTypes.Name = "cbxTypes";
 			this.cbxTypes.Size = new System.Drawing.Size(236, 21);
 			this.cbxTypes.TabIndex = 4;
-			this.cbxTypes.SelectedIndexChanged += new System.EventHandler(this.cbxTypes_SelectedIndexChanged);
+			this.cbxTypes.SelectedIndexChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
 			// lblAccountTypes
 			// 
+			this.lblAccountTypes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblAccountTypes.AutoSize = true;
-			this.lblAccountTypes.Location = new System.Drawing.Point(222, 7);
+			this.lblAccountTypes.Location = new System.Drawing.Point(287, 9);
 			this.lblAccountTypes.Name = "lblAccountTypes";
-			this.lblAccountTypes.Size = new System.Drawing.Size(79, 13);
+			this.lblAccountTypes.Size = new System.Drawing.Size(36, 13);
 			this.lblAccountTypes.TabIndex = 3;
-			this.lblAccountTypes.Text = "Account Types";
+			this.lblAccountTypes.Text = "Types";
 			// 
 			// lblSortBy
 			// 
-			this.lblSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSortBy.AutoSize = true;
 			this.lblSortBy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSortBy.Location = new System.Drawing.Point(549, 7);
+			this.lblSortBy.Location = new System.Drawing.Point(571, 7);
 			this.lblSortBy.Name = "lblSortBy";
 			this.lblSortBy.Size = new System.Drawing.Size(41, 15);
 			this.lblSortBy.TabIndex = 2;
@@ -181,18 +202,18 @@
 			// 
 			// cbSortBy
 			// 
-			this.cbSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbSortBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbSortBy.FormattingEnabled = true;
 			this.cbSortBy.Items.AddRange(new object[] {
             "Active and Inactive",
             "Active Only",
             "Inactive Only"});
-			this.cbSortBy.Location = new System.Drawing.Point(596, 6);
+			this.cbSortBy.Location = new System.Drawing.Point(618, 6);
 			this.cbSortBy.Name = "cbSortBy";
 			this.cbSortBy.Size = new System.Drawing.Size(135, 21);
 			this.cbSortBy.TabIndex = 1;
-			this.cbSortBy.SelectedIndexChanged += new System.EventHandler(this.cbSortBy_SelectedIndexChanged);
+			this.cbSortBy.SelectedIndexChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
 			// dgChartAccounts
 			// 
@@ -217,6 +238,13 @@
 			// 
 			// tpAccountTypes
 			// 
+			this.tpAccountTypes.Controls.Add(this.btnAddAccountType);
+			this.tpAccountTypes.Controls.Add(this.cbAccountTypeDebitIsPositive);
+			this.tpAccountTypes.Controls.Add(this.label3);
+			this.tpAccountTypes.Controls.Add(this.txtAccountTypeDescription);
+			this.tpAccountTypes.Controls.Add(this.txtAccountTypeName);
+			this.tpAccountTypes.Controls.Add(this.label2);
+			this.tpAccountTypes.Controls.Add(this.label1);
 			this.tpAccountTypes.Controls.Add(this.dgAccountTypes);
 			this.tpAccountTypes.Location = new System.Drawing.Point(124, 4);
 			this.tpAccountTypes.Name = "tpAccountTypes";
@@ -225,6 +253,69 @@
 			this.tpAccountTypes.TabIndex = 1;
 			this.tpAccountTypes.Text = "Types";
 			this.tpAccountTypes.UseVisualStyleBackColor = true;
+			// 
+			// btnAddAccountType
+			// 
+			this.btnAddAccountType.Location = new System.Drawing.Point(664, 2);
+			this.btnAddAccountType.Name = "btnAddAccountType";
+			this.btnAddAccountType.Size = new System.Drawing.Size(89, 23);
+			this.btnAddAccountType.TabIndex = 8;
+			this.btnAddAccountType.Text = "Add";
+			this.btnAddAccountType.UseVisualStyleBackColor = true;
+			this.btnAddAccountType.Click += new System.EventHandler(this.btnAddAccountType_Click);
+			// 
+			// cbAccountTypeDebitIsPositive
+			// 
+			this.cbAccountTypeDebitIsPositive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbAccountTypeDebitIsPositive.FormattingEnabled = true;
+			this.cbAccountTypeDebitIsPositive.Items.AddRange(new object[] {
+            "Credit",
+            "Debit"});
+			this.cbAccountTypeDebitIsPositive.Location = new System.Drawing.Point(563, 3);
+			this.cbAccountTypeDebitIsPositive.Name = "cbAccountTypeDebitIsPositive";
+			this.cbAccountTypeDebitIsPositive.Size = new System.Drawing.Size(95, 21);
+			this.cbAccountTypeDebitIsPositive.TabIndex = 7;
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(489, 7);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(68, 13);
+			this.label3.TabIndex = 6;
+			this.label3.Text = "Positive Side";
+			// 
+			// txtAccountTypeDescription
+			// 
+			this.txtAccountTypeDescription.Location = new System.Drawing.Point(279, 4);
+			this.txtAccountTypeDescription.Name = "txtAccountTypeDescription";
+			this.txtAccountTypeDescription.Size = new System.Drawing.Size(204, 20);
+			this.txtAccountTypeDescription.TabIndex = 4;
+			// 
+			// txtAccountTypeName
+			// 
+			this.txtAccountTypeName.Location = new System.Drawing.Point(48, 4);
+			this.txtAccountTypeName.Name = "txtAccountTypeName";
+			this.txtAccountTypeName.Size = new System.Drawing.Size(159, 20);
+			this.txtAccountTypeName.TabIndex = 3;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(213, 7);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(60, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Description";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(7, 7);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(35, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Name";
 			// 
 			// dgAccountTypes
 			// 
@@ -237,13 +328,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgAccountTypes.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgAccountTypes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgAccountTypes.Location = new System.Drawing.Point(3, 3);
+			this.dgAccountTypes.Location = new System.Drawing.Point(3, 30);
 			this.dgAccountTypes.MultiSelect = false;
 			this.dgAccountTypes.Name = "dgAccountTypes";
 			this.dgAccountTypes.ReadOnly = true;
 			this.dgAccountTypes.RowHeadersVisible = false;
 			this.dgAccountTypes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgAccountTypes.Size = new System.Drawing.Size(753, 420);
+			this.dgAccountTypes.Size = new System.Drawing.Size(753, 393);
 			this.dgAccountTypes.TabIndex = 0;
 			// 
 			// tpJournal
@@ -361,6 +452,7 @@
 			// 
 			// tabPosting
 			// 
+			this.tabPosting.Controls.Add(this.btnAddJournalEntry);
 			this.tabPosting.Controls.Add(this.btnRemoveTransaction);
 			this.tabPosting.Controls.Add(this.lblNotes);
 			this.tabPosting.Controls.Add(this.btnPostTransaction);
@@ -376,15 +468,25 @@
 			this.tabPosting.Text = "Posting";
 			this.tabPosting.UseVisualStyleBackColor = true;
 			// 
+			// btnAddJournalEntry
+			// 
+			this.btnAddJournalEntry.Location = new System.Drawing.Point(6, 395);
+			this.btnAddJournalEntry.Name = "btnAddJournalEntry";
+			this.btnAddJournalEntry.Size = new System.Drawing.Size(197, 23);
+			this.btnAddJournalEntry.TabIndex = 8;
+			this.btnAddJournalEntry.Text = "Add Journal Entry";
+			this.btnAddJournalEntry.UseVisualStyleBackColor = true;
+			this.btnAddJournalEntry.Click += new System.EventHandler(this.btnAddJournalEntry_Click);
+			// 
 			// btnRemoveTransaction
 			// 
 			this.btnRemoveTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnRemoveTransaction.Enabled = false;
-			this.btnRemoveTransaction.Location = new System.Drawing.Point(505, 390);
+			this.btnRemoveTransaction.Location = new System.Drawing.Point(510, 395);
 			this.btnRemoveTransaction.Name = "btnRemoveTransaction";
 			this.btnRemoveTransaction.Size = new System.Drawing.Size(123, 23);
 			this.btnRemoveTransaction.TabIndex = 7;
-			this.btnRemoveTransaction.Text = "Delete Journal Entry";
+			this.btnRemoveTransaction.Text = "Delete";
 			this.btnRemoveTransaction.UseVisualStyleBackColor = true;
 			this.btnRemoveTransaction.Click += new System.EventHandler(this.btnRemoveTransaction_Click);
 			// 
@@ -402,11 +504,11 @@
 			// 
 			this.btnPostTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPostTransaction.Enabled = false;
-			this.btnPostTransaction.Location = new System.Drawing.Point(634, 391);
+			this.btnPostTransaction.Location = new System.Drawing.Point(639, 395);
 			this.btnPostTransaction.Name = "btnPostTransaction";
 			this.btnPostTransaction.Size = new System.Drawing.Size(117, 23);
 			this.btnPostTransaction.TabIndex = 5;
-			this.btnPostTransaction.Text = "Post Journal Entry";
+			this.btnPostTransaction.Text = "Post";
 			this.btnPostTransaction.UseVisualStyleBackColor = true;
 			this.btnPostTransaction.Click += new System.EventHandler(this.btnPostTransaction_Click);
 			// 
@@ -418,13 +520,13 @@
 			this.txtNotes.Location = new System.Drawing.Point(209, 276);
 			this.txtNotes.Multiline = true;
 			this.txtNotes.Name = "txtNotes";
-			this.txtNotes.Size = new System.Drawing.Size(542, 109);
+			this.txtNotes.Size = new System.Drawing.Size(547, 110);
 			this.txtNotes.TabIndex = 4;
 			// 
 			// lblTransactionDetails
 			// 
 			this.lblTransactionDetails.AutoSize = true;
-			this.lblTransactionDetails.Location = new System.Drawing.Point(206, 4);
+			this.lblTransactionDetails.Location = new System.Drawing.Point(206, 2);
 			this.lblTransactionDetails.Name = "lblTransactionDetails";
 			this.lblTransactionDetails.Size = new System.Drawing.Size(68, 13);
 			this.lblTransactionDetails.TabIndex = 3;
@@ -441,7 +543,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgUnpostedJournalEntryTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgUnpostedJournalEntryTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgUnpostedJournalEntryTransactions.Location = new System.Drawing.Point(209, 21);
+			this.dgUnpostedJournalEntryTransactions.Location = new System.Drawing.Point(209, 18);
 			this.dgUnpostedJournalEntryTransactions.Name = "dgUnpostedJournalEntryTransactions";
 			this.dgUnpostedJournalEntryTransactions.RowHeadersVisible = false;
 			this.dgUnpostedJournalEntryTransactions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -453,16 +555,16 @@
 			this.lbUnpostedList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbUnpostedList.FormattingEnabled = true;
-			this.lbUnpostedList.Location = new System.Drawing.Point(7, 21);
+			this.lbUnpostedList.Location = new System.Drawing.Point(3, 18);
 			this.lbUnpostedList.Name = "lbUnpostedList";
-			this.lbUnpostedList.Size = new System.Drawing.Size(192, 394);
+			this.lbUnpostedList.Size = new System.Drawing.Size(200, 368);
 			this.lbUnpostedList.TabIndex = 1;
 			this.lbUnpostedList.SelectedIndexChanged += new System.EventHandler(this.lbUnpostedList_SelectedIndexChanged);
 			// 
 			// lbltransactions
 			// 
 			this.lbltransactions.AutoSize = true;
-			this.lbltransactions.Location = new System.Drawing.Point(4, 4);
+			this.lbltransactions.Location = new System.Drawing.Point(3, 2);
 			this.lbltransactions.Name = "lbltransactions";
 			this.lbltransactions.Size = new System.Drawing.Size(125, 13);
 			this.lbltransactions.TabIndex = 0;
@@ -484,6 +586,7 @@
 			this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbAccount.Controls.Add(this.btnDeleteAccount);
 			this.gbAccount.Controls.Add(this.lblBalance);
 			this.gbAccount.Controls.Add(this.dgAccountTransactions);
 			this.gbAccount.Controls.Add(this.cbAccountActive);
@@ -497,7 +600,7 @@
 			// lblBalance
 			// 
 			this.lblBalance.AutoSize = true;
-			this.lblBalance.Location = new System.Drawing.Point(7, 23);
+			this.lblBalance.Location = new System.Drawing.Point(225, 20);
 			this.lblBalance.Name = "lblBalance";
 			this.lblBalance.Size = new System.Drawing.Size(49, 13);
 			this.lblBalance.TabIndex = 6;
@@ -514,12 +617,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgAccountTransactions.Location = new System.Drawing.Point(232, 11);
+			this.dgAccountTransactions.Location = new System.Drawing.Point(3, 36);
 			this.dgAccountTransactions.Name = "dgAccountTransactions";
 			this.dgAccountTransactions.ReadOnly = true;
 			this.dgAccountTransactions.RowHeadersVisible = false;
 			this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgAccountTransactions.Size = new System.Drawing.Size(515, 409);
+			this.dgAccountTransactions.Size = new System.Drawing.Size(744, 384);
 			this.dgAccountTransactions.TabIndex = 5;
 			// 
 			// cbAccountActive
@@ -527,7 +630,7 @@
 			this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbAccountActive.AutoSize = true;
 			this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cbAccountActive.Location = new System.Drawing.Point(-14, 55);
+			this.cbAccountActive.Location = new System.Drawing.Point(6, 19);
 			this.cbAccountActive.Name = "cbAccountActive";
 			this.cbAccountActive.Size = new System.Drawing.Size(56, 17);
 			this.cbAccountActive.TabIndex = 3;
@@ -539,8 +642,7 @@
 			// 
 			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuAccounts,
-            this.menuJournal});
+            this.btnAddAccount});
 			this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.toolbarMain.Location = new System.Drawing.Point(0, 0);
 			this.toolbarMain.Name = "toolbarMain";
@@ -548,47 +650,24 @@
 			this.toolbarMain.TabIndex = 2;
 			this.toolbarMain.Text = "Toolbar";
 			// 
-			// menuAccounts
+			// btnAddAccount
 			// 
-			this.menuAccounts.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miAddAccount,
-            this.miAddAccountType});
-			this.menuAccounts.Image = ((System.Drawing.Image)(resources.GetObject("menuAccounts.Image")));
-			this.menuAccounts.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.menuAccounts.Name = "menuAccounts";
-			this.menuAccounts.Size = new System.Drawing.Size(86, 22);
-			this.menuAccounts.Text = "&Accounts";
+			this.btnAddAccount.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAccount.Image")));
+			this.btnAddAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnAddAccount.Name = "btnAddAccount";
+			this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
+			this.btnAddAccount.Text = "&Add Account";
+			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
 			// 
-			// miAddAccount
+			// btnDeleteAccount
 			// 
-			this.miAddAccount.Name = "miAddAccount";
-			this.miAddAccount.Size = new System.Drawing.Size(173, 22);
-			this.miAddAccount.Text = "Add &Account";
-			this.miAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
-			// 
-			// miAddAccountType
-			// 
-			this.miAddAccountType.Name = "miAddAccountType";
-			this.miAddAccountType.Size = new System.Drawing.Size(173, 22);
-			this.miAddAccountType.Text = "Add Account &Type";
-			this.miAddAccountType.Click += new System.EventHandler(this.miAddAccountType_Click);
-			// 
-			// menuJournal
-			// 
-			this.menuJournal.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addJournalEntryToolStripMenuItem});
-			this.menuJournal.Image = ((System.Drawing.Image)(resources.GetObject("menuJournal.Image")));
-			this.menuJournal.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.menuJournal.Name = "menuJournal";
-			this.menuJournal.Size = new System.Drawing.Size(74, 22);
-			this.menuJournal.Text = "&Journal";
-			// 
-			// addJournalEntryToolStripMenuItem
-			// 
-			this.addJournalEntryToolStripMenuItem.Name = "addJournalEntryToolStripMenuItem";
-			this.addJournalEntryToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-			this.addJournalEntryToolStripMenuItem.Text = "&Add Journal Entry";
-			this.addJournalEntryToolStripMenuItem.Click += new System.EventHandler(this.addJournalEntryToolStripMenuItem_Click);
+			this.btnDeleteAccount.Location = new System.Drawing.Point(598, 9);
+			this.btnDeleteAccount.Name = "btnDeleteAccount";
+			this.btnDeleteAccount.Size = new System.Drawing.Size(148, 23);
+			this.btnDeleteAccount.TabIndex = 7;
+			this.btnDeleteAccount.Text = "Delete Account";
+			this.btnDeleteAccount.UseVisualStyleBackColor = true;
+			this.btnDeleteAccount.Click += new System.EventHandler(this.btnDeleteAccount_Click);
 			// 
 			// Mainwin
 			// 
@@ -609,6 +688,7 @@
 			this.tpChartOfAccounts.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).EndInit();
 			this.tpAccountTypes.ResumeLayout(false);
+			this.tpAccountTypes.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).EndInit();
 			this.tpJournal.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).EndInit();
@@ -643,16 +723,11 @@
 		private System.Windows.Forms.TabPage tpAccountInfo;
 		private System.Windows.Forms.GroupBox gbAccount;
 		private System.Windows.Forms.CheckBox cbAccountActive;
-        private System.Windows.Forms.ToolStrip toolbarMain;
-		private System.Windows.Forms.ToolStripDropDownButton menuAccounts;
-		private System.Windows.Forms.ToolStripMenuItem miAddAccount;
-		private System.Windows.Forms.ToolStripMenuItem miAddAccountType;
+		private System.Windows.Forms.ToolStrip toolbarMain;
 		private System.Windows.Forms.TabPage tpChanges;
 		private System.Windows.Forms.DataGridView dgChanges;
         private System.Windows.Forms.TabPage tpJournal;
-        private System.Windows.Forms.DataGridView dgJournal;
-        private System.Windows.Forms.ToolStripDropDownButton menuJournal;
-        private System.Windows.Forms.ToolStripMenuItem addJournalEntryToolStripMenuItem;
+		private System.Windows.Forms.DataGridView dgJournal;
 		private System.Windows.Forms.ComboBox cbxTypes;
 		private System.Windows.Forms.Label lblAccountTypes;
 		private System.Windows.Forms.TextBox txtAccountName;
@@ -671,7 +746,18 @@
         private System.Windows.Forms.Label lblTransactionDetails;
         private System.Windows.Forms.DataGridView dgUnpostedJournalEntryTransactions;
         private System.Windows.Forms.ListBox lbUnpostedList;
-        private System.Windows.Forms.Label lbltransactions;
+		private System.Windows.Forms.Label lbltransactions;
+		private System.Windows.Forms.Button btnAddJournalEntry;
+		private System.Windows.Forms.TextBox txtAccountTypeDescription;
+		private System.Windows.Forms.TextBox txtAccountTypeName;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button btnAddAccountType;
+		private System.Windows.Forms.ComboBox cbAccountTypeDebitIsPositive;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ToolStripButton btnAddAccount;
+		private System.Windows.Forms.Button btnDeleteAccount;
 
 	}
 }

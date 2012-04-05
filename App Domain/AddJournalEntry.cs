@@ -93,12 +93,12 @@ namespace App_Domain {
 				if (accountIsDebit == transIsDebit)
 					fine = true;
 				else if (accountIsDebit && !transIsDebit)
-					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) - amount > 0 ? true : false;
+					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) - amount >= 0 ? true : false;
 				else if (!accountIsDebit && transIsDebit)
-					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) + amount < 0 ? true : false;
+					fine = Program.sqlcon.GetAccountBalance(temp.AccountNumber) + amount <= 0 ? true : false;
 
 				if (!fine) {//Confirm the user wants to continue if the transaction brings balance below 0.
-					DialogResult result = MessageBox.Show("This transaction would bring the account below 0. Continue anyway?", "cap", MessageBoxButtons.YesNo);
+					DialogResult result = MessageBox.Show("This transaction would bring the account below 0. Continue anyway?","Negative Balance", MessageBoxButtons.YesNo);
 					if(result.Equals(DialogResult.Yes))
 						fine = true;
 				}

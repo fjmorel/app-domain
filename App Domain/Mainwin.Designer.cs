@@ -97,6 +97,7 @@
 			this.tabMain.Padding = new System.Drawing.Point(0, 0);
 			this.tabMain.SelectedIndex = 0;
 			this.tabMain.Size = new System.Drawing.Size(887, 434);
+			this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
 			this.tabMain.TabIndex = 1;
 			this.tabMain.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabMain_DrawItem);
 			this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
@@ -401,10 +402,14 @@
 			this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgTrialBalance.Location = new System.Drawing.Point(3, 34);
+			this.dgTrialBalance.MultiSelect = false;
 			this.dgTrialBalance.Name = "dgTrialBalance";
 			this.dgTrialBalance.ReadOnly = true;
+			this.dgTrialBalance.RowHeadersVisible = false;
+			this.dgTrialBalance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgTrialBalance.Size = new System.Drawing.Size(773, 392);
 			this.dgTrialBalance.TabIndex = 0;
 			// 

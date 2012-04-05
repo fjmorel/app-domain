@@ -78,7 +78,7 @@ namespace App_Domain {
 				dgTrialBalance.Columns[0].Width = 120;
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
-				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width; ;
+				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width;
 			}
 		}
 

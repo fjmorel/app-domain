@@ -221,9 +221,9 @@
 			this.gbAccount.Controls.Add(this.lblBalance);
 			this.gbAccount.Controls.Add(this.dgAccountTransactions);
 			this.gbAccount.Controls.Add(this.cbAccountActive);
-			this.gbAccount.Location = new System.Drawing.Point(3, 6);
+			this.gbAccount.Location = new System.Drawing.Point(3, 3);
 			this.gbAccount.Name = "gbAccount";
-			this.gbAccount.Size = new System.Drawing.Size(773, 417);
+			this.gbAccount.Size = new System.Drawing.Size(773, 420);
 			this.gbAccount.TabIndex = 1;
 			this.gbAccount.TabStop = false;
 			this.gbAccount.Text = "### - Account Name";
@@ -253,7 +253,7 @@
 			this.dgAccountTransactions.ReadOnly = true;
 			this.dgAccountTransactions.RowHeadersVisible = false;
 			this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgAccountTransactions.Size = new System.Drawing.Size(541, 406);
+			this.dgAccountTransactions.Size = new System.Drawing.Size(538, 409);
 			this.dgAccountTransactions.TabIndex = 5;
 			// 
 			// cbAccountActive
@@ -297,7 +297,7 @@
 			this.dgAccountTypes.ReadOnly = true;
 			this.dgAccountTypes.RowHeadersVisible = false;
 			this.dgAccountTypes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgAccountTypes.Size = new System.Drawing.Size(787, 441);
+			this.dgAccountTypes.Size = new System.Drawing.Size(773, 420);
 			this.dgAccountTypes.TabIndex = 0;
 			// 
 			// tpJournal
@@ -329,7 +329,7 @@
 			this.dgJournal.ReadOnly = true;
 			this.dgJournal.RowHeadersVisible = false;
 			this.dgJournal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgJournal.Size = new System.Drawing.Size(787, 444);
+			this.dgJournal.Size = new System.Drawing.Size(773, 420);
 			this.dgJournal.TabIndex = 0;
 			// 
 			// tpChanges
@@ -360,7 +360,7 @@
 			this.dgChanges.ReadOnly = true;
 			this.dgChanges.RowHeadersVisible = false;
 			this.dgChanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgChanges.Size = new System.Drawing.Size(787, 441);
+			this.dgChanges.Size = new System.Drawing.Size(773, 420);
 			this.dgChanges.TabIndex = 1;
 			// 
 			// tpTrialBalance
@@ -402,10 +402,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgTrialBalance.Location = new System.Drawing.Point(0, 34);
+			this.dgTrialBalance.Location = new System.Drawing.Point(3, 34);
 			this.dgTrialBalance.Name = "dgTrialBalance";
 			this.dgTrialBalance.ReadOnly = true;
-			this.dgTrialBalance.Size = new System.Drawing.Size(776, 398);
+			this.dgTrialBalance.Size = new System.Drawing.Size(773, 392);
 			this.dgTrialBalance.TabIndex = 0;
 			// 
 			// toolbarMain

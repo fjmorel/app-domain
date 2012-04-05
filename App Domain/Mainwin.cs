@@ -15,7 +15,7 @@ namespace App_Domain {
 			tabMain.TabPages.Remove(tpAccountInfo);
 
 			//Create SQL connection
-			Program.sqlcon = new SQL();
+			//Program.sqlcon = new SQL();
 
 			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
@@ -26,6 +26,7 @@ namespace App_Domain {
 			dgChanges.AlternatingRowsDefaultCellStyle = cs;
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
+			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
 			dgAccountTypes.ScrollBars = ScrollBars.Vertical;
@@ -126,8 +127,8 @@ namespace App_Domain {
 
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
-			lblTotalCredit.Text = "Total Credits: " + Program.sqlcon.getTotalCredit();
-			lblTotalDebit.Text = "Total Debits: " + Program.sqlcon.getTotalDebit();
+			lblTotalCredit.Text = "Total Credits: " + String.Format("{0:C}",Program.sqlcon.getTotalCredit());
+			lblTotalDebit.Text = "Total Debits: " + String.Format("{0:C}",Program.sqlcon.getTotalDebit());
 		}
 
 		public void OnFillAccountChanges() {
@@ -148,7 +149,7 @@ namespace App_Domain {
 		private void OnFillAccountTransactions(int accountnum) {
 			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgAccountTransactions.ClearSelection();
-			int balance;
+			double balance;
 			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
 				balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
 			else

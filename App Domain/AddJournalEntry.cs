@@ -10,9 +10,10 @@ using System.Windows.Forms;
 namespace App_Domain {
 	public partial class frmAddJournalEntry : Form {
 		private event FillJournalHandler FillJournal;
-		private event FillTrialBalanceHandler FillTrialBalance;
 		private JournalEntry je = new JournalEntry();
 		private DataTable entries;
+		private double debits = 0;
+		private double credits = 0;
 
 		/// <summary>
 		/// Constructor
@@ -44,8 +45,9 @@ namespace App_Domain {
 			dgEntries.Columns[2].Width = 100;
 			dgEntries.Columns[3].Width = 100;
 			dgEntries.Columns[1].Width = dgEntries.Width - dgEntries.Columns[0].Width - dgEntries.Columns[2].Width - dgEntries.Columns[3].Width;
-			
 
+			dateTransaction.Value = DateTime.Now;
+			numAmount.Maximum = Decimal.MaxValue;
 			cbTransType.SelectedIndex = 0;
 		}
 
@@ -58,7 +60,7 @@ namespace App_Domain {
 			if (e.KeyCode == Keys.Enter) {
 				if (this.Focused || dgEntries.Focused) {//Form or datagrid is focused, post Journal Entry
 					bPost.PerformClick();
-				} else if (cbTransType.Focused || txtAmmount.Focused) {//Fields are focused, add transaction to Journal Entry
+				} else if (cbTransType.Focused || numAmount.Focused) {//Fields are focused, add transaction to Journal Entry
 					bAdd.PerformClick();
 				}
 			} else if (e.KeyCode == Keys.Escape) {
@@ -84,7 +86,7 @@ namespace App_Domain {
 			try {
 				int i = Convert.ToInt32(txtAccount.Text.IndexOf(" "));
 				Account temp = new Account(Convert.ToInt32(txtAccount.Text.Substring(0, i)), txtAccount.Text.Substring(i + 3, txtAccount.Text.Length - i - 3));
-				double amount = Convert.ToDouble(txtAmmount.Text);
+				double amount = (double)numAmount.Value;
 				bool transIsDebit = cbTransType.SelectedIndex == 0 ? true : false;
 				bool accountIsDebit = Program.sqlcon.IsDebitThePositiveSide(temp.AccountNumber) == 1 ? true : false;
 				bool fine = false;
@@ -104,6 +106,10 @@ namespace App_Domain {
 				if (fine) {//Add transaction if everything's fine
 					je.AddEntry(temp.AccountNumber, temp.AccountDescription, amount, transIsDebit);
 					Entry ent = je.Transactions[je.Transactions.Count - 1];
+					if (transIsDebit)
+						debits += amount;
+					else
+						credits += amount;
 					entries.Rows.Add(ent.AccountNumber, ent.Description, (ent.IsDebitNotCredit) ? String.Format("{0:C}", ent.Amount) : "", (!ent.IsDebitNotCredit) ? String.Format("{0:C}", ent.Amount) : "");
 					txtAccount.Clear();
 					bPost.Enabled = true;
@@ -120,14 +126,6 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void bPost_Click(object sender, EventArgs e) {
-			double debits = 0;
-			double credits = 0;
-			je.time = dateTransaction.Value;
-
-			foreach (Entry ent in je.Transactions) {
-				debits += (ent.IsDebitNotCredit) ? ent.Amount : 0;
-				credits += (!ent.IsDebitNotCredit) ? ent.Amount : 0;
-			}
 
 			if (debits > credits) {
 				MessageBox.Show("Debits are higher than credits by $" + (debits - credits));
@@ -140,6 +138,10 @@ namespace App_Domain {
 				FillJournal();
 				this.Close();
 			}
+		}
+
+		private void dateTransaction_ValueChanged(object sender, EventArgs e) {
+			je.time = dateTransaction.Value;
 		}
 	}
 }

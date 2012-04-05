@@ -134,7 +134,8 @@ namespace App_Domain {
 			} else if (debits == 0 && credits == 0) {
 				MessageBox.Show("No money is being debited or credited. Please enter transactions before posting.");
 			} else {
-				Program.sqlcon.PostJournalEntry(je);
+                je.notes = txtNotes.Text;
+				Program.sqlcon.AddJournalEntry(je);
 				FillJournal();
 				this.Close();
 			}

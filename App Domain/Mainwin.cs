@@ -8,6 +8,8 @@ using System.Windows.Forms;
 namespace App_Domain {
 	public partial class Mainwin : Form {
 
+        private DataTable UnpostedEntriesDT;
+
 		public Mainwin() { InitializeComponent(); }
 
 		private void Mainwin_Load(object sender, EventArgs e) {
@@ -26,6 +28,7 @@ namespace App_Domain {
 			dgChanges.AlternatingRowsDefaultCellStyle = cs;
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
+            dgUnpostedTransaction.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -38,9 +41,18 @@ namespace App_Domain {
 			OnFillAccountCharts();
 			OnFillAccountTypes();
 			OnFillJournal();//will refresh changes and trial balance
+            OnFillUnpostedTransactions();
 
 			//Resize columns of main window
 			tabMain_SelectedIndexChanged(this, new EventArgs());
+
+            //setup unposted datagridview
+            UnpostedEntriesDT = new DataTable();
+            UnpostedEntriesDT.Columns.Add("Account Number");
+            UnpostedEntriesDT.Columns.Add("Description");
+            UnpostedEntriesDT.Columns.Add("Debit");
+            UnpostedEntriesDT.Columns.Add("Credit");
+            dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
 			
 		}
 
@@ -79,7 +91,14 @@ namespace App_Domain {
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
 				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width;
-			}
+            }
+            else if (tabMain.SelectedTab == tabPosting)
+            {
+                dgUnpostedTransaction.Columns[0].Width = 120;
+                dgUnpostedTransaction.Columns[2].Width = 100;
+                dgUnpostedTransaction.Columns[3].Width = 100;
+                dgUnpostedTransaction.Columns[1].Width = dgUnpostedTransaction.Width - dgUnpostedTransaction.Columns[0].Width - dgUnpostedTransaction.Columns[2].Width - dgUnpostedTransaction.Columns[3].Width;
+            }
 		}
 
 		/// <summary>
@@ -131,6 +150,16 @@ namespace App_Domain {
 			lblTotalDebit.Text = "Total Debits: " + String.Format("{0:C}",Program.sqlcon.getTotalDebit());
 		}
 
+        public void OnFillUnpostedTransactions()
+        {
+            List<string> items = Program.sqlcon.GetListOfUnpostedTransaction();
+            lbUnpostedList.Items.Clear();
+            foreach (string item in items)
+            {
+                lbUnpostedList.Items.Add(item);
+            }
+        }
+
 		public void OnFillAccountChanges() {
 			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
 			dgChanges.ClearSelection();
@@ -144,6 +173,7 @@ namespace App_Domain {
 			dgJournal.ClearSelection();
 			OnFillAccountChanges();
 			OnFillTrialBalance();
+            OnFillUnpostedTransactions();
 		}
 
 		private void OnFillAccountTransactions(int accountnum) {
@@ -274,6 +304,58 @@ namespace App_Domain {
 			Program.sqlcon.ChangeAccountStatusByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), cbAccountActive.Checked);
 			OnFillAccountCharts();
 		}
+
+        private void lbUnpostedList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string item = (string)lbUnpostedList.SelectedItem;
+            int refnum;
+            if (item != null)
+            {
+                string[] split = item.Split(' ');
+                refnum = Convert.ToInt32(split[split.Length - 1]);
+                dgUnpostedTransaction.DataSource = Program.sqlcon.GetUnpoastedTransaction(refnum);
+                txtNotes.Text = Program.sqlcon.GetJournalNote(refnum);
+                tabMain_SelectedIndexChanged(this, new EventArgs());
+                btnPostTransaction.Enabled = true;
+                btnRemoveTransaction.Enabled = true;
+            }
+        }
+
+        private void btnPostTransaction_Click(object sender, EventArgs e)
+        {
+            string item = (string)lbUnpostedList.SelectedItem;
+            int refnum;
+            if (item != null)
+            {
+                string[] split = item.Split(' ');
+                refnum = Convert.ToInt32(split[split.Length - 1]);
+                Program.sqlcon.PostJournalEntry(refnum);
+                btnPostTransaction.Enabled = false;
+                btnRemoveTransaction.Enabled = false;
+                OnFillUnpostedTransactions();
+                OnFillJournal();
+                dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
+                tabMain_SelectedIndexChanged(this, new EventArgs());
+            }
+        }
+
+        private void btnRemoveTransaction_Click(object sender, EventArgs e)
+        {
+            string item = (string)lbUnpostedList.SelectedItem;
+            int refnum;
+            if (item != null)
+            {
+                string[] split = item.Split(' ');
+                refnum = Convert.ToInt32(split[split.Length - 1]);
+                Program.sqlcon.DeleteJournalEntry(refnum);
+                btnPostTransaction.Enabled = false;
+                btnRemoveTransaction.Enabled = false;
+                OnFillUnpostedTransactions();
+                OnFillJournal();
+                dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
+                tabMain_SelectedIndexChanged(this, new EventArgs());
+            }
+        }
 
 	}//end Mainwin class
 }//end namespace

@@ -38,11 +38,6 @@
             this.lblSortBy = new System.Windows.Forms.Label();
             this.cbSortBy = new System.Windows.Forms.ComboBox();
             this.dgChartAccounts = new System.Windows.Forms.DataGridView();
-            this.tpAccountInfo = new System.Windows.Forms.TabPage();
-            this.gbAccount = new System.Windows.Forms.GroupBox();
-            this.lblBalance = new System.Windows.Forms.Label();
-            this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
-            this.cbAccountActive = new System.Windows.Forms.CheckBox();
             this.tpAccountTypes = new System.Windows.Forms.TabPage();
             this.dgAccountTypes = new System.Windows.Forms.DataGridView();
             this.tpJournal = new System.Windows.Forms.TabPage();
@@ -53,6 +48,20 @@
             this.lblTotalCredit = new System.Windows.Forms.Label();
             this.lblTotalDebit = new System.Windows.Forms.Label();
             this.dgTrialBalance = new System.Windows.Forms.DataGridView();
+            this.tabPosting = new System.Windows.Forms.TabPage();
+            this.btnRemoveTransaction = new System.Windows.Forms.Button();
+            this.lblNotes = new System.Windows.Forms.Label();
+            this.btnPostTransaction = new System.Windows.Forms.Button();
+            this.txtNotes = new System.Windows.Forms.TextBox();
+            this.lblTransactionDetails = new System.Windows.Forms.Label();
+            this.dgUnpostedTransaction = new System.Windows.Forms.DataGridView();
+            this.lbUnpostedList = new System.Windows.Forms.ListBox();
+            this.lbltransactions = new System.Windows.Forms.Label();
+            this.tpAccountInfo = new System.Windows.Forms.TabPage();
+            this.gbAccount = new System.Windows.Forms.GroupBox();
+            this.lblBalance = new System.Windows.Forms.Label();
+            this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
+            this.cbAccountActive = new System.Windows.Forms.CheckBox();
             this.toolbarMain = new System.Windows.Forms.ToolStrip();
             this.menuAccounts = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddAccount = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,9 +71,6 @@
             this.tabMain.SuspendLayout();
             this.tpChartOfAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
-            this.tpAccountInfo.SuspendLayout();
-            this.gbAccount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
             this.tpAccountTypes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).BeginInit();
             this.tpJournal.SuspendLayout();
@@ -73,6 +79,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgChanges)).BeginInit();
             this.tpTrialBalance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).BeginInit();
+            this.tabPosting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgUnpostedTransaction)).BeginInit();
+            this.tpAccountInfo.SuspendLayout();
+            this.gbAccount.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
             this.toolbarMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,11 +94,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMain.Controls.Add(this.tpChartOfAccounts);
-            this.tabMain.Controls.Add(this.tpAccountInfo);
             this.tabMain.Controls.Add(this.tpAccountTypes);
             this.tabMain.Controls.Add(this.tpJournal);
             this.tabMain.Controls.Add(this.tpChanges);
             this.tabMain.Controls.Add(this.tpTrialBalance);
+            this.tabMain.Controls.Add(this.tabPosting);
+            this.tabMain.Controls.Add(this.tpAccountInfo);
             this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabMain.ItemSize = new System.Drawing.Size(30, 120);
             this.tabMain.Location = new System.Drawing.Point(0, 28);
@@ -203,73 +215,6 @@
             this.dgChartAccounts.TabIndex = 0;
             this.dgChartAccounts.DoubleClick += new System.EventHandler(this.dgChartAccounts_DoubleClick);
             // 
-            // tpAccountInfo
-            // 
-            this.tpAccountInfo.Controls.Add(this.gbAccount);
-            this.tpAccountInfo.Location = new System.Drawing.Point(124, 4);
-            this.tpAccountInfo.Name = "tpAccountInfo";
-            this.tpAccountInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAccountInfo.Size = new System.Drawing.Size(759, 426);
-            this.tpAccountInfo.TabIndex = 2;
-            this.tpAccountInfo.Text = "Account Details";
-            this.tpAccountInfo.UseVisualStyleBackColor = true;
-            // 
-            // gbAccount
-            // 
-            this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbAccount.Controls.Add(this.lblBalance);
-            this.gbAccount.Controls.Add(this.dgAccountTransactions);
-            this.gbAccount.Controls.Add(this.cbAccountActive);
-            this.gbAccount.Location = new System.Drawing.Point(3, 3);
-            this.gbAccount.Name = "gbAccount";
-            this.gbAccount.Size = new System.Drawing.Size(753, 420);
-            this.gbAccount.TabIndex = 1;
-            this.gbAccount.TabStop = false;
-            this.gbAccount.Text = "### - Account Name";
-            // 
-            // lblBalance
-            // 
-            this.lblBalance.AutoSize = true;
-            this.lblBalance.Location = new System.Drawing.Point(7, 23);
-            this.lblBalance.Name = "lblBalance";
-            this.lblBalance.Size = new System.Drawing.Size(49, 13);
-            this.lblBalance.TabIndex = 6;
-            this.lblBalance.Text = "Balance:";
-            // 
-            // dgAccountTransactions
-            // 
-            this.dgAccountTransactions.AllowUserToAddRows = false;
-            this.dgAccountTransactions.AllowUserToDeleteRows = false;
-            this.dgAccountTransactions.AllowUserToResizeColumns = false;
-            this.dgAccountTransactions.AllowUserToResizeRows = false;
-            this.dgAccountTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgAccountTransactions.Location = new System.Drawing.Point(232, 11);
-            this.dgAccountTransactions.Name = "dgAccountTransactions";
-            this.dgAccountTransactions.ReadOnly = true;
-            this.dgAccountTransactions.RowHeadersVisible = false;
-            this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgAccountTransactions.Size = new System.Drawing.Size(515, 409);
-            this.dgAccountTransactions.TabIndex = 5;
-            // 
-            // cbAccountActive
-            // 
-            this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAccountActive.AutoSize = true;
-            this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAccountActive.Location = new System.Drawing.Point(-14, 55);
-            this.cbAccountActive.Name = "cbAccountActive";
-            this.cbAccountActive.Size = new System.Drawing.Size(56, 17);
-            this.cbAccountActive.TabIndex = 3;
-            this.cbAccountActive.Text = "Active";
-            this.cbAccountActive.UseVisualStyleBackColor = true;
-            this.cbAccountActive.CheckedChanged += new System.EventHandler(this.cbAccountActive_CheckedChanged);
-            // 
             // tpAccountTypes
             // 
             this.tpAccountTypes.Controls.Add(this.dgAccountTypes);
@@ -323,7 +268,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgJournal.EnableHeadersVisualStyles = false;
             this.dgJournal.Location = new System.Drawing.Point(3, 3);
             this.dgJournal.MultiSelect = false;
             this.dgJournal.Name = "dgJournal";
@@ -415,6 +359,182 @@
             this.dgTrialBalance.Size = new System.Drawing.Size(753, 392);
             this.dgTrialBalance.TabIndex = 0;
             // 
+            // tabPosting
+            // 
+            this.tabPosting.Controls.Add(this.btnRemoveTransaction);
+            this.tabPosting.Controls.Add(this.lblNotes);
+            this.tabPosting.Controls.Add(this.btnPostTransaction);
+            this.tabPosting.Controls.Add(this.txtNotes);
+            this.tabPosting.Controls.Add(this.lblTransactionDetails);
+            this.tabPosting.Controls.Add(this.dgUnpostedTransaction);
+            this.tabPosting.Controls.Add(this.lbUnpostedList);
+            this.tabPosting.Controls.Add(this.lbltransactions);
+            this.tabPosting.Location = new System.Drawing.Point(124, 4);
+            this.tabPosting.Name = "tabPosting";
+            this.tabPosting.Size = new System.Drawing.Size(759, 426);
+            this.tabPosting.TabIndex = 6;
+            this.tabPosting.Text = "Posting";
+            this.tabPosting.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveTransaction
+            // 
+            this.btnRemoveTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveTransaction.Enabled = false;
+            this.btnRemoveTransaction.Location = new System.Drawing.Point(505, 390);
+            this.btnRemoveTransaction.Name = "btnRemoveTransaction";
+            this.btnRemoveTransaction.Size = new System.Drawing.Size(123, 23);
+            this.btnRemoveTransaction.TabIndex = 7;
+            this.btnRemoveTransaction.Text = "Remove Transaction";
+            this.btnRemoveTransaction.UseVisualStyleBackColor = true;
+            this.btnRemoveTransaction.Click += new System.EventHandler(this.btnRemoveTransaction_Click);
+            // 
+            // lblNotes
+            // 
+            this.lblNotes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblNotes.AutoSize = true;
+            this.lblNotes.Location = new System.Drawing.Point(209, 257);
+            this.lblNotes.Name = "lblNotes";
+            this.lblNotes.Size = new System.Drawing.Size(35, 13);
+            this.lblNotes.TabIndex = 6;
+            this.lblNotes.Text = "Notes";
+            // 
+            // btnPostTransaction
+            // 
+            this.btnPostTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPostTransaction.Enabled = false;
+            this.btnPostTransaction.Location = new System.Drawing.Point(634, 391);
+            this.btnPostTransaction.Name = "btnPostTransaction";
+            this.btnPostTransaction.Size = new System.Drawing.Size(117, 23);
+            this.btnPostTransaction.TabIndex = 5;
+            this.btnPostTransaction.Text = "Post Transaction";
+            this.btnPostTransaction.UseVisualStyleBackColor = true;
+            this.btnPostTransaction.Click += new System.EventHandler(this.btnPostTransaction_Click);
+            // 
+            // txtNotes
+            // 
+            this.txtNotes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtNotes.Enabled = false;
+            this.txtNotes.Location = new System.Drawing.Point(209, 276);
+            this.txtNotes.Multiline = true;
+            this.txtNotes.Name = "txtNotes";
+            this.txtNotes.Size = new System.Drawing.Size(542, 109);
+            this.txtNotes.TabIndex = 4;
+            // 
+            // lblTransactionDetails
+            // 
+            this.lblTransactionDetails.AutoSize = true;
+            this.lblTransactionDetails.Location = new System.Drawing.Point(206, 4);
+            this.lblTransactionDetails.Name = "lblTransactionDetails";
+            this.lblTransactionDetails.Size = new System.Drawing.Size(98, 13);
+            this.lblTransactionDetails.TabIndex = 3;
+            this.lblTransactionDetails.Text = "Transaction Details";
+            // 
+            // dgUnpostedTransaction
+            // 
+            this.dgUnpostedTransaction.AllowUserToAddRows = false;
+            this.dgUnpostedTransaction.AllowUserToDeleteRows = false;
+            this.dgUnpostedTransaction.AllowUserToResizeColumns = false;
+            this.dgUnpostedTransaction.AllowUserToResizeRows = false;
+            this.dgUnpostedTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgUnpostedTransaction.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.dgUnpostedTransaction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgUnpostedTransaction.Location = new System.Drawing.Point(209, 21);
+            this.dgUnpostedTransaction.Name = "dgUnpostedTransaction";
+            this.dgUnpostedTransaction.RowHeadersVisible = false;
+            this.dgUnpostedTransaction.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgUnpostedTransaction.Size = new System.Drawing.Size(547, 233);
+            this.dgUnpostedTransaction.TabIndex = 2;
+            // 
+            // lbUnpostedList
+            // 
+            this.lbUnpostedList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbUnpostedList.FormattingEnabled = true;
+            this.lbUnpostedList.Location = new System.Drawing.Point(7, 21);
+            this.lbUnpostedList.Name = "lbUnpostedList";
+            this.lbUnpostedList.Size = new System.Drawing.Size(192, 394);
+            this.lbUnpostedList.TabIndex = 1;
+            this.lbUnpostedList.SelectedIndexChanged += new System.EventHandler(this.lbUnpostedList_SelectedIndexChanged);
+            // 
+            // lbltransactions
+            // 
+            this.lbltransactions.AutoSize = true;
+            this.lbltransactions.Location = new System.Drawing.Point(4, 4);
+            this.lbltransactions.Name = "lbltransactions";
+            this.lbltransactions.Size = new System.Drawing.Size(117, 13);
+            this.lbltransactions.TabIndex = 0;
+            this.lbltransactions.Text = "Unposted Transactions";
+            // 
+            // tpAccountInfo
+            // 
+            this.tpAccountInfo.Controls.Add(this.gbAccount);
+            this.tpAccountInfo.Location = new System.Drawing.Point(124, 4);
+            this.tpAccountInfo.Name = "tpAccountInfo";
+            this.tpAccountInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tpAccountInfo.Size = new System.Drawing.Size(759, 426);
+            this.tpAccountInfo.TabIndex = 2;
+            this.tpAccountInfo.Text = "Account Details";
+            this.tpAccountInfo.UseVisualStyleBackColor = true;
+            // 
+            // gbAccount
+            // 
+            this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbAccount.Controls.Add(this.lblBalance);
+            this.gbAccount.Controls.Add(this.dgAccountTransactions);
+            this.gbAccount.Controls.Add(this.cbAccountActive);
+            this.gbAccount.Location = new System.Drawing.Point(3, 3);
+            this.gbAccount.Name = "gbAccount";
+            this.gbAccount.Size = new System.Drawing.Size(753, 420);
+            this.gbAccount.TabIndex = 1;
+            this.gbAccount.TabStop = false;
+            this.gbAccount.Text = "### - Account Name";
+            // 
+            // lblBalance
+            // 
+            this.lblBalance.AutoSize = true;
+            this.lblBalance.Location = new System.Drawing.Point(7, 23);
+            this.lblBalance.Name = "lblBalance";
+            this.lblBalance.Size = new System.Drawing.Size(49, 13);
+            this.lblBalance.TabIndex = 6;
+            this.lblBalance.Text = "Balance:";
+            // 
+            // dgAccountTransactions
+            // 
+            this.dgAccountTransactions.AllowUserToAddRows = false;
+            this.dgAccountTransactions.AllowUserToDeleteRows = false;
+            this.dgAccountTransactions.AllowUserToResizeColumns = false;
+            this.dgAccountTransactions.AllowUserToResizeRows = false;
+            this.dgAccountTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgAccountTransactions.Location = new System.Drawing.Point(232, 11);
+            this.dgAccountTransactions.Name = "dgAccountTransactions";
+            this.dgAccountTransactions.ReadOnly = true;
+            this.dgAccountTransactions.RowHeadersVisible = false;
+            this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgAccountTransactions.Size = new System.Drawing.Size(515, 409);
+            this.dgAccountTransactions.TabIndex = 5;
+            // 
+            // cbAccountActive
+            // 
+            this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAccountActive.AutoSize = true;
+            this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbAccountActive.Location = new System.Drawing.Point(-14, 55);
+            this.cbAccountActive.Name = "cbAccountActive";
+            this.cbAccountActive.Size = new System.Drawing.Size(56, 17);
+            this.cbAccountActive.TabIndex = 3;
+            this.cbAccountActive.Text = "Active";
+            this.cbAccountActive.UseVisualStyleBackColor = true;
+            this.cbAccountActive.CheckedChanged += new System.EventHandler(this.cbAccountActive_CheckedChanged);
+            // 
             // toolbarMain
             // 
             this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -488,10 +608,6 @@
             this.tpChartOfAccounts.ResumeLayout(false);
             this.tpChartOfAccounts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).EndInit();
-            this.tpAccountInfo.ResumeLayout(false);
-            this.gbAccount.ResumeLayout(false);
-            this.gbAccount.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
             this.tpAccountTypes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).EndInit();
             this.tpJournal.ResumeLayout(false);
@@ -501,6 +617,13 @@
             this.tpTrialBalance.ResumeLayout(false);
             this.tpTrialBalance.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
+            this.tabPosting.ResumeLayout(false);
+            this.tabPosting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgUnpostedTransaction)).EndInit();
+            this.tpAccountInfo.ResumeLayout(false);
+            this.gbAccount.ResumeLayout(false);
+            this.gbAccount.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
             this.toolbarMain.ResumeLayout(false);
             this.toolbarMain.PerformLayout();
             this.ResumeLayout(false);
@@ -540,6 +663,15 @@
 		private System.Windows.Forms.DataGridView dgTrialBalance;
 		private System.Windows.Forms.Label lblTotalCredit;
 		private System.Windows.Forms.Label lblTotalDebit;
+        private System.Windows.Forms.TabPage tabPosting;
+        private System.Windows.Forms.Button btnRemoveTransaction;
+        private System.Windows.Forms.Label lblNotes;
+        private System.Windows.Forms.Button btnPostTransaction;
+        private System.Windows.Forms.TextBox txtNotes;
+        private System.Windows.Forms.Label lblTransactionDetails;
+        private System.Windows.Forms.DataGridView dgUnpostedTransaction;
+        private System.Windows.Forms.ListBox lbUnpostedList;
+        private System.Windows.Forms.Label lbltransactions;
 
 	}
 }

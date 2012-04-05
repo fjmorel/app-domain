@@ -30,6 +30,7 @@ namespace App_Domain {
 		}
 
 		public DateTime time;
+        public string notes;
 
 		/// <summary>
 		/// Constructor

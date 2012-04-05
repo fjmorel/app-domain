@@ -129,6 +129,44 @@ namespace App_Domain {
 			return accounts;
 		}
 
+        /// <summary>
+        /// Get a list of all unposted transactions by date and ref number
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetListOfUnpostedTransaction()
+        {
+            List<string> transactions = new List<string>();
+            DataTable dt = ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0");
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    transactions.Add(Convert.ToString(Convert.ToString(row["datecreated"]) + " ref " + Convert.ToString(row["id"])));
+                }
+            }
+            return transactions;
+        }
+
+        /// <summary>
+        /// Get journal entries by ref number
+        /// </summary>
+        /// <param name="refnum"></param>
+        /// <returns></returns>
+        public DataTable GetUnpoastedTransaction(int refnum)
+        {
+            return ExecuteQuery("SELECT j.accountnum AS [Account Number], ca.descript AS [Account], j.dammount AS [Debit], j.cammount AS [Credit] FROM journal_Transactions jt JOIN Journal j ON (jt.id = j.ref) JOIN Chart_of_Accounts ca ON (j.accountnum = ca.accountnum) WHERE jt.id = " + refnum.ToString());
+        }
+
+        /// <summary>
+        /// Get a Journal note by ref number
+        /// </summary>
+        /// <param name="refnum"></param>
+        /// <returns></returns>
+        public string GetJournalNote(int refnum)
+        {
+            return Convert.ToString(ExecuteQuery("SELECT notes FROM Journal_Transactions WHERE id = " + refnum.ToString()).Rows[0][0]);
+        }
+
 		/// <summary>
 		/// Gets a DataTable representing account types.
 		/// </summary>
@@ -151,7 +189,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public DataTable GetAccountLedger(int accountnum) {
-			return ExecuteQuery("SELECT j.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) WHERE c.accountnum = " + accountnum);
+            return ExecuteQuery("SELECT jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Transactions jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
 		}
 
 		/// <summary>
@@ -183,7 +221,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetJournal() {
-			return ExecuteQuery("SELECT j.accountnum AS [Account Number], ca.descript AS [Account Description], j.dammount AS [Debit], j.cammount AS [Credit], j.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca on (j.accountnum = ca.accountnum)");
+            return ExecuteQuery("SELECT j.accountnum AS [Account Number], ca.descript AS [Account Description], j.dammount AS [Debit], j.cammount AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
 		}
 
 		/// <summary>
@@ -269,19 +307,46 @@ namespace App_Domain {
 
 		/// <summary>
 		/// Enters a balanced set of journal entries
+        /// 
+        /// updated this function to take care of adding a ref id and notes
 		/// </summary>
 		/// <param name="j"></param>
-		public void PostJournalEntry(JournalEntry journal) {
+		public void AddJournalEntry(JournalEntry journal) {
+            //get ref id
+            int refnum = Convert.ToInt32(ExecuteQuery("SELECT next_ref_id FROM Settings").Rows[0][0]);
+            ExecuteNonQuery("UPDATE Settings SET next_ref_id = " + (refnum + 1).ToString());
+            //insert journal transaction notes and ref
+            ExecuteNonQuery("INSERT INTO Journal_Transactions (id, notes) VALUES(" + refnum.ToString() + ",'" + journal.notes + "')");
 			foreach (Entry e in journal.Transactions) {
 				string[] DorC = new string[] { "c", "Credi" };
 				if (e.IsDebitNotCredit)//Used debit instead of credit
 					DorC = new string[] { "d", "Debi" };
-				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Journal (accountnum," + DorC[0] + "ammount,postdate) VALUES (" + e.AccountNumber + "," + e.Amount + ",@datePost)", con);
-				cmd.Parameters.AddWithValue("@datePost", journal.time);
+				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Journal (accountnum," + DorC[0] + "ammount, ref) VALUES (" + e.AccountNumber + "," + e.Amount + ", " + refnum.ToString() + ")", con);
+				//cmd.Parameters.AddWithValue("@datePost", journal.time);
 				cmd.ExecuteNonQuery();
 				AddAccountChange(e.AccountNumber, String.Format(DorC[1] + "ted account by {0:C} on " + journal.time.ToString("M/d/yyyy"), e.Amount));
 			}
 		}
+
+        /// <summary>
+        /// post a journal entry by ref number
+        /// </summary>
+        /// <param name="refnum"></param>
+        public void PostJournalEntry(int refnum)
+        {
+            ExecuteNonQuery("UPDATE Journal_Transactions SET posted = 1 WHERE id = " + refnum.ToString());
+            ExecuteNonQuery("UPDATE Journal_Transactions SET postdate = GETDATE() WHERE id = " + refnum.ToString());
+        }
+
+        /// <summary>
+        /// remove an unposted journal transaction
+        /// </summary>
+        /// <param name="refnum"></param>
+        public void DeleteJournalEntry(int refnum)
+        {
+            ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum.ToString());
+            ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum.ToString());
+        }
 
 		/// <summary>
 		/// update an account to change the active or incactive flag
@@ -311,7 +376,7 @@ namespace App_Domain {
 				new SqlCeDataAdapter(cmd, con).Fill(dt);
 				return dt;
 			} catch (Exception ex) {
-				Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
 				return null;
 			}
 		}
@@ -324,7 +389,7 @@ namespace App_Domain {
 			try {
 				new SqlCeCommand(cmd, con).ExecuteNonQuery();
 			} catch (Exception ex) {
-				Console.WriteLine(ex.Message);
+				MessageBox.Show(ex.Message);
 			}
 		}
 

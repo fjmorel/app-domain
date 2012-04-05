@@ -10,18 +10,26 @@ using System.Windows.Forms;
 namespace App_Domain {
 	public partial class AddAccount : Form {
 
+		/// <summary>
+		/// To refresh accounts
+		/// </summary>
 		private event FillChartOfAccountsHandler FillAccount;
+		/// <summary>
+		/// To refresh account changes
+		/// </summary>
+		private event FillChangesHandler FillChanges;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="callback"></param>
-		public AddAccount(FillChartOfAccountsHandler callback) {
+		public AddAccount(FillChartOfAccountsHandler callback, FillChangesHandler callback2) {
 			InitializeComponent();
 
 			txtType.entireList = Program.sqlcon.GetAccountTypesList();
 
 			this.FillAccount += callback;
+			this.FillChanges += callback2;
 		}
 
 		void AddAccount_KeyDown(object sender, KeyEventArgs e) {
@@ -29,16 +37,6 @@ namespace App_Domain {
 				if(txtAccountnum.Focused || txtDescription.Focused)
 					bAdd.PerformClick();
 			}
-		}
-
-		/// <summary>
-		/// Initialize account types dropdown
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void AddAccount_Load(object sender, EventArgs e) {
-			//cbType.Items.AddRange(Program.sqlcon.GetAccountTypesList().ToArray());
-			//cbType.SelectedIndex = 0;
 		}
 
 		/// <summary>
@@ -58,6 +56,7 @@ namespace App_Domain {
 						int active = checkActive.Checked ? 1 : 0;//1 for active, 0 for inactive
 						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), txtOwner.Text, Convert.ToInt32(txtAccountnum.Text));
 						FillAccount();
+						FillChanges();
 						this.Close();
 					} else {
 						MessageBox.Show("Please enter a valid account type.");

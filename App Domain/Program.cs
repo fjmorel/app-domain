@@ -5,6 +5,7 @@ namespace App_Domain {
 	public delegate void FillChartOfAccountsHandler();
 	public delegate void FillAccountTypesHandler();
     public delegate void FillJournalHandler();
+	public delegate void FillChangesHandler();
 
 	static class Program {
 

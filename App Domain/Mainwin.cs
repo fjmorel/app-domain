@@ -8,16 +8,13 @@ using System.Windows.Forms;
 namespace App_Domain {
 	public partial class Mainwin : Form {
 
-        private DataTable UnpostedEntriesDT;
+		private DataTable UnpostedEntriesDT;
 
 		public Mainwin() { InitializeComponent(); }
 
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
 			tabMain.TabPages.Remove(tpAccountInfo);
-
-			//Create SQL connection
-			//Program.sqlcon = new SQL();
 
 			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
@@ -28,7 +25,7 @@ namespace App_Domain {
 			dgChanges.AlternatingRowsDefaultCellStyle = cs;
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
-            dgUnpostedTransaction.AlternatingRowsDefaultCellStyle = cs;
+			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -40,20 +37,20 @@ namespace App_Domain {
 			//Populate datagridviews
 			OnFillAccountCharts();
 			OnFillAccountTypes();
-			OnFillJournal();//will refresh changes and trial balance
-            OnFillUnpostedTransactions();
+			OnFillTransactions();//will refresh changes and trial balance
+			OnFillUnpostedJournalEntries();
 
 			//Resize columns of main window
 			tabMain_SelectedIndexChanged(this, new EventArgs());
 
-            //setup unposted datagridview
-            UnpostedEntriesDT = new DataTable();
-            UnpostedEntriesDT.Columns.Add("Account Number");
-            UnpostedEntriesDT.Columns.Add("Description");
-            UnpostedEntriesDT.Columns.Add("Debit");
-            UnpostedEntriesDT.Columns.Add("Credit");
-            dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
-			
+			//setup unposted datagridview - need columns to be able to resize them
+			UnpostedEntriesDT = new DataTable();
+			UnpostedEntriesDT.Columns.Add("Account");
+			UnpostedEntriesDT.Columns.Add("Description");
+			UnpostedEntriesDT.Columns.Add("Debit");
+			UnpostedEntriesDT.Columns.Add("Credit");
+			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+
 		}
 
 		/// <summary>
@@ -91,14 +88,12 @@ namespace App_Domain {
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
 				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width;
-            }
-            else if (tabMain.SelectedTab == tabPosting)
-            {
-                dgUnpostedTransaction.Columns[0].Width = 120;
-                dgUnpostedTransaction.Columns[2].Width = 100;
-                dgUnpostedTransaction.Columns[3].Width = 100;
-                dgUnpostedTransaction.Columns[1].Width = dgUnpostedTransaction.Width - dgUnpostedTransaction.Columns[0].Width - dgUnpostedTransaction.Columns[2].Width - dgUnpostedTransaction.Columns[3].Width;
-            }
+			} else if (tabMain.SelectedTab == tabPosting) {
+				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
+				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
+				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
+				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width;
+			}
 		}
 
 		/// <summary>
@@ -123,7 +118,6 @@ namespace App_Domain {
 					act = cbSortBy.SelectedIndex == 1 ? true : false;//If active selected, true, otherwise false
 				}
 				dgChartAccounts.DataSource = Program.sqlcon.GetFilteredChartOfAccounts(care, act, type, txtAccountName.Text);
-				OnFillAccountChanges();//Needed for some reason. I think it's when we add or edit an account. It was the only way I could of to call this.
 			}
 
 			dgChartAccounts.ClearSelection();
@@ -139,26 +133,24 @@ namespace App_Domain {
 			//Populate account type dropdown on chart of accounts view
 			cbxTypes.Items.Clear();
 			cbxTypes.Items.Add("All");
-			foreach(String each in Program.sqlcon.GetAccountTypesList())
+			foreach (String each in Program.sqlcon.GetAccountTypesList())
 				cbxTypes.Items.Add(each);
 			cbxTypes.SelectedIndex = 0;
 		}
 
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
-			lblTotalCredit.Text = "Total Credits: " + String.Format("{0:C}",Program.sqlcon.getTotalCredit());
-			lblTotalDebit.Text = "Total Debits: " + String.Format("{0:C}",Program.sqlcon.getTotalDebit());
+			lblTotalCredit.Text = "Total Credits: " + String.Format("{0:C}", Program.sqlcon.getTotalCredit());
+			lblTotalDebit.Text = "Total Debits: " + String.Format("{0:C}", Program.sqlcon.getTotalDebit());
 		}
 
-        public void OnFillUnpostedTransactions()
-        {
-            List<string> items = Program.sqlcon.GetListOfUnpostedTransaction();
-            lbUnpostedList.Items.Clear();
-            foreach (string item in items)
-            {
-                lbUnpostedList.Items.Add(item);
-            }
-        }
+		public void OnFillUnpostedJournalEntries() {
+			List<string> items = Program.sqlcon.GetListOfUnpostedJournalEntries();
+			lbUnpostedList.Items.Clear();
+			foreach (string item in items) {
+				lbUnpostedList.Items.Add(item);
+			}
+		}
 
 		public void OnFillAccountChanges() {
 			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
@@ -166,14 +158,14 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Refresh journal as well as changes and trial balance
+		/// Refresh journal as well as changes, trial balance, and journal entries
 		/// </summary>
-		public void OnFillJournal() {
+		public void OnFillTransactions() {
 			dgJournal.DataSource = Program.sqlcon.GetJournal();
 			dgJournal.ClearSelection();
 			OnFillAccountChanges();
 			OnFillTrialBalance();
-            OnFillUnpostedTransactions();
+			OnFillUnpostedJournalEntries();
 		}
 
 		private void OnFillAccountTransactions(int accountnum) {
@@ -213,7 +205,7 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void miAddAccount_Click(object sender, EventArgs e) {
-			new AddAccount(this.OnFillAccountCharts).ShowDialog();
+			new AddAccount(this.OnFillAccountCharts, this.OnFillAccountChanges).ShowDialog();
 		}
 
 		/// <summary>
@@ -264,7 +256,7 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void addJournalEntryToolStripMenuItem_Click(object sender, EventArgs e) {
-			new frmAddJournalEntry(this.OnFillJournal).ShowDialog();
+			new frmAddJournalEntry(this.OnFillTransactions).ShowDialog();
 		}
 
 
@@ -305,57 +297,48 @@ namespace App_Domain {
 			OnFillAccountCharts();
 		}
 
-        private void lbUnpostedList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string item = (string)lbUnpostedList.SelectedItem;
-            int refnum;
-            if (item != null)
-            {
-                string[] split = item.Split(' ');
-                refnum = Convert.ToInt32(split[split.Length - 1]);
-                dgUnpostedTransaction.DataSource = Program.sqlcon.GetUnpoastedTransaction(refnum);
-                txtNotes.Text = Program.sqlcon.GetJournalNote(refnum);
-                tabMain_SelectedIndexChanged(this, new EventArgs());
-                btnPostTransaction.Enabled = true;
-                btnRemoveTransaction.Enabled = true;
-            }
-        }
+		private void lbUnpostedList_SelectedIndexChanged(object sender, EventArgs e) {
+			string item = (string)lbUnpostedList.SelectedItem;
+			int refnum;
+			if (item != null) {
+				string[] split = item.Split(' ');
+				refnum = Convert.ToInt32(split[split.Length - 1]);
+				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetUnpostedJournalEntryTransactions(refnum);
+				txtNotes.Text = Program.sqlcon.GetJournalNote(refnum);
+				tabMain_SelectedIndexChanged(this, new EventArgs());
+				btnPostTransaction.Enabled = true;
+				btnRemoveTransaction.Enabled = true;
+			}
+		}
 
-        private void btnPostTransaction_Click(object sender, EventArgs e)
-        {
-            string item = (string)lbUnpostedList.SelectedItem;
-            int refnum;
-            if (item != null)
-            {
-                string[] split = item.Split(' ');
-                refnum = Convert.ToInt32(split[split.Length - 1]);
-                Program.sqlcon.PostJournalEntry(refnum);
-                btnPostTransaction.Enabled = false;
-                btnRemoveTransaction.Enabled = false;
-                OnFillUnpostedTransactions();
-                OnFillJournal();
-                dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
-                tabMain_SelectedIndexChanged(this, new EventArgs());
-            }
-        }
+		private void btnPostTransaction_Click(object sender, EventArgs e) {
+			string item = (string)lbUnpostedList.SelectedItem;
+			if (item != null) {
+				string[] split = item.Split(' ');
+				int refnum = Convert.ToInt32(split[split.Length - 1]);
+				Program.sqlcon.PostJournalEntry(refnum);
+				btnPostTransaction.Enabled = false;
+				btnRemoveTransaction.Enabled = false;
+				OnFillTransactions();
+				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+				tabMain_SelectedIndexChanged(this, new EventArgs());
+			}
+		}
 
-        private void btnRemoveTransaction_Click(object sender, EventArgs e)
-        {
-            string item = (string)lbUnpostedList.SelectedItem;
-            int refnum;
-            if (item != null)
-            {
-                string[] split = item.Split(' ');
-                refnum = Convert.ToInt32(split[split.Length - 1]);
-                Program.sqlcon.DeleteJournalEntry(refnum);
-                btnPostTransaction.Enabled = false;
-                btnRemoveTransaction.Enabled = false;
-                OnFillUnpostedTransactions();
-                OnFillJournal();
-                dgUnpostedTransaction.DataSource = UnpostedEntriesDT;
-                tabMain_SelectedIndexChanged(this, new EventArgs());
-            }
-        }
+		private void btnRemoveTransaction_Click(object sender, EventArgs e) {
+			string item = (string)lbUnpostedList.SelectedItem;
+			int refnum;
+			if (item != null) {
+				string[] split = item.Split(' ');
+				refnum = Convert.ToInt32(split[split.Length - 1]);
+				Program.sqlcon.DeleteJournalEntry(refnum);
+				btnPostTransaction.Enabled = false;
+				btnRemoveTransaction.Enabled = false;
+				OnFillTransactions();
+				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+				tabMain_SelectedIndexChanged(this, new EventArgs());
+			}
+		}
 
 	}//end Mainwin class
 }//end namespace

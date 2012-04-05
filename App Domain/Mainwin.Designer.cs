@@ -59,6 +59,12 @@
             this.miAddAccountType = new System.Windows.Forms.ToolStripMenuItem();
             this.menuJournal = new System.Windows.Forms.ToolStripDropDownButton();
             this.addJournalEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPosting = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lblunposted = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblJournalsum = new System.Windows.Forms.Label();
+            this.btnPostEntry = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tpChartOfAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -74,6 +80,8 @@
             this.tpTrialBalance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).BeginInit();
             this.toolbarMain.SuspendLayout();
+            this.tabPosting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabMain
@@ -88,6 +96,7 @@
             this.tabMain.Controls.Add(this.tpJournal);
             this.tabMain.Controls.Add(this.tpChanges);
             this.tabMain.Controls.Add(this.tpTrialBalance);
+            this.tabMain.Controls.Add(this.tabPosting);
             this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabMain.ItemSize = new System.Drawing.Size(30, 120);
             this.tabMain.Location = new System.Drawing.Point(0, 28);
@@ -138,12 +147,13 @@
             // 
             // cbxTypes
             // 
+            this.cbxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTypes.FormattingEnabled = true;
             this.cbxTypes.Items.AddRange(new object[] {
             "All"});
             this.cbxTypes.Location = new System.Drawing.Point(307, 6);
             this.cbxTypes.Name = "cbxTypes";
-            this.cbxTypes.Size = new System.Drawing.Size(276, 21);
+            this.cbxTypes.Size = new System.Drawing.Size(256, 21);
             this.cbxTypes.TabIndex = 4;
             this.cbxTypes.SelectedIndexChanged += new System.EventHandler(this.cbxTypes_SelectedIndexChanged);
             // 
@@ -468,6 +478,70 @@
             this.addJournalEntryToolStripMenuItem.Text = "&Add Journal Entry";
             this.addJournalEntryToolStripMenuItem.Click += new System.EventHandler(this.addJournalEntryToolStripMenuItem_Click);
             // 
+            // tabPosting
+            // 
+            this.tabPosting.Controls.Add(this.btnPostEntry);
+            this.tabPosting.Controls.Add(this.lblJournalsum);
+            this.tabPosting.Controls.Add(this.dataGridView1);
+            this.tabPosting.Controls.Add(this.lblunposted);
+            this.tabPosting.Controls.Add(this.listBox1);
+            this.tabPosting.Location = new System.Drawing.Point(124, 4);
+            this.tabPosting.Name = "tabPosting";
+            this.tabPosting.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPosting.Size = new System.Drawing.Size(759, 426);
+            this.tabPosting.TabIndex = 6;
+            this.tabPosting.Text = "Posting";
+            this.tabPosting.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(3, 19);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(205, 407);
+            this.listBox1.TabIndex = 0;
+            // 
+            // lblunposted
+            // 
+            this.lblunposted.AutoSize = true;
+            this.lblunposted.Location = new System.Drawing.Point(6, 3);
+            this.lblunposted.Name = "lblunposted";
+            this.lblunposted.Size = new System.Drawing.Size(125, 13);
+            this.lblunposted.TabIndex = 1;
+            this.lblunposted.Text = "Unposted Journal Entries";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(214, 19);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(542, 370);
+            this.dataGridView1.TabIndex = 2;
+            // 
+            // lblJournalsum
+            // 
+            this.lblJournalsum.AutoSize = true;
+            this.lblJournalsum.Location = new System.Drawing.Point(215, 3);
+            this.lblJournalsum.Name = "lblJournalsum";
+            this.lblJournalsum.Size = new System.Drawing.Size(69, 13);
+            this.lblJournalsum.TabIndex = 3;
+            this.lblJournalsum.Text = "Entry Sumary";
+            // 
+            // btnPostEntry
+            // 
+            this.btnPostEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPostEntry.Location = new System.Drawing.Point(638, 395);
+            this.btnPostEntry.Name = "btnPostEntry";
+            this.btnPostEntry.Size = new System.Drawing.Size(113, 23);
+            this.btnPostEntry.TabIndex = 4;
+            this.btnPostEntry.Text = "Post Transaction";
+            this.btnPostEntry.UseVisualStyleBackColor = true;
+            // 
             // Mainwin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +575,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
             this.toolbarMain.ResumeLayout(false);
             this.toolbarMain.PerformLayout();
+            this.tabPosting.ResumeLayout(false);
+            this.tabPosting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -538,6 +615,12 @@
 		private System.Windows.Forms.DataGridView dgTrialBalance;
 		private System.Windows.Forms.Label lblTotalCredit;
 		private System.Windows.Forms.Label lblTotalDebit;
+        private System.Windows.Forms.TabPage tabPosting;
+        private System.Windows.Forms.Label lblJournalsum;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblunposted;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button btnPostEntry;
 
 	}
 }

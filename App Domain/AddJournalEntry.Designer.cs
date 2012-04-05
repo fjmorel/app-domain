@@ -113,7 +113,7 @@
             this.bPost.Name = "bPost";
             this.bPost.Size = new System.Drawing.Size(75, 23);
             this.bPost.TabIndex = 8;
-            this.bPost.Text = "Post";
+            this.bPost.Text = "Save";
             this.bPost.UseVisualStyleBackColor = true;
             this.bPost.Click += new System.EventHandler(this.bPost_Click);
             // 

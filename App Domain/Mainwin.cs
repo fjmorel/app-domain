@@ -19,7 +19,7 @@ namespace App_Domain {
 
 			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
-			cs.BackColor = Color.FromArgb(255, 239, 239, 239);
+			cs.BackColor = Color.LightCyan;
 			dgChartAccounts.AlternatingRowsDefaultCellStyle = cs;
 			dgAccountTransactions.AlternatingRowsDefaultCellStyle = cs;
 			dgAccountTypes.AlternatingRowsDefaultCellStyle = cs;
@@ -35,11 +35,19 @@ namespace App_Domain {
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 
+            List<string> atypes = Program.sqlcon.GetAccountTypesList();
+            foreach (string s in atypes)
+            {
+                cbAddType.Items.Add(s);
+            }
+            cbAddType.SelectedIndex = 0;
+
 			//Populate datagridviews
 			OnFillAccountCharts();
 			OnFillAccountTypes();
 			OnFillTransactions();//will refresh changes and trial balance
 			OnFillUnpostedJournalEntries();
+            OnFillIncomeSummary();
 
 			//Resize columns of main window
 			tabMain_SelectedIndexChanged(this, new EventArgs());
@@ -88,7 +96,7 @@ namespace App_Domain {
 				dgTrialBalance.Columns[0].Width = 120;
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
-				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgChanges.Columns[3].Width;
+				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width;
 			} else if (tabMain.SelectedTab == tabPosting) {
 				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
@@ -152,6 +160,12 @@ namespace App_Domain {
 				lbUnpostedList.Items.Add(item);
 			}
 		}
+
+        public void OnFillIncomeSummary()
+        {
+            lbSummaryList.Items.Clear();
+            lbSummaryList.Items.AddRange(Program.sqlcon.GetIncomeSummaryTypeList().ToArray());
+        }
 
 		public void OnFillAccountChanges() {
 			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
@@ -351,6 +365,24 @@ namespace App_Domain {
 			tabMain.SelectTab(tpChartOfAccounts);
 			tabMain.TabPages.Remove(tpAccountInfo);
 		}
+
+        private void btnAddType_Click(object sender, EventArgs e)
+        {
+            if (lbSummaryList.Items.IndexOf(cbAddType.SelectedItem) == -1)
+            {
+                Program.sqlcon.AddTypeToIncome(cbAddType.SelectedItem.ToString());
+                OnFillIncomeSummary();
+            }
+        }
+
+        private void btnRemoveType_Click(object sender, EventArgs e)
+        {
+            if (lbSummaryList.SelectedIndex > -1)
+            {
+                Program.sqlcon.RemoveTypeFromIncome(lbSummaryList.SelectedItem.ToString());
+                OnFillIncomeSummary();
+            }
+        }
 
 	}//end Mainwin class
 }//end namespace

@@ -303,6 +303,41 @@ namespace App_Domain {
 			AddAccountChange(accountnum, "Created new account: " + description);
 		}
 
+        /// <summary>
+        /// add an accoutn type by name to the income summary
+        /// </summary>
+        /// <param name="typename"></param>
+        public void AddTypeToIncome(string typename)
+        {
+            int id = Convert.ToInt32(ExecuteQuery("SELECT id FROM Account_Types WHERE name LIKE '" + typename + "'").Rows[0][0]);
+            ExecuteNonQuery("INSERT INTO income_summary (type_id) VALUES(" + id.ToString() + ")");
+        }
+
+        /// <summary>
+        /// remove an account type from an income statment
+        /// </summary>
+        /// <param name="id"></param>
+        public void RemoveTypeFromIncome(string typename)
+        {
+            int id = Convert.ToInt32(ExecuteQuery("SELECT isum.type_id FROM Account_Types at JOIN income_summary isum ON (at.id = isum.type_id) WHERE at.name LIKE '" + typename + "'").Rows[0][0]);
+            ExecuteNonQuery("DELETE FROM income_summary WHERE type_id = " + id.ToString());
+        }
+
+        /// <summary>
+        /// get a list of account types in the income summary
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetIncomeSummaryTypeList()
+        {
+            List<string> accounts = new List<string>();
+            DataTable dt = ExecuteQuery("SELECT at.name FROM income_summary isum JOIN Account_Types at ON (at.id = isum.type_id)");
+            foreach (DataRow row in dt.Rows)
+            {
+                accounts.Add(row["name"].ToString());
+            }
+            return accounts;
+        }
+
 		/// <summary>
 		/// Add account changes to database (new transaction, status changes, etc)
 		/// </summary>

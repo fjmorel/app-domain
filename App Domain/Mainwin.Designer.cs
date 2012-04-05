@@ -82,6 +82,7 @@
             this.tabMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+<<<<<<< HEAD
             this.tabMain.Controls.Add(this.tpChartOfAccounts);
             this.tabMain.Controls.Add(this.tpAccountInfo);
             this.tabMain.Controls.Add(this.tpAccountTypes);
@@ -141,6 +142,66 @@
             this.cbxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTypes.FormattingEnabled = true;
             this.cbxTypes.Items.AddRange(new object[] {
+=======
+			this.tabMain.Controls.Add(this.tpChartOfAccounts);
+			this.tabMain.Controls.Add(this.tpAccountInfo);
+			this.tabMain.Controls.Add(this.tpAccountTypes);
+			this.tabMain.Controls.Add(this.tpJournal);
+			this.tabMain.Controls.Add(this.tpChanges);
+			this.tabMain.Controls.Add(this.tpTrialBalance);
+			this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+			this.tabMain.ItemSize = new System.Drawing.Size(13, 100);
+			this.tabMain.Location = new System.Drawing.Point(0, 28);
+			this.tabMain.MinimumSize = new System.Drawing.Size(887, 434);
+			this.tabMain.Multiline = true;
+			this.tabMain.Name = "tabMain";
+			this.tabMain.Padding = new System.Drawing.Point(0, 0);
+			this.tabMain.SelectedIndex = 0;
+			this.tabMain.Size = new System.Drawing.Size(887, 434);
+			this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+			this.tabMain.TabIndex = 1;
+			this.tabMain.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabMain_DrawItem);
+			this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
+			// 
+			// tpChartOfAccounts
+			// 
+			this.tpChartOfAccounts.Controls.Add(this.txtAccountName);
+			this.tpChartOfAccounts.Controls.Add(this.lblName);
+			this.tpChartOfAccounts.Controls.Add(this.cbxTypes);
+			this.tpChartOfAccounts.Controls.Add(this.lblAccountTypes);
+			this.tpChartOfAccounts.Controls.Add(this.lblSortBy);
+			this.tpChartOfAccounts.Controls.Add(this.cbSortBy);
+			this.tpChartOfAccounts.Controls.Add(this.dgChartAccounts);
+			this.tpChartOfAccounts.Location = new System.Drawing.Point(104, 4);
+			this.tpChartOfAccounts.Name = "tpChartOfAccounts";
+			this.tpChartOfAccounts.Padding = new System.Windows.Forms.Padding(3);
+			this.tpChartOfAccounts.Size = new System.Drawing.Size(779, 426);
+			this.tpChartOfAccounts.TabIndex = 0;
+			this.tpChartOfAccounts.Text = "Accounts";
+			this.tpChartOfAccounts.UseVisualStyleBackColor = true;
+			// 
+			// txtAccountName
+			// 
+			this.txtAccountName.Location = new System.Drawing.Point(92, 6);
+			this.txtAccountName.Name = "txtAccountName";
+			this.txtAccountName.Size = new System.Drawing.Size(124, 20);
+			this.txtAccountName.TabIndex = 6;
+			this.txtAccountName.TextChanged += new System.EventHandler(this.txtAccountName_TextChanged);
+			// 
+			// lblName
+			// 
+			this.lblName.AutoSize = true;
+			this.lblName.Location = new System.Drawing.Point(7, 7);
+			this.lblName.Name = "lblName";
+			this.lblName.Size = new System.Drawing.Size(78, 13);
+			this.lblName.TabIndex = 5;
+			this.lblName.Text = "Account Name";
+			// 
+			// cbxTypes
+			// 
+			this.cbxTypes.FormattingEnabled = true;
+			this.cbxTypes.Items.AddRange(new object[] {
+>>>>>>> b6601a5b5c9d09dabcbd5ed466481f6b8d9b0fdc
             "All"});
             this.cbxTypes.Location = new System.Drawing.Point(307, 6);
             this.cbxTypes.Name = "cbxTypes";
@@ -405,6 +466,7 @@
             this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+<<<<<<< HEAD
             this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgTrialBalance.Location = new System.Drawing.Point(3, 34);
             this.dgTrialBalance.Name = "dgTrialBalance";
@@ -417,6 +479,23 @@
             // 
             this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+=======
+			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgTrialBalance.Location = new System.Drawing.Point(3, 34);
+			this.dgTrialBalance.MultiSelect = false;
+			this.dgTrialBalance.Name = "dgTrialBalance";
+			this.dgTrialBalance.ReadOnly = true;
+			this.dgTrialBalance.RowHeadersVisible = false;
+			this.dgTrialBalance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgTrialBalance.Size = new System.Drawing.Size(773, 392);
+			this.dgTrialBalance.TabIndex = 0;
+			// 
+			// toolbarMain
+			// 
+			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+>>>>>>> b6601a5b5c9d09dabcbd5ed466481f6b8d9b0fdc
             this.menuAccounts,
             this.menuJournal});
             this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;

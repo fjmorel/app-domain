@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
@@ -42,6 +42,12 @@
 			this.lblSortBy = new System.Windows.Forms.Label();
 			this.cbSortBy = new System.Windows.Forms.ComboBox();
 			this.dgChartAccounts = new System.Windows.Forms.DataGridView();
+			this.tpAccountDetails = new System.Windows.Forms.TabPage();
+			this.gbAccount = new System.Windows.Forms.GroupBox();
+			this.btnDeleteAccount = new System.Windows.Forms.Button();
+			this.lblBalance = new System.Windows.Forms.Label();
+			this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
+			this.cbAccountActive = new System.Windows.Forms.CheckBox();
 			this.tpAllAccountTypes = new System.Windows.Forms.TabPage();
 			this.cbAccountType = new System.Windows.Forms.ComboBox();
 			this.lblType = new System.Windows.Forms.Label();
@@ -51,12 +57,6 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.dgAccountTypes = new System.Windows.Forms.DataGridView();
-			this.tpAllTransactions = new System.Windows.Forms.TabPage();
-			this.dgJournal = new System.Windows.Forms.DataGridView();
-			this.tpAllChanges = new System.Windows.Forms.TabPage();
-			this.dgChanges = new System.Windows.Forms.DataGridView();
-			this.tpTrialBalance = new System.Windows.Forms.TabPage();
-			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.tpAllJournalEntries = new System.Windows.Forms.TabPage();
 			this.btnAddJournalEntry = new System.Windows.Forms.Button();
 			this.btnRemoveTransaction = new System.Windows.Forms.Button();
@@ -67,12 +67,12 @@
 			this.dgUnpostedJournalEntryTransactions = new System.Windows.Forms.DataGridView();
 			this.lbUnpostedList = new System.Windows.Forms.ListBox();
 			this.lbltransactions = new System.Windows.Forms.Label();
-			this.tpAccountDetails = new System.Windows.Forms.TabPage();
-			this.gbAccount = new System.Windows.Forms.GroupBox();
-			this.btnDeleteAccount = new System.Windows.Forms.Button();
-			this.lblBalance = new System.Windows.Forms.Label();
-			this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
-			this.cbAccountActive = new System.Windows.Forms.CheckBox();
+			this.tpAllTransactions = new System.Windows.Forms.TabPage();
+			this.dgJournal = new System.Windows.Forms.DataGridView();
+			this.tpAllChanges = new System.Windows.Forms.TabPage();
+			this.dgChanges = new System.Windows.Forms.DataGridView();
+			this.tpTrialBalance = new System.Windows.Forms.TabPage();
+			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.tpIncomeStatement = new System.Windows.Forms.TabPage();
 			this.dgIncomeSummary = new System.Windows.Forms.DataGridView();
 			this.tpRetainedEarnings = new System.Windows.Forms.TabPage();
@@ -86,26 +86,36 @@
 			this.tpBalanceSheet = new System.Windows.Forms.TabPage();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
+			this.tpAccountDetails.SuspendLayout();
+			this.gbAccount.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
 			this.tpAllAccountTypes.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).BeginInit();
+			this.tpAllJournalEntries.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).BeginInit();
 			this.tpAllTransactions.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).BeginInit();
 			this.tpAllChanges.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChanges)).BeginInit();
 			this.tpTrialBalance.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).BeginInit();
-			this.tpAllJournalEntries.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).BeginInit();
-			this.tpAccountDetails.SuspendLayout();
-			this.gbAccount.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
 			this.tpIncomeStatement.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).BeginInit();
 			this.tpRetainedEarnings.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDividends)).BeginInit();
+			this.tpBalanceSheet.SuspendLayout();
 			this.toolbarMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -256,6 +266,84 @@
 			this.dgChartAccounts.TabIndex = 0;
 			this.dgChartAccounts.DoubleClick += new System.EventHandler(this.dgChartAccounts_DoubleClick);
 			// 
+			// tpAccountDetails
+			// 
+			this.tpAccountDetails.Controls.Add(this.gbAccount);
+			this.tpAccountDetails.Location = new System.Drawing.Point(124, 4);
+			this.tpAccountDetails.Name = "tpAccountDetails";
+			this.tpAccountDetails.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAccountDetails.Size = new System.Drawing.Size(759, 426);
+			this.tpAccountDetails.TabIndex = 2;
+			this.tpAccountDetails.Text = "Account Details";
+			this.tpAccountDetails.UseVisualStyleBackColor = true;
+			// 
+			// gbAccount
+			// 
+			this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbAccount.Controls.Add(this.btnDeleteAccount);
+			this.gbAccount.Controls.Add(this.lblBalance);
+			this.gbAccount.Controls.Add(this.dgAccountTransactions);
+			this.gbAccount.Controls.Add(this.cbAccountActive);
+			this.gbAccount.Location = new System.Drawing.Point(3, 3);
+			this.gbAccount.Name = "gbAccount";
+			this.gbAccount.Size = new System.Drawing.Size(753, 420);
+			this.gbAccount.TabIndex = 1;
+			this.gbAccount.TabStop = false;
+			this.gbAccount.Text = "### - Account Name";
+			// 
+			// btnDeleteAccount
+			// 
+			this.btnDeleteAccount.Location = new System.Drawing.Point(598, 9);
+			this.btnDeleteAccount.Name = "btnDeleteAccount";
+			this.btnDeleteAccount.Size = new System.Drawing.Size(148, 23);
+			this.btnDeleteAccount.TabIndex = 7;
+			this.btnDeleteAccount.Text = "Delete Account";
+			this.btnDeleteAccount.UseVisualStyleBackColor = true;
+			this.btnDeleteAccount.Click += new System.EventHandler(this.btnDeleteAccount_Click);
+			// 
+			// lblBalance
+			// 
+			this.lblBalance.AutoSize = true;
+			this.lblBalance.Location = new System.Drawing.Point(225, 20);
+			this.lblBalance.Name = "lblBalance";
+			this.lblBalance.Size = new System.Drawing.Size(49, 13);
+			this.lblBalance.TabIndex = 6;
+			this.lblBalance.Text = "Balance:";
+			// 
+			// dgAccountTransactions
+			// 
+			this.dgAccountTransactions.AllowUserToAddRows = false;
+			this.dgAccountTransactions.AllowUserToDeleteRows = false;
+			this.dgAccountTransactions.AllowUserToResizeColumns = false;
+			this.dgAccountTransactions.AllowUserToResizeRows = false;
+			this.dgAccountTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgAccountTransactions.Location = new System.Drawing.Point(3, 36);
+			this.dgAccountTransactions.Name = "dgAccountTransactions";
+			this.dgAccountTransactions.ReadOnly = true;
+			this.dgAccountTransactions.RowHeadersVisible = false;
+			this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgAccountTransactions.Size = new System.Drawing.Size(744, 384);
+			this.dgAccountTransactions.TabIndex = 5;
+			// 
+			// cbAccountActive
+			// 
+			this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbAccountActive.AutoSize = true;
+			this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cbAccountActive.Location = new System.Drawing.Point(6, 19);
+			this.cbAccountActive.Name = "cbAccountActive";
+			this.cbAccountActive.Size = new System.Drawing.Size(56, 17);
+			this.cbAccountActive.TabIndex = 3;
+			this.cbAccountActive.Text = "Active";
+			this.cbAccountActive.UseVisualStyleBackColor = true;
+			this.cbAccountActive.CheckedChanged += new System.EventHandler(this.cbAccountActive_CheckedChanged);
+			// 
 			// tpAllAccountTypes
 			// 
 			this.tpAllAccountTypes.Controls.Add(this.cbAccountType);
@@ -366,115 +454,6 @@
 			this.dgAccountTypes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgAccountTypes.Size = new System.Drawing.Size(753, 362);
 			this.dgAccountTypes.TabIndex = 0;
-			// 
-			// tpAllTransactions
-			// 
-			this.tpAllTransactions.Controls.Add(this.dgJournal);
-			this.tpAllTransactions.Location = new System.Drawing.Point(124, 4);
-			this.tpAllTransactions.Name = "tpAllTransactions";
-			this.tpAllTransactions.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAllTransactions.Size = new System.Drawing.Size(759, 426);
-			this.tpAllTransactions.TabIndex = 4;
-			this.tpAllTransactions.Text = "Transactions";
-			this.tpAllTransactions.UseVisualStyleBackColor = true;
-			// 
-			// dgJournal
-			// 
-			this.dgJournal.AllowUserToAddRows = false;
-			this.dgJournal.AllowUserToDeleteRows = false;
-			this.dgJournal.AllowUserToResizeColumns = false;
-			this.dgJournal.AllowUserToResizeRows = false;
-			this.dgJournal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-			this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle1;
-			this.dgJournal.Location = new System.Drawing.Point(3, 3);
-			this.dgJournal.MultiSelect = false;
-			this.dgJournal.Name = "dgJournal";
-			this.dgJournal.ReadOnly = true;
-			this.dgJournal.RowHeadersVisible = false;
-			this.dgJournal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgJournal.Size = new System.Drawing.Size(753, 420);
-			this.dgJournal.TabIndex = 0;
-			// 
-			// tpAllChanges
-			// 
-			this.tpAllChanges.Controls.Add(this.dgChanges);
-			this.tpAllChanges.Location = new System.Drawing.Point(124, 4);
-			this.tpAllChanges.Name = "tpAllChanges";
-			this.tpAllChanges.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAllChanges.Size = new System.Drawing.Size(759, 426);
-			this.tpAllChanges.TabIndex = 3;
-			this.tpAllChanges.Text = "Change Log";
-			this.tpAllChanges.UseVisualStyleBackColor = true;
-			// 
-			// dgChanges
-			// 
-			this.dgChanges.AllowUserToAddRows = false;
-			this.dgChanges.AllowUserToDeleteRows = false;
-			this.dgChanges.AllowUserToResizeColumns = false;
-			this.dgChanges.AllowUserToResizeRows = false;
-			this.dgChanges.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgChanges.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-			this.dgChanges.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgChanges.Location = new System.Drawing.Point(3, 3);
-			this.dgChanges.MultiSelect = false;
-			this.dgChanges.Name = "dgChanges";
-			this.dgChanges.ReadOnly = true;
-			this.dgChanges.RowHeadersVisible = false;
-			this.dgChanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgChanges.Size = new System.Drawing.Size(753, 420);
-			this.dgChanges.TabIndex = 1;
-			// 
-			// tpTrialBalance
-			// 
-			this.tpTrialBalance.Controls.Add(this.dgTrialBalance);
-			this.tpTrialBalance.Location = new System.Drawing.Point(124, 4);
-			this.tpTrialBalance.Name = "tpTrialBalance";
-			this.tpTrialBalance.Padding = new System.Windows.Forms.Padding(3);
-			this.tpTrialBalance.Size = new System.Drawing.Size(759, 426);
-			this.tpTrialBalance.TabIndex = 5;
-			this.tpTrialBalance.Text = "Trial Balance";
-			this.tpTrialBalance.UseVisualStyleBackColor = true;
-			// 
-			// dgTrialBalance
-			// 
-			this.dgTrialBalance.AllowUserToAddRows = false;
-			this.dgTrialBalance.AllowUserToDeleteRows = false;
-			this.dgTrialBalance.AllowUserToResizeColumns = false;
-			this.dgTrialBalance.AllowUserToResizeRows = false;
-			this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle2;
-			this.dgTrialBalance.Location = new System.Drawing.Point(3, 3);
-			this.dgTrialBalance.MultiSelect = false;
-			this.dgTrialBalance.Name = "dgTrialBalance";
-			this.dgTrialBalance.ReadOnly = true;
-			this.dgTrialBalance.RowHeadersVisible = false;
-			this.dgTrialBalance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgTrialBalance.Size = new System.Drawing.Size(753, 423);
-			this.dgTrialBalance.TabIndex = 0;
 			// 
 			// tpAllJournalEntries
 			// 
@@ -597,86 +576,123 @@
 			this.lbltransactions.TabIndex = 0;
 			this.lbltransactions.Text = "Unposted Journal Entries";
 			// 
-			// tpAccountDetails
+			// tpAllTransactions
 			// 
-			this.tpAccountDetails.Controls.Add(this.gbAccount);
-			this.tpAccountDetails.Location = new System.Drawing.Point(124, 4);
-			this.tpAccountDetails.Name = "tpAccountDetails";
-			this.tpAccountDetails.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAccountDetails.Size = new System.Drawing.Size(759, 426);
-			this.tpAccountDetails.TabIndex = 2;
-			this.tpAccountDetails.Text = "Account Details";
-			this.tpAccountDetails.UseVisualStyleBackColor = true;
+			this.tpAllTransactions.Controls.Add(this.dgJournal);
+			this.tpAllTransactions.Location = new System.Drawing.Point(124, 4);
+			this.tpAllTransactions.Name = "tpAllTransactions";
+			this.tpAllTransactions.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllTransactions.Size = new System.Drawing.Size(759, 426);
+			this.tpAllTransactions.TabIndex = 4;
+			this.tpAllTransactions.Text = "Transactions";
+			this.tpAllTransactions.UseVisualStyleBackColor = true;
 			// 
-			// gbAccount
+			// dgJournal
 			// 
-			this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.dgJournal.AllowUserToAddRows = false;
+			this.dgJournal.AllowUserToDeleteRows = false;
+			this.dgJournal.AllowUserToResizeColumns = false;
+			this.dgJournal.AllowUserToResizeRows = false;
+			this.dgJournal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.gbAccount.Controls.Add(this.btnDeleteAccount);
-			this.gbAccount.Controls.Add(this.lblBalance);
-			this.gbAccount.Controls.Add(this.dgAccountTransactions);
-			this.gbAccount.Controls.Add(this.cbAccountActive);
-			this.gbAccount.Location = new System.Drawing.Point(3, 3);
-			this.gbAccount.Name = "gbAccount";
-			this.gbAccount.Size = new System.Drawing.Size(753, 420);
-			this.gbAccount.TabIndex = 1;
-			this.gbAccount.TabStop = false;
-			this.gbAccount.Text = "### - Account Name";
+			this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle10;
+			this.dgJournal.Location = new System.Drawing.Point(3, 3);
+			this.dgJournal.MultiSelect = false;
+			this.dgJournal.Name = "dgJournal";
+			this.dgJournal.ReadOnly = true;
+			this.dgJournal.RowHeadersVisible = false;
+			this.dgJournal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgJournal.Size = new System.Drawing.Size(753, 420);
+			this.dgJournal.TabIndex = 0;
 			// 
-			// btnDeleteAccount
+			// tpAllChanges
 			// 
-			this.btnDeleteAccount.Location = new System.Drawing.Point(598, 9);
-			this.btnDeleteAccount.Name = "btnDeleteAccount";
-			this.btnDeleteAccount.Size = new System.Drawing.Size(148, 23);
-			this.btnDeleteAccount.TabIndex = 7;
-			this.btnDeleteAccount.Text = "Delete Account";
-			this.btnDeleteAccount.UseVisualStyleBackColor = true;
-			this.btnDeleteAccount.Click += new System.EventHandler(this.btnDeleteAccount_Click);
+			this.tpAllChanges.Controls.Add(this.dgChanges);
+			this.tpAllChanges.Location = new System.Drawing.Point(124, 4);
+			this.tpAllChanges.Name = "tpAllChanges";
+			this.tpAllChanges.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllChanges.Size = new System.Drawing.Size(759, 426);
+			this.tpAllChanges.TabIndex = 3;
+			this.tpAllChanges.Text = "Change Log";
+			this.tpAllChanges.UseVisualStyleBackColor = true;
 			// 
-			// lblBalance
+			// dgChanges
 			// 
-			this.lblBalance.AutoSize = true;
-			this.lblBalance.Location = new System.Drawing.Point(225, 20);
-			this.lblBalance.Name = "lblBalance";
-			this.lblBalance.Size = new System.Drawing.Size(49, 13);
-			this.lblBalance.TabIndex = 6;
-			this.lblBalance.Text = "Balance:";
-			// 
-			// dgAccountTransactions
-			// 
-			this.dgAccountTransactions.AllowUserToAddRows = false;
-			this.dgAccountTransactions.AllowUserToDeleteRows = false;
-			this.dgAccountTransactions.AllowUserToResizeColumns = false;
-			this.dgAccountTransactions.AllowUserToResizeRows = false;
-			this.dgAccountTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.dgChanges.AllowUserToAddRows = false;
+			this.dgChanges.AllowUserToDeleteRows = false;
+			this.dgChanges.AllowUserToResizeColumns = false;
+			this.dgChanges.AllowUserToResizeRows = false;
+			this.dgChanges.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-			this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgAccountTransactions.Location = new System.Drawing.Point(3, 36);
-			this.dgAccountTransactions.Name = "dgAccountTransactions";
-			this.dgAccountTransactions.ReadOnly = true;
-			this.dgAccountTransactions.RowHeadersVisible = false;
-			this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgAccountTransactions.Size = new System.Drawing.Size(744, 384);
-			this.dgAccountTransactions.TabIndex = 5;
+			this.dgChanges.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgChanges.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgChanges.Location = new System.Drawing.Point(3, 3);
+			this.dgChanges.MultiSelect = false;
+			this.dgChanges.Name = "dgChanges";
+			this.dgChanges.ReadOnly = true;
+			this.dgChanges.RowHeadersVisible = false;
+			this.dgChanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgChanges.Size = new System.Drawing.Size(753, 420);
+			this.dgChanges.TabIndex = 1;
 			// 
-			// cbAccountActive
+			// tpTrialBalance
 			// 
-			this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbAccountActive.AutoSize = true;
-			this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cbAccountActive.Location = new System.Drawing.Point(6, 19);
-			this.cbAccountActive.Name = "cbAccountActive";
-			this.cbAccountActive.Size = new System.Drawing.Size(56, 17);
-			this.cbAccountActive.TabIndex = 3;
-			this.cbAccountActive.Text = "Active";
-			this.cbAccountActive.UseVisualStyleBackColor = true;
-			this.cbAccountActive.CheckedChanged += new System.EventHandler(this.cbAccountActive_CheckedChanged);
+			this.tpTrialBalance.Controls.Add(this.label6);
+			this.tpTrialBalance.Controls.Add(this.label5);
+			this.tpTrialBalance.Controls.Add(this.label3);
+			this.tpTrialBalance.Controls.Add(this.dgTrialBalance);
+			this.tpTrialBalance.Location = new System.Drawing.Point(124, 4);
+			this.tpTrialBalance.Name = "tpTrialBalance";
+			this.tpTrialBalance.Padding = new System.Windows.Forms.Padding(3);
+			this.tpTrialBalance.Size = new System.Drawing.Size(759, 426);
+			this.tpTrialBalance.TabIndex = 5;
+			this.tpTrialBalance.Text = "Trial Balance";
+			this.tpTrialBalance.UseVisualStyleBackColor = true;
+			// 
+			// dgTrialBalance
+			// 
+			this.dgTrialBalance.AllowUserToAddRows = false;
+			this.dgTrialBalance.AllowUserToDeleteRows = false;
+			this.dgTrialBalance.AllowUserToResizeColumns = false;
+			this.dgTrialBalance.AllowUserToResizeRows = false;
+			this.dgTrialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle11;
+			this.dgTrialBalance.Location = new System.Drawing.Point(3, 64);
+			this.dgTrialBalance.MultiSelect = false;
+			this.dgTrialBalance.Name = "dgTrialBalance";
+			this.dgTrialBalance.ReadOnly = true;
+			this.dgTrialBalance.RowHeadersVisible = false;
+			this.dgTrialBalance.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgTrialBalance.Size = new System.Drawing.Size(753, 362);
+			this.dgTrialBalance.TabIndex = 0;
 			// 
 			// tpIncomeStatement
 			// 
+			this.tpIncomeStatement.Controls.Add(this.label7);
+			this.tpIncomeStatement.Controls.Add(this.label8);
+			this.tpIncomeStatement.Controls.Add(this.label9);
 			this.tpIncomeStatement.Controls.Add(this.dgIncomeSummary);
 			this.tpIncomeStatement.Location = new System.Drawing.Point(124, 4);
 			this.tpIncomeStatement.Name = "tpIncomeStatement";
@@ -696,20 +712,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgIncomeSummary.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgIncomeSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle3;
-			this.dgIncomeSummary.Location = new System.Drawing.Point(3, 3);
+			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle12;
+			this.dgIncomeSummary.Location = new System.Drawing.Point(3, 75);
 			this.dgIncomeSummary.MultiSelect = false;
 			this.dgIncomeSummary.Name = "dgIncomeSummary";
 			this.dgIncomeSummary.RowHeadersVisible = false;
 			this.dgIncomeSummary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgIncomeSummary.Size = new System.Drawing.Size(753, 420);
+			this.dgIncomeSummary.Size = new System.Drawing.Size(753, 348);
 			this.dgIncomeSummary.TabIndex = 0;
 			// 
 			// tpRetainedEarnings
@@ -741,7 +757,7 @@
 			// lblDividends
 			// 
 			this.lblDividends.AutoSize = true;
-			this.lblDividends.Location = new System.Drawing.Point(7, 62);
+			this.lblDividends.Location = new System.Drawing.Point(3, 58);
 			this.lblDividends.Name = "lblDividends";
 			this.lblDividends.Size = new System.Drawing.Size(54, 13);
 			this.lblDividends.TabIndex = 6;
@@ -780,7 +796,7 @@
 			this.lblRetainedEarnings.Name = "lblRetainedEarnings";
 			this.lblRetainedEarnings.Size = new System.Drawing.Size(94, 13);
 			this.lblRetainedEarnings.TabIndex = 1;
-			this.lblRetainedEarnings.Text = "Retained Eranings";
+			this.lblRetainedEarnings.Text = "Retained Earnings";
 			// 
 			// lblIncome
 			// 
@@ -793,6 +809,9 @@
 			// 
 			// tpBalanceSheet
 			// 
+			this.tpBalanceSheet.Controls.Add(this.label10);
+			this.tpBalanceSheet.Controls.Add(this.label11);
+			this.tpBalanceSheet.Controls.Add(this.label12);
 			this.tpBalanceSheet.Location = new System.Drawing.Point(124, 4);
 			this.tpBalanceSheet.Name = "tpBalanceSheet";
 			this.tpBalanceSheet.Size = new System.Drawing.Size(759, 426);
@@ -821,6 +840,105 @@
 			this.btnAddAccount.Text = "&Add Account";
 			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
 			// 
+			// label3
+			// 
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(332, 3);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(82, 13);
+			this.label3.TabIndex = 1;
+			this.label3.Text = "Company Name";
+			// 
+			// label5
+			// 
+			this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(340, 25);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(69, 13);
+			this.label5.TabIndex = 2;
+			this.label5.Text = "Trial Balance";
+			// 
+			// label6
+			// 
+			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(340, 48);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(72, 13);
+			this.label6.TabIndex = 3;
+			this.label6.Text = "April 12, 2012";
+			// 
+			// label7
+			// 
+			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(300, 59);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(196, 13);
+			this.label7.TabIndex = 6;
+			this.label7.Text = "January 12, 2012 through April 12, 2012";
+			// 
+			// label8
+			// 
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(343, 34);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(93, 13);
+			this.label8.TabIndex = 5;
+			this.label8.Text = "Income Statement";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(346, 9);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(82, 13);
+			this.label9.TabIndex = 4;
+			this.label9.Text = "Company Name";
+			// 
+			// label10
+			// 
+			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(354, 55);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(72, 13);
+			this.label10.TabIndex = 6;
+			this.label10.Text = "April 12, 2012";
+			// 
+			// label11
+			// 
+			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(351, 32);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(77, 13);
+			this.label11.TabIndex = 5;
+			this.label11.Text = "Balance Sheet";
+			// 
+			// label12
+			// 
+			this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(346, 10);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(82, 13);
+			this.label12.TabIndex = 4;
+			this.label12.Text = "Company Name";
+			// 
 			// Mainwin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -839,27 +957,31 @@
 			this.tpAllAccounts.ResumeLayout(false);
 			this.tpAllAccounts.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).EndInit();
+			this.tpAccountDetails.ResumeLayout(false);
+			this.gbAccount.ResumeLayout(false);
+			this.gbAccount.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
 			this.tpAllAccountTypes.ResumeLayout(false);
 			this.tpAllAccountTypes.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).EndInit();
+			this.tpAllJournalEntries.ResumeLayout(false);
+			this.tpAllJournalEntries.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).EndInit();
 			this.tpAllTransactions.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).EndInit();
 			this.tpAllChanges.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgChanges)).EndInit();
 			this.tpTrialBalance.ResumeLayout(false);
+			this.tpTrialBalance.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
-			this.tpAllJournalEntries.ResumeLayout(false);
-			this.tpAllJournalEntries.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).EndInit();
-			this.tpAccountDetails.ResumeLayout(false);
-			this.gbAccount.ResumeLayout(false);
-			this.gbAccount.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
 			this.tpIncomeStatement.ResumeLayout(false);
+			this.tpIncomeStatement.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).EndInit();
 			this.tpRetainedEarnings.ResumeLayout(false);
 			this.tpRetainedEarnings.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDividends)).EndInit();
+			this.tpBalanceSheet.ResumeLayout(false);
+			this.tpBalanceSheet.PerformLayout();
 			this.toolbarMain.ResumeLayout(false);
 			this.toolbarMain.PerformLayout();
 			this.ResumeLayout(false);
@@ -923,6 +1045,15 @@
         private System.Windows.Forms.Label lblRetainedEarnings;
         private System.Windows.Forms.Label lblIncome;
         private System.Windows.Forms.NumericUpDown numDividends;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label label12;
 
 	}
 }

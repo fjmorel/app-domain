@@ -14,7 +14,7 @@ namespace App_Domain {
 
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
-			cbAccountTypeDebitIsPositive.SelectedItem = "Debit";
+			cbAccountType.SelectedIndex = 0;
 			tabMain.TabPages.Remove(tpAccountInfo);
 
 			//Style datagridviews
@@ -356,7 +356,8 @@ namespace App_Domain {
 			if (txtAccountTypeName.Text != "" && txtAccountTypeDescription.Text != "") {
 				DataTable dt = Program.sqlcon.GetAccountTypeByName(txtAccountTypeName.Text);
 				if (dt != null && dt.Rows.Count < 1) {//Check for existing type of that name
-					bool debitIsPositive = cbAccountTypeDebitIsPositive.SelectedText == "Debit" ? true : false;
+					//Account type type now dictates whether debit is positive or not
+					bool debitIsPositive = cbAccountType.SelectedItem.ToString().Equals("Asset") || cbAccountType.SelectedItem.ToString().Equals("Expense") ? true : false;
 					Program.sqlcon.AddAccountType(txtAccountTypeName.Text, txtAccountTypeDescription.Text, debitIsPositive, cbAccountType.SelectedIndex);
 					OnFillAccountTypes();
 				} else {

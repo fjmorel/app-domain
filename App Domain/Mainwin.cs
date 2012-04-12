@@ -27,6 +27,7 @@ namespace App_Domain {
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
 			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
+            dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -34,6 +35,7 @@ namespace App_Domain {
 			dgChanges.ScrollBars = ScrollBars.Vertical;
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
+            dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
 
 			//Populate datagridviews
 			OnFillAccountCharts();
@@ -52,6 +54,8 @@ namespace App_Domain {
 			UnpostedEntriesDT.Columns.Add("Debit");
 			UnpostedEntriesDT.Columns.Add("Credit");
 			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+
+            cbAccountType.SelectedIndex = 0;
 
 		}
 
@@ -95,7 +99,14 @@ namespace App_Domain {
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width;
-			}
+            }
+            else if (tabMain.SelectedTab == tabIncome)
+            {
+                dgIncomeSummary.Columns[0].Width = 100;
+                dgIncomeSummary.Columns[2].Width = 100;
+                dgIncomeSummary.Columns[3].Width = 100;
+                dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
+            }
 		}
 
 		/// <summary>
@@ -154,7 +165,7 @@ namespace App_Domain {
 
         public void OnFillIncomeSummary()
         {
-
+            dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
         }
 
 		public void OnFillAccountChanges() {
@@ -337,7 +348,7 @@ namespace App_Domain {
 				DataTable dt = Program.sqlcon.GetAccountTypeByName(txtAccountTypeName.Text);
 				if (dt != null && dt.Rows.Count < 1) {//Check for existing type of that name
 					bool debitIsPositive = cbAccountTypeDebitIsPositive.SelectedText == "Debit" ? true : false;
-					Program.sqlcon.AddAccountType(txtAccountTypeName.Text, txtAccountTypeDescription.Text, debitIsPositive);
+					Program.sqlcon.AddAccountType(txtAccountTypeName.Text, txtAccountTypeDescription.Text, debitIsPositive, cbAccountType.SelectedIndex);
 					OnFillAccountTypes();
 				} else {
 					MessageBox.Show("This account type already exists. Please enter something else.");

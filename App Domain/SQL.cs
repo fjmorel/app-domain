@@ -50,6 +50,7 @@ namespace App_Domain {
 					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
 				}
 			}
+            
             dt.Rows.Add("Totals", "", String.Format("{0:C}", Math.Abs(getTotalDebit())), String.Format("{0:C}", Math.Abs(getTotalCredit())));
 
 			return dt;
@@ -301,7 +302,29 @@ namespace App_Domain {
 
         public DataTable GetIncome()
         {
-            return null;
+            DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 2 OR at.account_type = 3 ORDER BY at.account_type DESC");
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Account", typeof(string));
+            dt.Columns.Add("Description", typeof(string));
+            dt.Columns.Add("Debits", typeof(string));
+            dt.Columns.Add("Credits", typeof(string));
+
+            foreach (DataRow row in accounts.Rows)
+            {
+                int accountnum = Convert.ToInt32(row[0].ToString());
+                string account = row[1].ToString();
+                double amount = GetAccountBalance(accountnum);
+                if (amount != 0)
+                {
+                    string debit = amount < 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
+                    string credit = amount > 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
+                    dt.Rows.Add(accountnum.ToString(), account, debit, credit);
+                }
+            }
+
+            dt.Rows.Add("Total Income", String.Format("{0:C}", GetIncomeDebits() - GetIncomeCredits()), "", "" );
+
+            return dt;
         }
 
 		/// <summary>
@@ -330,9 +353,9 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="name">Account type name</param>
 		/// <param name="description">Account type description</param>
-		public void AddAccountType(string name, string description, bool debitIsPositive) {
+		public void AddAccountType(string name, string description, bool debitIsPositive, int accounttype) {
 			int debitispositive = debitIsPositive ? 1 : 0;
-			ExecuteNonQuery("INSERT INTO Account_Types (name, descript, debitispositive) VALUES('" + name + "','" + description + "', " + debitispositive + ")");
+			ExecuteNonQuery("INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('" + name + "','" + description + "', " + debitispositive + ", " + accounttype.ToString() + ")");
 		}
 
 		/// <summary>

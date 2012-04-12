@@ -15,7 +15,7 @@ namespace App_Domain {
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
 			cbAccountType.SelectedIndex = 0;
-			tabMain.TabPages.Remove(tpAccountInfo);
+			tabMain.TabPages.Remove(tpAccountDetails);
 
 			//Style datagridviews
 			DataGridViewCellStyle cs = new DataGridViewCellStyle();
@@ -66,26 +66,26 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void tabMain_SelectedIndexChanged(object sender, EventArgs e) {
-			if (tabMain.SelectedTab == tpChartOfAccounts) {
+			if (tabMain.SelectedTab == tpAllAccounts) {
 				dgChartAccounts.Columns[0].Width = 120;
 				dgChartAccounts.Columns[2].Width = 80;
 				dgChartAccounts.Columns[3].Width = 200;
 				dgChartAccounts.Columns[1].Width = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width - 20;
-			} else if (tabMain.SelectedTab == tpAccountInfo) {
+			} else if (tabMain.SelectedTab == tpAccountDetails) {
 				dgAccountTransactions.Columns[1].Width = 120;
 				dgAccountTransactions.Columns[2].Width = 120;
 				dgAccountTransactions.Columns[0].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[1].Width;
-			} else if (tabMain.SelectedTab == tpAccountTypes) {
+			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
 				dgAccountTypes.Columns[0].Width = 120;
 				dgAccountTypes.Columns[2].Width = 120;
 				dgAccountTypes.Columns[1].Width = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width - 20;
-			} else if (tabMain.SelectedTab == tpJournal) {
+			} else if (tabMain.SelectedTab == tpAllTransactions) {
 				dgJournal.Columns[0].Width = 120;
 				dgJournal.Columns[2].Width = 120;
 				dgJournal.Columns[3].Width = 120;
 				dgJournal.Columns[4].Width = 150;
 				dgJournal.Columns[1].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[2].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width;
-			} else if (tabMain.SelectedTab == tpChanges) {
+			} else if (tabMain.SelectedTab == tpAllChanges) {
 				dgChanges.Columns[0].Width = 120;
 				dgChanges.Columns[2].Width = 120;
 				dgChanges.Columns[3].Width = 150;
@@ -95,13 +95,13 @@ namespace App_Domain {
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
 				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width;
-			} else if (tabMain.SelectedTab == tabPosting) {
+			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
 				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width;
             }
-            else if (tabMain.SelectedTab == tabIncome)
+            else if (tabMain.SelectedTab == tpIncomeStatement)
             {
                 dgIncomeSummary.Columns[0].Width = 100;
                 dgIncomeSummary.Columns[2].Width = 100;
@@ -256,10 +256,10 @@ namespace App_Domain {
 					else
 						btnDeleteAccount.Visible = false;
 					//Show tab
-					if (!tabMain.TabPages.Contains(tpAccountInfo)) {
-						tabMain.TabPages.Insert(1, tpAccountInfo);
+					if (!tabMain.TabPages.Contains(tpAccountDetails)) {
+						tabMain.TabPages.Insert(1, tpAccountDetails);
 					}
-					tabMain.SelectedTab = tpAccountInfo;
+					tabMain.SelectedTab = tpAccountDetails;
 				}
 				dgChartAccounts.ClearSelection();
 			}
@@ -374,8 +374,8 @@ namespace App_Domain {
 			Program.sqlcon.DeleteAccount(Convert.ToInt32(gbAccount.Text.Substring(0, i)));
 			OnFillAccountCharts();
 			//Go back to main and hide tab
-			tabMain.SelectTab(tpChartOfAccounts);
-			tabMain.TabPages.Remove(tpAccountInfo);
+			tabMain.SelectTab(tpAllAccounts);
+			tabMain.TabPages.Remove(tpAccountDetails);
 		}
 
         private void numDividends_ValueChanged(object sender, EventArgs e)

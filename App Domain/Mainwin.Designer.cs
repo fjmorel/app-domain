@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
-			this.tpChartOfAccounts = new System.Windows.Forms.TabPage();
+			this.tpAllAccounts = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
 			this.txtAccountName = new System.Windows.Forms.TextBox();
 			this.lblName = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
 			this.lblSortBy = new System.Windows.Forms.Label();
 			this.cbSortBy = new System.Windows.Forms.ComboBox();
 			this.dgChartAccounts = new System.Windows.Forms.DataGridView();
-			this.tpAccountTypes = new System.Windows.Forms.TabPage();
+			this.tpAllAccountTypes = new System.Windows.Forms.TabPage();
 			this.cbAccountType = new System.Windows.Forms.ComboBox();
 			this.lblType = new System.Windows.Forms.Label();
 			this.btnAddAccountType = new System.Windows.Forms.Button();
@@ -51,13 +51,13 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.dgAccountTypes = new System.Windows.Forms.DataGridView();
-			this.tpJournal = new System.Windows.Forms.TabPage();
+			this.tpAllTransactions = new System.Windows.Forms.TabPage();
 			this.dgJournal = new System.Windows.Forms.DataGridView();
-			this.tpChanges = new System.Windows.Forms.TabPage();
+			this.tpAllChanges = new System.Windows.Forms.TabPage();
 			this.dgChanges = new System.Windows.Forms.DataGridView();
 			this.tpTrialBalance = new System.Windows.Forms.TabPage();
 			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
-			this.tabPosting = new System.Windows.Forms.TabPage();
+			this.tpAllJournalEntries = new System.Windows.Forms.TabPage();
 			this.btnAddJournalEntry = new System.Windows.Forms.Button();
 			this.btnRemoveTransaction = new System.Windows.Forms.Button();
 			this.lblNotes = new System.Windows.Forms.Label();
@@ -67,15 +67,15 @@
 			this.dgUnpostedJournalEntryTransactions = new System.Windows.Forms.DataGridView();
 			this.lbUnpostedList = new System.Windows.Forms.ListBox();
 			this.lbltransactions = new System.Windows.Forms.Label();
-			this.tpAccountInfo = new System.Windows.Forms.TabPage();
+			this.tpAccountDetails = new System.Windows.Forms.TabPage();
 			this.gbAccount = new System.Windows.Forms.GroupBox();
 			this.btnDeleteAccount = new System.Windows.Forms.Button();
 			this.lblBalance = new System.Windows.Forms.Label();
 			this.dgAccountTransactions = new System.Windows.Forms.DataGridView();
 			this.cbAccountActive = new System.Windows.Forms.CheckBox();
-			this.tabIncome = new System.Windows.Forms.TabPage();
+			this.tpIncomeStatement = new System.Windows.Forms.TabPage();
 			this.dgIncomeSummary = new System.Windows.Forms.DataGridView();
-			this.tabRetainedEarnings = new System.Windows.Forms.TabPage();
+			this.tpRetainedEarnings = new System.Windows.Forms.TabPage();
 			this.numDividends = new System.Windows.Forms.NumericUpDown();
 			this.lblDividends = new System.Windows.Forms.Label();
 			this.btnSaveRE = new System.Windows.Forms.Button();
@@ -83,28 +83,28 @@
 			this.txtIncome = new System.Windows.Forms.TextBox();
 			this.lblRetainedEarnings = new System.Windows.Forms.Label();
 			this.lblIncome = new System.Windows.Forms.Label();
-			this.tabBalanceSheet = new System.Windows.Forms.TabPage();
+			this.tpBalanceSheet = new System.Windows.Forms.TabPage();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
 			this.tabMain.SuspendLayout();
-			this.tpChartOfAccounts.SuspendLayout();
+			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
-			this.tpAccountTypes.SuspendLayout();
+			this.tpAllAccountTypes.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).BeginInit();
-			this.tpJournal.SuspendLayout();
+			this.tpAllTransactions.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).BeginInit();
-			this.tpChanges.SuspendLayout();
+			this.tpAllChanges.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChanges)).BeginInit();
 			this.tpTrialBalance.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).BeginInit();
-			this.tabPosting.SuspendLayout();
+			this.tpAllJournalEntries.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).BeginInit();
-			this.tpAccountInfo.SuspendLayout();
+			this.tpAccountDetails.SuspendLayout();
 			this.gbAccount.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
-			this.tabIncome.SuspendLayout();
+			this.tpIncomeStatement.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).BeginInit();
-			this.tabRetainedEarnings.SuspendLayout();
+			this.tpRetainedEarnings.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDividends)).BeginInit();
 			this.toolbarMain.SuspendLayout();
 			this.SuspendLayout();
@@ -115,16 +115,16 @@
 			this.tabMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.tabMain.Controls.Add(this.tpChartOfAccounts);
-			this.tabMain.Controls.Add(this.tpAccountTypes);
-			this.tabMain.Controls.Add(this.tpJournal);
-			this.tabMain.Controls.Add(this.tpChanges);
+			this.tabMain.Controls.Add(this.tpAllAccounts);
+			this.tabMain.Controls.Add(this.tpAccountDetails);
+			this.tabMain.Controls.Add(this.tpAllAccountTypes);
+			this.tabMain.Controls.Add(this.tpAllJournalEntries);
+			this.tabMain.Controls.Add(this.tpAllTransactions);
+			this.tabMain.Controls.Add(this.tpAllChanges);
 			this.tabMain.Controls.Add(this.tpTrialBalance);
-			this.tabMain.Controls.Add(this.tabPosting);
-			this.tabMain.Controls.Add(this.tpAccountInfo);
-			this.tabMain.Controls.Add(this.tabIncome);
-			this.tabMain.Controls.Add(this.tabRetainedEarnings);
-			this.tabMain.Controls.Add(this.tabBalanceSheet);
+			this.tabMain.Controls.Add(this.tpIncomeStatement);
+			this.tabMain.Controls.Add(this.tpRetainedEarnings);
+			this.tabMain.Controls.Add(this.tpBalanceSheet);
 			this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.tabMain.ItemSize = new System.Drawing.Size(30, 120);
 			this.tabMain.Location = new System.Drawing.Point(0, 28);
@@ -139,23 +139,23 @@
 			this.tabMain.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabMain_DrawItem);
 			this.tabMain.SelectedIndexChanged += new System.EventHandler(this.tabMain_SelectedIndexChanged);
 			// 
-			// tpChartOfAccounts
+			// tpAllAccounts
 			// 
-			this.tpChartOfAccounts.Controls.Add(this.label4);
-			this.tpChartOfAccounts.Controls.Add(this.txtAccountName);
-			this.tpChartOfAccounts.Controls.Add(this.lblName);
-			this.tpChartOfAccounts.Controls.Add(this.cbxTypes);
-			this.tpChartOfAccounts.Controls.Add(this.lblAccountTypes);
-			this.tpChartOfAccounts.Controls.Add(this.lblSortBy);
-			this.tpChartOfAccounts.Controls.Add(this.cbSortBy);
-			this.tpChartOfAccounts.Controls.Add(this.dgChartAccounts);
-			this.tpChartOfAccounts.Location = new System.Drawing.Point(124, 4);
-			this.tpChartOfAccounts.Name = "tpChartOfAccounts";
-			this.tpChartOfAccounts.Padding = new System.Windows.Forms.Padding(3);
-			this.tpChartOfAccounts.Size = new System.Drawing.Size(759, 426);
-			this.tpChartOfAccounts.TabIndex = 0;
-			this.tpChartOfAccounts.Text = "Accounts";
-			this.tpChartOfAccounts.UseVisualStyleBackColor = true;
+			this.tpAllAccounts.Controls.Add(this.label4);
+			this.tpAllAccounts.Controls.Add(this.txtAccountName);
+			this.tpAllAccounts.Controls.Add(this.lblName);
+			this.tpAllAccounts.Controls.Add(this.cbxTypes);
+			this.tpAllAccounts.Controls.Add(this.lblAccountTypes);
+			this.tpAllAccounts.Controls.Add(this.lblSortBy);
+			this.tpAllAccounts.Controls.Add(this.cbSortBy);
+			this.tpAllAccounts.Controls.Add(this.dgChartAccounts);
+			this.tpAllAccounts.Location = new System.Drawing.Point(124, 4);
+			this.tpAllAccounts.Name = "tpAllAccounts";
+			this.tpAllAccounts.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllAccounts.Size = new System.Drawing.Size(759, 426);
+			this.tpAllAccounts.TabIndex = 0;
+			this.tpAllAccounts.Text = "Accounts";
+			this.tpAllAccounts.UseVisualStyleBackColor = true;
 			// 
 			// label4
 			// 
@@ -256,23 +256,23 @@
 			this.dgChartAccounts.TabIndex = 0;
 			this.dgChartAccounts.DoubleClick += new System.EventHandler(this.dgChartAccounts_DoubleClick);
 			// 
-			// tpAccountTypes
+			// tpAllAccountTypes
 			// 
-			this.tpAccountTypes.Controls.Add(this.cbAccountType);
-			this.tpAccountTypes.Controls.Add(this.lblType);
-			this.tpAccountTypes.Controls.Add(this.btnAddAccountType);
-			this.tpAccountTypes.Controls.Add(this.txtAccountTypeDescription);
-			this.tpAccountTypes.Controls.Add(this.txtAccountTypeName);
-			this.tpAccountTypes.Controls.Add(this.label2);
-			this.tpAccountTypes.Controls.Add(this.label1);
-			this.tpAccountTypes.Controls.Add(this.dgAccountTypes);
-			this.tpAccountTypes.Location = new System.Drawing.Point(124, 4);
-			this.tpAccountTypes.Name = "tpAccountTypes";
-			this.tpAccountTypes.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAccountTypes.Size = new System.Drawing.Size(759, 426);
-			this.tpAccountTypes.TabIndex = 1;
-			this.tpAccountTypes.Text = "Types";
-			this.tpAccountTypes.UseVisualStyleBackColor = true;
+			this.tpAllAccountTypes.Controls.Add(this.cbAccountType);
+			this.tpAllAccountTypes.Controls.Add(this.lblType);
+			this.tpAllAccountTypes.Controls.Add(this.btnAddAccountType);
+			this.tpAllAccountTypes.Controls.Add(this.txtAccountTypeDescription);
+			this.tpAllAccountTypes.Controls.Add(this.txtAccountTypeName);
+			this.tpAllAccountTypes.Controls.Add(this.label2);
+			this.tpAllAccountTypes.Controls.Add(this.label1);
+			this.tpAllAccountTypes.Controls.Add(this.dgAccountTypes);
+			this.tpAllAccountTypes.Location = new System.Drawing.Point(124, 4);
+			this.tpAllAccountTypes.Name = "tpAllAccountTypes";
+			this.tpAllAccountTypes.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllAccountTypes.Size = new System.Drawing.Size(759, 426);
+			this.tpAllAccountTypes.TabIndex = 1;
+			this.tpAllAccountTypes.Text = "Types";
+			this.tpAllAccountTypes.UseVisualStyleBackColor = true;
 			// 
 			// cbAccountType
 			// 
@@ -367,16 +367,16 @@
 			this.dgAccountTypes.Size = new System.Drawing.Size(753, 362);
 			this.dgAccountTypes.TabIndex = 0;
 			// 
-			// tpJournal
+			// tpAllTransactions
 			// 
-			this.tpJournal.Controls.Add(this.dgJournal);
-			this.tpJournal.Location = new System.Drawing.Point(124, 4);
-			this.tpJournal.Name = "tpJournal";
-			this.tpJournal.Padding = new System.Windows.Forms.Padding(3);
-			this.tpJournal.Size = new System.Drawing.Size(759, 426);
-			this.tpJournal.TabIndex = 4;
-			this.tpJournal.Text = "Transactions";
-			this.tpJournal.UseVisualStyleBackColor = true;
+			this.tpAllTransactions.Controls.Add(this.dgJournal);
+			this.tpAllTransactions.Location = new System.Drawing.Point(124, 4);
+			this.tpAllTransactions.Name = "tpAllTransactions";
+			this.tpAllTransactions.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllTransactions.Size = new System.Drawing.Size(759, 426);
+			this.tpAllTransactions.TabIndex = 4;
+			this.tpAllTransactions.Text = "Transactions";
+			this.tpAllTransactions.UseVisualStyleBackColor = true;
 			// 
 			// dgJournal
 			// 
@@ -389,14 +389,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle1;
 			this.dgJournal.Location = new System.Drawing.Point(3, 3);
 			this.dgJournal.MultiSelect = false;
 			this.dgJournal.Name = "dgJournal";
@@ -406,16 +406,16 @@
 			this.dgJournal.Size = new System.Drawing.Size(753, 420);
 			this.dgJournal.TabIndex = 0;
 			// 
-			// tpChanges
+			// tpAllChanges
 			// 
-			this.tpChanges.Controls.Add(this.dgChanges);
-			this.tpChanges.Location = new System.Drawing.Point(124, 4);
-			this.tpChanges.Name = "tpChanges";
-			this.tpChanges.Padding = new System.Windows.Forms.Padding(3);
-			this.tpChanges.Size = new System.Drawing.Size(759, 426);
-			this.tpChanges.TabIndex = 3;
-			this.tpChanges.Text = "Changes";
-			this.tpChanges.UseVisualStyleBackColor = true;
+			this.tpAllChanges.Controls.Add(this.dgChanges);
+			this.tpAllChanges.Location = new System.Drawing.Point(124, 4);
+			this.tpAllChanges.Name = "tpAllChanges";
+			this.tpAllChanges.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAllChanges.Size = new System.Drawing.Size(759, 426);
+			this.tpAllChanges.TabIndex = 3;
+			this.tpAllChanges.Text = "Change Log";
+			this.tpAllChanges.UseVisualStyleBackColor = true;
 			// 
 			// dgChanges
 			// 
@@ -459,14 +459,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dgTrialBalance.Location = new System.Drawing.Point(3, 3);
 			this.dgTrialBalance.MultiSelect = false;
 			this.dgTrialBalance.Name = "dgTrialBalance";
@@ -476,26 +476,27 @@
 			this.dgTrialBalance.Size = new System.Drawing.Size(753, 423);
 			this.dgTrialBalance.TabIndex = 0;
 			// 
-			// tabPosting
+			// tpAllJournalEntries
 			// 
-			this.tabPosting.Controls.Add(this.btnAddJournalEntry);
-			this.tabPosting.Controls.Add(this.btnRemoveTransaction);
-			this.tabPosting.Controls.Add(this.lblNotes);
-			this.tabPosting.Controls.Add(this.btnPostTransaction);
-			this.tabPosting.Controls.Add(this.txtNotes);
-			this.tabPosting.Controls.Add(this.lblTransactionDetails);
-			this.tabPosting.Controls.Add(this.dgUnpostedJournalEntryTransactions);
-			this.tabPosting.Controls.Add(this.lbUnpostedList);
-			this.tabPosting.Controls.Add(this.lbltransactions);
-			this.tabPosting.Location = new System.Drawing.Point(124, 4);
-			this.tabPosting.Name = "tabPosting";
-			this.tabPosting.Size = new System.Drawing.Size(759, 426);
-			this.tabPosting.TabIndex = 6;
-			this.tabPosting.Text = "Posting";
-			this.tabPosting.UseVisualStyleBackColor = true;
+			this.tpAllJournalEntries.Controls.Add(this.btnAddJournalEntry);
+			this.tpAllJournalEntries.Controls.Add(this.btnRemoveTransaction);
+			this.tpAllJournalEntries.Controls.Add(this.lblNotes);
+			this.tpAllJournalEntries.Controls.Add(this.btnPostTransaction);
+			this.tpAllJournalEntries.Controls.Add(this.txtNotes);
+			this.tpAllJournalEntries.Controls.Add(this.lblTransactionDetails);
+			this.tpAllJournalEntries.Controls.Add(this.dgUnpostedJournalEntryTransactions);
+			this.tpAllJournalEntries.Controls.Add(this.lbUnpostedList);
+			this.tpAllJournalEntries.Controls.Add(this.lbltransactions);
+			this.tpAllJournalEntries.Location = new System.Drawing.Point(124, 4);
+			this.tpAllJournalEntries.Name = "tpAllJournalEntries";
+			this.tpAllJournalEntries.Size = new System.Drawing.Size(759, 426);
+			this.tpAllJournalEntries.TabIndex = 6;
+			this.tpAllJournalEntries.Text = "Journal Entries";
+			this.tpAllJournalEntries.UseVisualStyleBackColor = true;
 			// 
 			// btnAddJournalEntry
 			// 
+			this.btnAddJournalEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btnAddJournalEntry.Location = new System.Drawing.Point(6, 395);
 			this.btnAddJournalEntry.Name = "btnAddJournalEntry";
 			this.btnAddJournalEntry.Size = new System.Drawing.Size(197, 23);
@@ -596,16 +597,16 @@
 			this.lbltransactions.TabIndex = 0;
 			this.lbltransactions.Text = "Unposted Journal Entries";
 			// 
-			// tpAccountInfo
+			// tpAccountDetails
 			// 
-			this.tpAccountInfo.Controls.Add(this.gbAccount);
-			this.tpAccountInfo.Location = new System.Drawing.Point(124, 4);
-			this.tpAccountInfo.Name = "tpAccountInfo";
-			this.tpAccountInfo.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAccountInfo.Size = new System.Drawing.Size(759, 426);
-			this.tpAccountInfo.TabIndex = 2;
-			this.tpAccountInfo.Text = "Account Details";
-			this.tpAccountInfo.UseVisualStyleBackColor = true;
+			this.tpAccountDetails.Controls.Add(this.gbAccount);
+			this.tpAccountDetails.Location = new System.Drawing.Point(124, 4);
+			this.tpAccountDetails.Name = "tpAccountDetails";
+			this.tpAccountDetails.Padding = new System.Windows.Forms.Padding(3);
+			this.tpAccountDetails.Size = new System.Drawing.Size(759, 426);
+			this.tpAccountDetails.TabIndex = 2;
+			this.tpAccountDetails.Text = "Account Details";
+			this.tpAccountDetails.UseVisualStyleBackColor = true;
 			// 
 			// gbAccount
 			// 
@@ -674,15 +675,15 @@
 			this.cbAccountActive.UseVisualStyleBackColor = true;
 			this.cbAccountActive.CheckedChanged += new System.EventHandler(this.cbAccountActive_CheckedChanged);
 			// 
-			// tabIncome
+			// tpIncomeStatement
 			// 
-			this.tabIncome.Controls.Add(this.dgIncomeSummary);
-			this.tabIncome.Location = new System.Drawing.Point(124, 4);
-			this.tabIncome.Name = "tabIncome";
-			this.tabIncome.Size = new System.Drawing.Size(759, 426);
-			this.tabIncome.TabIndex = 7;
-			this.tabIncome.Text = "Income Statement";
-			this.tabIncome.UseVisualStyleBackColor = true;
+			this.tpIncomeStatement.Controls.Add(this.dgIncomeSummary);
+			this.tpIncomeStatement.Location = new System.Drawing.Point(124, 4);
+			this.tpIncomeStatement.Name = "tpIncomeStatement";
+			this.tpIncomeStatement.Size = new System.Drawing.Size(759, 426);
+			this.tpIncomeStatement.TabIndex = 7;
+			this.tpIncomeStatement.Text = "Income Statement";
+			this.tpIncomeStatement.UseVisualStyleBackColor = true;
 			// 
 			// dgIncomeSummary
 			// 
@@ -695,14 +696,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgIncomeSummary.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgIncomeSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle3;
 			this.dgIncomeSummary.Location = new System.Drawing.Point(3, 3);
 			this.dgIncomeSummary.MultiSelect = false;
 			this.dgIncomeSummary.Name = "dgIncomeSummary";
@@ -711,21 +712,21 @@
 			this.dgIncomeSummary.Size = new System.Drawing.Size(753, 420);
 			this.dgIncomeSummary.TabIndex = 0;
 			// 
-			// tabRetainedEarnings
+			// tpRetainedEarnings
 			// 
-			this.tabRetainedEarnings.Controls.Add(this.numDividends);
-			this.tabRetainedEarnings.Controls.Add(this.lblDividends);
-			this.tabRetainedEarnings.Controls.Add(this.btnSaveRE);
-			this.tabRetainedEarnings.Controls.Add(this.txtRE);
-			this.tabRetainedEarnings.Controls.Add(this.txtIncome);
-			this.tabRetainedEarnings.Controls.Add(this.lblRetainedEarnings);
-			this.tabRetainedEarnings.Controls.Add(this.lblIncome);
-			this.tabRetainedEarnings.Location = new System.Drawing.Point(124, 4);
-			this.tabRetainedEarnings.Name = "tabRetainedEarnings";
-			this.tabRetainedEarnings.Size = new System.Drawing.Size(759, 426);
-			this.tabRetainedEarnings.TabIndex = 8;
-			this.tabRetainedEarnings.Text = "Retained Earnings";
-			this.tabRetainedEarnings.UseVisualStyleBackColor = true;
+			this.tpRetainedEarnings.Controls.Add(this.numDividends);
+			this.tpRetainedEarnings.Controls.Add(this.lblDividends);
+			this.tpRetainedEarnings.Controls.Add(this.btnSaveRE);
+			this.tpRetainedEarnings.Controls.Add(this.txtRE);
+			this.tpRetainedEarnings.Controls.Add(this.txtIncome);
+			this.tpRetainedEarnings.Controls.Add(this.lblRetainedEarnings);
+			this.tpRetainedEarnings.Controls.Add(this.lblIncome);
+			this.tpRetainedEarnings.Location = new System.Drawing.Point(124, 4);
+			this.tpRetainedEarnings.Name = "tpRetainedEarnings";
+			this.tpRetainedEarnings.Size = new System.Drawing.Size(759, 426);
+			this.tpRetainedEarnings.TabIndex = 8;
+			this.tpRetainedEarnings.Text = "Retained Earnings";
+			this.tpRetainedEarnings.UseVisualStyleBackColor = true;
 			// 
 			// numDividends
 			// 
@@ -790,14 +791,14 @@
 			this.lblIncome.TabIndex = 0;
 			this.lblIncome.Text = "Income";
 			// 
-			// tabBalanceSheet
+			// tpBalanceSheet
 			// 
-			this.tabBalanceSheet.Location = new System.Drawing.Point(124, 4);
-			this.tabBalanceSheet.Name = "tabBalanceSheet";
-			this.tabBalanceSheet.Size = new System.Drawing.Size(759, 426);
-			this.tabBalanceSheet.TabIndex = 9;
-			this.tabBalanceSheet.Text = "Balance Sheet";
-			this.tabBalanceSheet.UseVisualStyleBackColor = true;
+			this.tpBalanceSheet.Location = new System.Drawing.Point(124, 4);
+			this.tpBalanceSheet.Name = "tpBalanceSheet";
+			this.tpBalanceSheet.Size = new System.Drawing.Size(759, 426);
+			this.tpBalanceSheet.TabIndex = 9;
+			this.tpBalanceSheet.Text = "Balance Sheet";
+			this.tpBalanceSheet.UseVisualStyleBackColor = true;
 			// 
 			// toolbarMain
 			// 
@@ -835,29 +836,29 @@
 			this.Load += new System.EventHandler(this.Mainwin_Load);
 			this.Resize += new System.EventHandler(this.tabMain_SelectedIndexChanged);
 			this.tabMain.ResumeLayout(false);
-			this.tpChartOfAccounts.ResumeLayout(false);
-			this.tpChartOfAccounts.PerformLayout();
+			this.tpAllAccounts.ResumeLayout(false);
+			this.tpAllAccounts.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).EndInit();
-			this.tpAccountTypes.ResumeLayout(false);
-			this.tpAccountTypes.PerformLayout();
+			this.tpAllAccountTypes.ResumeLayout(false);
+			this.tpAllAccountTypes.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).EndInit();
-			this.tpJournal.ResumeLayout(false);
+			this.tpAllTransactions.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).EndInit();
-			this.tpChanges.ResumeLayout(false);
+			this.tpAllChanges.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgChanges)).EndInit();
 			this.tpTrialBalance.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgTrialBalance)).EndInit();
-			this.tabPosting.ResumeLayout(false);
-			this.tabPosting.PerformLayout();
+			this.tpAllJournalEntries.ResumeLayout(false);
+			this.tpAllJournalEntries.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).EndInit();
-			this.tpAccountInfo.ResumeLayout(false);
+			this.tpAccountDetails.ResumeLayout(false);
 			this.gbAccount.ResumeLayout(false);
 			this.gbAccount.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
-			this.tabIncome.ResumeLayout(false);
+			this.tpIncomeStatement.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).EndInit();
-			this.tabRetainedEarnings.ResumeLayout(false);
-			this.tabRetainedEarnings.PerformLayout();
+			this.tpRetainedEarnings.ResumeLayout(false);
+			this.tpRetainedEarnings.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numDividends)).EndInit();
 			this.toolbarMain.ResumeLayout(false);
 			this.toolbarMain.PerformLayout();
@@ -869,19 +870,19 @@
         #endregion
 
 		private System.Windows.Forms.TabControl tabMain;
-		private System.Windows.Forms.TabPage tpChartOfAccounts;
+		private System.Windows.Forms.TabPage tpAllAccounts;
 		private System.Windows.Forms.DataGridView dgChartAccounts;
-        private System.Windows.Forms.TabPage tpAccountTypes;
+        private System.Windows.Forms.TabPage tpAllAccountTypes;
 		private System.Windows.Forms.DataGridView dgAccountTypes;
         private System.Windows.Forms.Label lblSortBy;
         private System.Windows.Forms.ComboBox cbSortBy;
-		private System.Windows.Forms.TabPage tpAccountInfo;
+		private System.Windows.Forms.TabPage tpAccountDetails;
 		private System.Windows.Forms.GroupBox gbAccount;
 		private System.Windows.Forms.CheckBox cbAccountActive;
 		private System.Windows.Forms.ToolStrip toolbarMain;
-		private System.Windows.Forms.TabPage tpChanges;
+		private System.Windows.Forms.TabPage tpAllChanges;
 		private System.Windows.Forms.DataGridView dgChanges;
-        private System.Windows.Forms.TabPage tpJournal;
+        private System.Windows.Forms.TabPage tpAllTransactions;
 		private System.Windows.Forms.DataGridView dgJournal;
 		private System.Windows.Forms.ComboBox cbxTypes;
 		private System.Windows.Forms.Label lblAccountTypes;
@@ -891,7 +892,7 @@
 		private System.Windows.Forms.Label lblBalance;
 		private System.Windows.Forms.TabPage tpTrialBalance;
         private System.Windows.Forms.DataGridView dgTrialBalance;
-        private System.Windows.Forms.TabPage tabPosting;
+        private System.Windows.Forms.TabPage tpAllJournalEntries;
         private System.Windows.Forms.Button btnRemoveTransaction;
         private System.Windows.Forms.Label lblNotes;
         private System.Windows.Forms.Button btnPostTransaction;
@@ -909,12 +910,12 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.ToolStripButton btnAddAccount;
 		private System.Windows.Forms.Button btnDeleteAccount;
-        private System.Windows.Forms.TabPage tabIncome;
+        private System.Windows.Forms.TabPage tpIncomeStatement;
         private System.Windows.Forms.DataGridView dgIncomeSummary;
         private System.Windows.Forms.ComboBox cbAccountType;
         private System.Windows.Forms.Label lblType;
-        private System.Windows.Forms.TabPage tabRetainedEarnings;
-        private System.Windows.Forms.TabPage tabBalanceSheet;
+        private System.Windows.Forms.TabPage tpRetainedEarnings;
+        private System.Windows.Forms.TabPage tpBalanceSheet;
         private System.Windows.Forms.Label lblDividends;
         private System.Windows.Forms.Button btnSaveRE;
         private System.Windows.Forms.TextBox txtRE;

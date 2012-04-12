@@ -191,6 +191,7 @@ namespace App_Domain {
 			OnFillAccountChanges();
 			OnFillTrialBalance();
 			OnFillUnpostedJournalEntries();
+            OnFillIncomeSummary();
 		}
 
 		/// <summary>

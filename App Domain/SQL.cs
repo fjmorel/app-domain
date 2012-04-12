@@ -50,6 +50,7 @@ namespace App_Domain {
 					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
 				}
 			}
+            dt.Rows.Add("Totals", "", String.Format("{0:C}", Math.Abs(getTotalDebit())), String.Format("{0:C}", Math.Abs(getTotalCredit())));
 
 			return dt;
 		}
@@ -216,7 +217,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetJournal() {
-			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description], j.dammount AS [Debit], j.cammount AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
+			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(12), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
 		}
 
 		/// <summary>
@@ -260,6 +261,49 @@ namespace App_Domain {
 			return total;
 		}
 
+        /// <summary>
+        /// Get the total of all revenues
+        /// </summary>
+        /// <returns></returns>
+        private double GetIncomeDebits()
+        {
+            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3");
+            double total = 0;
+            if (dt != null)
+            {
+                foreach (DataRow each in dt.Rows)
+                {
+                    int a = Convert.ToInt32(each["accountnum"]);
+                    total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
+                }
+            }
+            return Math.Abs(total);
+        }
+
+        /// <summary>
+        /// Get the total of all expenses
+        /// </summary>
+        /// <returns></returns>
+        private double GetIncomeCredits()
+        {
+            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2");
+            double total = 0;
+            if (dt != null)
+            {
+                foreach (DataRow each in dt.Rows)
+                {
+                    int a = Convert.ToInt32(each["accountnum"]);
+                    total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
+                }
+            }
+            return Math.Abs(total);
+        }
+
+        public DataTable GetIncome()
+        {
+            return null;
+        }
+
 		/// <summary>
 		/// Finds whether an account increases on debit or credit side
 		/// </summary>
@@ -302,41 +346,6 @@ namespace App_Domain {
 			ExecuteNonQuery("INSERT INTO Chart_of_Accounts (descript, active, typeid, datecreated, accountnum) VALUES('" + description + "', '" + active + "', '" + typeid + "', GETDATE(), " + accountnum + ")");
 			AddAccountChange(accountnum, "Created new account: " + description);
 		}
-
-        /// <summary>
-        /// add an accoutn type by name to the income summary
-        /// </summary>
-        /// <param name="typename"></param>
-        public void AddTypeToIncome(string typename)
-        {
-            int id = Convert.ToInt32(ExecuteQuery("SELECT id FROM Account_Types WHERE name LIKE '" + typename + "'").Rows[0][0]);
-            ExecuteNonQuery("INSERT INTO income_summary (type_id) VALUES(" + id.ToString() + ")");
-        }
-
-        /// <summary>
-        /// remove an account type from an income statment
-        /// </summary>
-        /// <param name="id"></param>
-        public void RemoveTypeFromIncome(string typename)
-        {
-            int id = Convert.ToInt32(ExecuteQuery("SELECT isum.type_id FROM Account_Types at JOIN income_summary isum ON (at.id = isum.type_id) WHERE at.name LIKE '" + typename + "'").Rows[0][0]);
-            ExecuteNonQuery("DELETE FROM income_summary WHERE type_id = " + id.ToString());
-        }
-
-        /// <summary>
-        /// get a list of account types in the income summary
-        /// </summary>
-        /// <returns></returns>
-        public List<string> GetIncomeSummaryTypeList()
-        {
-            List<string> accounts = new List<string>();
-            DataTable dt = ExecuteQuery("SELECT at.name FROM income_summary isum JOIN Account_Types at ON (at.id = isum.type_id)");
-            foreach (DataRow row in dt.Rows)
-            {
-                accounts.Add(row["name"].ToString());
-            }
-            return accounts;
-        }
 
 		/// <summary>
 		/// Add account changes to database (new transaction, status changes, etc)

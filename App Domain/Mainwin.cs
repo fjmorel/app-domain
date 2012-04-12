@@ -35,13 +35,6 @@ namespace App_Domain {
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 
-            List<string> atypes = Program.sqlcon.GetAccountTypesList();
-            foreach (string s in atypes)
-            {
-                cbAddType.Items.Add(s);
-            }
-            cbAddType.SelectedIndex = 0;
-
 			//Populate datagridviews
 			OnFillAccountCharts();
 			OnFillAccountTypes();
@@ -72,7 +65,7 @@ namespace App_Domain {
 				dgChartAccounts.Columns[0].Width = 120;
 				dgChartAccounts.Columns[2].Width = 80;
 				dgChartAccounts.Columns[3].Width = 200;
-				dgChartAccounts.Columns[1].Width = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width;
+				dgChartAccounts.Columns[1].Width = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width - 20;
 			} else if (tabMain.SelectedTab == tpAccountInfo) {
 				dgAccountTransactions.Columns[1].Width = 120;
 				dgAccountTransactions.Columns[2].Width = 120;
@@ -80,7 +73,7 @@ namespace App_Domain {
 			} else if (tabMain.SelectedTab == tpAccountTypes) {
 				dgAccountTypes.Columns[0].Width = 120;
 				dgAccountTypes.Columns[2].Width = 120;
-				dgAccountTypes.Columns[1].Width = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width;
+				dgAccountTypes.Columns[1].Width = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width - 20;
 			} else if (tabMain.SelectedTab == tpJournal) {
 				dgJournal.Columns[0].Width = 120;
 				dgJournal.Columns[2].Width = 120;
@@ -149,8 +142,6 @@ namespace App_Domain {
 
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
-			lblTotalCredit.Text = "Total Credits: " + String.Format("{0:C}", Program.sqlcon.getTotalCredit());
-			lblTotalDebit.Text = "Total Debits: " + String.Format("{0:C}", Program.sqlcon.getTotalDebit());
 		}
 
 		public void OnFillUnpostedJournalEntries() {
@@ -163,8 +154,7 @@ namespace App_Domain {
 
         public void OnFillIncomeSummary()
         {
-            lbSummaryList.Items.Clear();
-            lbSummaryList.Items.AddRange(Program.sqlcon.GetIncomeSummaryTypeList().ToArray());
+
         }
 
 		public void OnFillAccountChanges() {
@@ -365,24 +355,6 @@ namespace App_Domain {
 			tabMain.SelectTab(tpChartOfAccounts);
 			tabMain.TabPages.Remove(tpAccountInfo);
 		}
-
-        private void btnAddType_Click(object sender, EventArgs e)
-        {
-            if (lbSummaryList.Items.IndexOf(cbAddType.SelectedItem) == -1)
-            {
-                Program.sqlcon.AddTypeToIncome(cbAddType.SelectedItem.ToString());
-                OnFillIncomeSummary();
-            }
-        }
-
-        private void btnRemoveType_Click(object sender, EventArgs e)
-        {
-            if (lbSummaryList.SelectedIndex > -1)
-            {
-                Program.sqlcon.RemoveTypeFromIncome(lbSummaryList.SelectedItem.ToString());
-                OnFillIncomeSummary();
-            }
-        }
 
 	}//end Mainwin class
 }//end namespace

@@ -43,6 +43,8 @@
             this.cbSortBy = new System.Windows.Forms.ComboBox();
             this.dgChartAccounts = new System.Windows.Forms.DataGridView();
             this.tpAccountTypes = new System.Windows.Forms.TabPage();
+            this.cbAccountType = new System.Windows.Forms.ComboBox();
+            this.lblType = new System.Windows.Forms.Label();
             this.btnAddAccountType = new System.Windows.Forms.Button();
             this.cbAccountTypeDebitIsPositive = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -75,12 +77,17 @@
             this.cbAccountActive = new System.Windows.Forms.CheckBox();
             this.tabIncome = new System.Windows.Forms.TabPage();
             this.dgIncomeSummary = new System.Windows.Forms.DataGridView();
+            this.tabRetainedEarnings = new System.Windows.Forms.TabPage();
+            this.numDividends = new System.Windows.Forms.NumericUpDown();
+            this.lblDividends = new System.Windows.Forms.Label();
+            this.btnSaveRE = new System.Windows.Forms.Button();
+            this.txtRE = new System.Windows.Forms.TextBox();
+            this.txtIncome = new System.Windows.Forms.TextBox();
+            this.lblRetainedEarnings = new System.Windows.Forms.Label();
+            this.lblIncome = new System.Windows.Forms.Label();
+            this.tabBalanceSheet = new System.Windows.Forms.TabPage();
             this.toolbarMain = new System.Windows.Forms.ToolStrip();
             this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
-            this.lblType = new System.Windows.Forms.Label();
-            this.cbAccountType = new System.Windows.Forms.ComboBox();
-            this.tabRetainedEarnings = new System.Windows.Forms.TabPage();
-            this.tabBalanceSheet = new System.Windows.Forms.TabPage();
             this.tabMain.SuspendLayout();
             this.tpChartOfAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -99,6 +106,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).BeginInit();
             this.tabIncome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).BeginInit();
+            this.tabRetainedEarnings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDividends)).BeginInit();
             this.toolbarMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -268,6 +277,32 @@
             this.tpAccountTypes.TabIndex = 1;
             this.tpAccountTypes.Text = "Types";
             this.tpAccountTypes.UseVisualStyleBackColor = true;
+            // 
+            // cbAccountType
+            // 
+            this.cbAccountType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAccountType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAccountType.FormattingEnabled = true;
+            this.cbAccountType.Items.AddRange(new object[] {
+            "Asset",
+            "Liability",
+            "Expense",
+            "Revenue",
+            "Equity"});
+            this.cbAccountType.Location = new System.Drawing.Point(252, 7);
+            this.cbAccountType.Name = "cbAccountType";
+            this.cbAccountType.Size = new System.Drawing.Size(183, 21);
+            this.cbAccountType.TabIndex = 10;
+            // 
+            // lblType
+            // 
+            this.lblType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblType.AutoSize = true;
+            this.lblType.Location = new System.Drawing.Point(214, 7);
+            this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(31, 13);
+            this.lblType.TabIndex = 9;
+            this.lblType.Text = "Type";
             // 
             // btnAddAccountType
             // 
@@ -703,6 +738,94 @@
             this.dgIncomeSummary.Size = new System.Drawing.Size(753, 420);
             this.dgIncomeSummary.TabIndex = 0;
             // 
+            // tabRetainedEarnings
+            // 
+            this.tabRetainedEarnings.Controls.Add(this.numDividends);
+            this.tabRetainedEarnings.Controls.Add(this.lblDividends);
+            this.tabRetainedEarnings.Controls.Add(this.btnSaveRE);
+            this.tabRetainedEarnings.Controls.Add(this.txtRE);
+            this.tabRetainedEarnings.Controls.Add(this.txtIncome);
+            this.tabRetainedEarnings.Controls.Add(this.lblRetainedEarnings);
+            this.tabRetainedEarnings.Controls.Add(this.lblIncome);
+            this.tabRetainedEarnings.Location = new System.Drawing.Point(124, 4);
+            this.tabRetainedEarnings.Name = "tabRetainedEarnings";
+            this.tabRetainedEarnings.Size = new System.Drawing.Size(759, 426);
+            this.tabRetainedEarnings.TabIndex = 8;
+            this.tabRetainedEarnings.Text = "Retained Earnings";
+            this.tabRetainedEarnings.UseVisualStyleBackColor = true;
+            // 
+            // numDividends
+            // 
+            this.numDividends.DecimalPlaces = 2;
+            this.numDividends.Location = new System.Drawing.Point(104, 56);
+            this.numDividends.Name = "numDividends";
+            this.numDividends.Size = new System.Drawing.Size(144, 20);
+            this.numDividends.TabIndex = 7;
+            this.numDividends.ValueChanged += new System.EventHandler(this.numDividends_ValueChanged);
+            this.numDividends.Leave += new System.EventHandler(this.numDividends_Leave);
+            // 
+            // lblDividends
+            // 
+            this.lblDividends.AutoSize = true;
+            this.lblDividends.Location = new System.Drawing.Point(7, 62);
+            this.lblDividends.Name = "lblDividends";
+            this.lblDividends.Size = new System.Drawing.Size(54, 13);
+            this.lblDividends.TabIndex = 6;
+            this.lblDividends.Text = "Dividends";
+            // 
+            // btnSaveRE
+            // 
+            this.btnSaveRE.Location = new System.Drawing.Point(150, 82);
+            this.btnSaveRE.Name = "btnSaveRE";
+            this.btnSaveRE.Size = new System.Drawing.Size(98, 23);
+            this.btnSaveRE.TabIndex = 4;
+            this.btnSaveRE.Text = "Set Dividends";
+            this.btnSaveRE.UseVisualStyleBackColor = true;
+            this.btnSaveRE.Click += new System.EventHandler(this.btnSaveRE_Click);
+            // 
+            // txtRE
+            // 
+            this.txtRE.Enabled = false;
+            this.txtRE.Location = new System.Drawing.Point(104, 29);
+            this.txtRE.Name = "txtRE";
+            this.txtRE.Size = new System.Drawing.Size(144, 20);
+            this.txtRE.TabIndex = 3;
+            // 
+            // txtIncome
+            // 
+            this.txtIncome.Enabled = false;
+            this.txtIncome.Location = new System.Drawing.Point(104, 4);
+            this.txtIncome.Name = "txtIncome";
+            this.txtIncome.Size = new System.Drawing.Size(144, 20);
+            this.txtIncome.TabIndex = 2;
+            // 
+            // lblRetainedEarnings
+            // 
+            this.lblRetainedEarnings.AutoSize = true;
+            this.lblRetainedEarnings.Location = new System.Drawing.Point(4, 32);
+            this.lblRetainedEarnings.Name = "lblRetainedEarnings";
+            this.lblRetainedEarnings.Size = new System.Drawing.Size(94, 13);
+            this.lblRetainedEarnings.TabIndex = 1;
+            this.lblRetainedEarnings.Text = "Retained Eranings";
+            // 
+            // lblIncome
+            // 
+            this.lblIncome.AutoSize = true;
+            this.lblIncome.Location = new System.Drawing.Point(4, 7);
+            this.lblIncome.Name = "lblIncome";
+            this.lblIncome.Size = new System.Drawing.Size(42, 13);
+            this.lblIncome.TabIndex = 0;
+            this.lblIncome.Text = "Income";
+            // 
+            // tabBalanceSheet
+            // 
+            this.tabBalanceSheet.Location = new System.Drawing.Point(124, 4);
+            this.tabBalanceSheet.Name = "tabBalanceSheet";
+            this.tabBalanceSheet.Size = new System.Drawing.Size(759, 426);
+            this.tabBalanceSheet.TabIndex = 9;
+            this.tabBalanceSheet.Text = "Balance Sheet";
+            this.tabBalanceSheet.UseVisualStyleBackColor = true;
+            // 
             // toolbarMain
             // 
             this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -723,50 +846,6 @@
             this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
             this.btnAddAccount.Text = "&Add Account";
             this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
-            // 
-            // lblType
-            // 
-            this.lblType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(214, 7);
-            this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(31, 13);
-            this.lblType.TabIndex = 9;
-            this.lblType.Text = "Type";
-            // 
-            // cbAccountType
-            // 
-            this.cbAccountType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAccountType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbAccountType.FormattingEnabled = true;
-            this.cbAccountType.Items.AddRange(new object[] {
-            "Asset",
-            "Liability",
-            "Expense",
-            "Revenue",
-            "Equity"});
-            this.cbAccountType.Location = new System.Drawing.Point(252, 7);
-            this.cbAccountType.Name = "cbAccountType";
-            this.cbAccountType.Size = new System.Drawing.Size(183, 21);
-            this.cbAccountType.TabIndex = 10;
-            // 
-            // tabRetainedEarnings
-            // 
-            this.tabRetainedEarnings.Location = new System.Drawing.Point(124, 4);
-            this.tabRetainedEarnings.Name = "tabRetainedEarnings";
-            this.tabRetainedEarnings.Size = new System.Drawing.Size(759, 426);
-            this.tabRetainedEarnings.TabIndex = 8;
-            this.tabRetainedEarnings.Text = "Retained Earnings";
-            this.tabRetainedEarnings.UseVisualStyleBackColor = true;
-            // 
-            // tabBalanceSheet
-            // 
-            this.tabBalanceSheet.Location = new System.Drawing.Point(124, 4);
-            this.tabBalanceSheet.Name = "tabBalanceSheet";
-            this.tabBalanceSheet.Size = new System.Drawing.Size(759, 426);
-            this.tabBalanceSheet.TabIndex = 9;
-            this.tabBalanceSheet.Text = "Balance Sheet";
-            this.tabBalanceSheet.UseVisualStyleBackColor = true;
             // 
             // Mainwin
             // 
@@ -804,6 +883,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgAccountTransactions)).EndInit();
             this.tabIncome.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgIncomeSummary)).EndInit();
+            this.tabRetainedEarnings.ResumeLayout(false);
+            this.tabRetainedEarnings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDividends)).EndInit();
             this.toolbarMain.ResumeLayout(false);
             this.toolbarMain.PerformLayout();
             this.ResumeLayout(false);
@@ -862,6 +944,13 @@
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.TabPage tabRetainedEarnings;
         private System.Windows.Forms.TabPage tabBalanceSheet;
+        private System.Windows.Forms.Label lblDividends;
+        private System.Windows.Forms.Button btnSaveRE;
+        private System.Windows.Forms.TextBox txtRE;
+        private System.Windows.Forms.TextBox txtIncome;
+        private System.Windows.Forms.Label lblRetainedEarnings;
+        private System.Windows.Forms.Label lblIncome;
+        private System.Windows.Forms.NumericUpDown numDividends;
 
 	}
 }

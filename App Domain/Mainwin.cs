@@ -43,6 +43,7 @@ namespace App_Domain {
 			OnFillTransactions();//will refresh changes and trial balance
 			OnFillUnpostedJournalEntries();
             OnFillIncomeSummary();
+            OnFillRE();
 
 			//Resize columns of main window
 			tabMain_SelectedIndexChanged(this, new EventArgs());
@@ -166,6 +167,14 @@ namespace App_Domain {
         public void OnFillIncomeSummary()
         {
             dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
+        }
+
+        public void OnFillRE()
+        {
+            double income = Program.sqlcon.GetIncomeDebits() - Program.sqlcon.GetIncomeCredits();
+            numDividends.Maximum = (decimal)income;
+            txtIncome.Text = income.ToString();
+            numDividends_ValueChanged(this, new EventArgs());
         }
 
 		public void OnFillAccountChanges() {
@@ -366,6 +375,24 @@ namespace App_Domain {
 			tabMain.SelectTab(tpChartOfAccounts);
 			tabMain.TabPages.Remove(tpAccountInfo);
 		}
+
+        private void numDividends_ValueChanged(object sender, EventArgs e)
+        {
+            double income = Convert.ToDouble(txtIncome.Text);
+            double dividends = (double)numDividends.Value;
+            txtRE.Text = (income - dividends).ToString();
+        }
+
+        private void numDividends_Leave(object sender, EventArgs e)
+        {
+            numDividends_ValueChanged(this, new EventArgs());
+        }
+
+        private void btnSaveRE_Click(object sender, EventArgs e)
+        {
+            Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
+            Program.sqlcon.SetDividends((double)numDividends.Value);
+        }
 
 	}//end Mainwin class
 }//end namespace

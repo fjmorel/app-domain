@@ -266,7 +266,7 @@ namespace App_Domain {
         /// Get the total of all revenues
         /// </summary>
         /// <returns></returns>
-        private double GetIncomeDebits()
+        public double GetIncomeDebits()
         {
             DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3");
             double total = 0;
@@ -285,7 +285,7 @@ namespace App_Domain {
         /// Get the total of all expenses
         /// </summary>
         /// <returns></returns>
-        private double GetIncomeCredits()
+        public double GetIncomeCredits()
         {
             DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2");
             double total = 0;
@@ -300,6 +300,10 @@ namespace App_Domain {
             return Math.Abs(total);
         }
 
+        /// <summary>
+        /// get income statement
+        /// </summary>
+        /// <returns></returns>
         public DataTable GetIncome()
         {
             DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 2 OR at.account_type = 3 ORDER BY at.account_type DESC");
@@ -325,6 +329,24 @@ namespace App_Domain {
             dt.Rows.Add("Total Income", String.Format("{0:C}", GetIncomeDebits() - GetIncomeCredits()), "", "" );
 
             return dt;
+        }
+
+        /// <summary>
+        /// set retained earnings
+        /// </summary>
+        /// <param name="re"></param>
+        public void SetRE(double re)
+        {
+            ExecuteNonQuery("UPDATE settings SET retained_earnings = " + re.ToString());
+        }
+
+        /// <summary>
+        /// set dividends
+        /// </summary>
+        /// <param name="div"></param>
+        public void SetDividends(double div)
+        {
+            ExecuteNonQuery("UPDATE settings SET dividens = " + div.ToString());
         }
 
 		/// <summary>

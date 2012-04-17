@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
@@ -58,10 +58,11 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.dgAccountTypes = new System.Windows.Forms.DataGridView();
 			this.tpAllJournalEntries = new System.Windows.Forms.TabPage();
+			this.btnPostAllJournalEntries = new System.Windows.Forms.Button();
 			this.btnAddJournalEntry = new System.Windows.Forms.Button();
-			this.btnRemoveTransaction = new System.Windows.Forms.Button();
+			this.btnDeleteJournalEntry = new System.Windows.Forms.Button();
 			this.lblNotes = new System.Windows.Forms.Label();
-			this.btnPostTransaction = new System.Windows.Forms.Button();
+			this.btnPostJournalEntry = new System.Windows.Forms.Button();
 			this.txtNotes = new System.Windows.Forms.TextBox();
 			this.lblTransactionDetails = new System.Windows.Forms.Label();
 			this.dgUnpostedJournalEntryTransactions = new System.Windows.Forms.DataGridView();
@@ -72,8 +73,14 @@
 			this.tpAllChanges = new System.Windows.Forms.TabPage();
 			this.dgChanges = new System.Windows.Forms.DataGridView();
 			this.tpTrialBalance = new System.Windows.Forms.TabPage();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
 			this.dgTrialBalance = new System.Windows.Forms.DataGridView();
 			this.tpIncomeStatement = new System.Windows.Forms.TabPage();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
 			this.dgIncomeSummary = new System.Windows.Forms.DataGridView();
 			this.tpRetainedEarnings = new System.Windows.Forms.TabPage();
 			this.numDividends = new System.Windows.Forms.NumericUpDown();
@@ -84,17 +91,11 @@
 			this.lblRetainedEarnings = new System.Windows.Forms.Label();
 			this.lblIncome = new System.Windows.Forms.Label();
 			this.tpBalanceSheet = new System.Windows.Forms.TabPage();
-			this.toolbarMain = new System.Windows.Forms.ToolStrip();
-			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
+			this.toolbarMain = new System.Windows.Forms.ToolStrip();
+			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -457,10 +458,11 @@
 			// 
 			// tpAllJournalEntries
 			// 
+			this.tpAllJournalEntries.Controls.Add(this.btnPostAllJournalEntries);
 			this.tpAllJournalEntries.Controls.Add(this.btnAddJournalEntry);
-			this.tpAllJournalEntries.Controls.Add(this.btnRemoveTransaction);
+			this.tpAllJournalEntries.Controls.Add(this.btnDeleteJournalEntry);
 			this.tpAllJournalEntries.Controls.Add(this.lblNotes);
-			this.tpAllJournalEntries.Controls.Add(this.btnPostTransaction);
+			this.tpAllJournalEntries.Controls.Add(this.btnPostJournalEntry);
 			this.tpAllJournalEntries.Controls.Add(this.txtNotes);
 			this.tpAllJournalEntries.Controls.Add(this.lblTransactionDetails);
 			this.tpAllJournalEntries.Controls.Add(this.dgUnpostedJournalEntryTransactions);
@@ -473,6 +475,17 @@
 			this.tpAllJournalEntries.Text = "Journal Entries";
 			this.tpAllJournalEntries.UseVisualStyleBackColor = true;
 			// 
+			// btnPostAllJournalEntries
+			// 
+			this.btnPostAllJournalEntries.Enabled = false;
+			this.btnPostAllJournalEntries.Location = new System.Drawing.Point(634, 395);
+			this.btnPostAllJournalEntries.Name = "btnPostAllJournalEntries";
+			this.btnPostAllJournalEntries.Size = new System.Drawing.Size(117, 23);
+			this.btnPostAllJournalEntries.TabIndex = 9;
+			this.btnPostAllJournalEntries.Text = "Post All";
+			this.btnPostAllJournalEntries.UseVisualStyleBackColor = true;
+			this.btnPostAllJournalEntries.Click += new System.EventHandler(this.btnPostAllJournalEntries_Click);
+			// 
 			// btnAddJournalEntry
 			// 
 			this.btnAddJournalEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -484,17 +497,17 @@
 			this.btnAddJournalEntry.UseVisualStyleBackColor = true;
 			this.btnAddJournalEntry.Click += new System.EventHandler(this.btnAddJournalEntry_Click);
 			// 
-			// btnRemoveTransaction
+			// btnDeleteJournalEntry
 			// 
-			this.btnRemoveTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnRemoveTransaction.Enabled = false;
-			this.btnRemoveTransaction.Location = new System.Drawing.Point(510, 395);
-			this.btnRemoveTransaction.Name = "btnRemoveTransaction";
-			this.btnRemoveTransaction.Size = new System.Drawing.Size(123, 23);
-			this.btnRemoveTransaction.TabIndex = 7;
-			this.btnRemoveTransaction.Text = "Delete";
-			this.btnRemoveTransaction.UseVisualStyleBackColor = true;
-			this.btnRemoveTransaction.Click += new System.EventHandler(this.btnRemoveTransaction_Click);
+			this.btnDeleteJournalEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnDeleteJournalEntry.Enabled = false;
+			this.btnDeleteJournalEntry.Location = new System.Drawing.Point(388, 395);
+			this.btnDeleteJournalEntry.Name = "btnDeleteJournalEntry";
+			this.btnDeleteJournalEntry.Size = new System.Drawing.Size(117, 23);
+			this.btnDeleteJournalEntry.TabIndex = 7;
+			this.btnDeleteJournalEntry.Text = "Delete";
+			this.btnDeleteJournalEntry.UseVisualStyleBackColor = true;
+			this.btnDeleteJournalEntry.Click += new System.EventHandler(this.btnDeleteJournalEntry_Click);
 			// 
 			// lblNotes
 			// 
@@ -506,17 +519,18 @@
 			this.lblNotes.TabIndex = 6;
 			this.lblNotes.Text = "Note";
 			// 
-			// btnPostTransaction
+			// btnPostJournalEntry
 			// 
-			this.btnPostTransaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPostTransaction.Enabled = false;
-			this.btnPostTransaction.Location = new System.Drawing.Point(639, 395);
-			this.btnPostTransaction.Name = "btnPostTransaction";
-			this.btnPostTransaction.Size = new System.Drawing.Size(117, 23);
-			this.btnPostTransaction.TabIndex = 5;
-			this.btnPostTransaction.Text = "Post";
-			this.btnPostTransaction.UseVisualStyleBackColor = true;
-			this.btnPostTransaction.Click += new System.EventHandler(this.btnPostTransaction_Click);
+			this.btnPostJournalEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPostJournalEntry.Enabled = false;
+			this.btnPostJournalEntry.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnPostJournalEntry.Location = new System.Drawing.Point(511, 395);
+			this.btnPostJournalEntry.Name = "btnPostJournalEntry";
+			this.btnPostJournalEntry.Size = new System.Drawing.Size(117, 23);
+			this.btnPostJournalEntry.TabIndex = 5;
+			this.btnPostJournalEntry.Text = "Post";
+			this.btnPostJournalEntry.UseVisualStyleBackColor = true;
+			this.btnPostJournalEntry.Click += new System.EventHandler(this.btnPostJournalEntry_Click);
 			// 
 			// txtNotes
 			// 
@@ -598,14 +612,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle10;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle1;
 			this.dgJournal.Location = new System.Drawing.Point(3, 3);
 			this.dgJournal.MultiSelect = false;
 			this.dgJournal.Name = "dgJournal";
@@ -660,6 +674,39 @@
 			this.tpTrialBalance.Text = "Trial Balance";
 			this.tpTrialBalance.UseVisualStyleBackColor = true;
 			// 
+			// label6
+			// 
+			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(340, 48);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(72, 13);
+			this.label6.TabIndex = 3;
+			this.label6.Text = "April 12, 2012";
+			// 
+			// label5
+			// 
+			this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(340, 25);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(69, 13);
+			this.label5.TabIndex = 2;
+			this.label5.Text = "Trial Balance";
+			// 
+			// label3
+			// 
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(332, 3);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(82, 13);
+			this.label3.TabIndex = 1;
+			this.label3.Text = "Company Name";
+			// 
 			// dgTrialBalance
 			// 
 			this.dgTrialBalance.AllowUserToAddRows = false;
@@ -671,14 +718,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle11;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dgTrialBalance.Location = new System.Drawing.Point(3, 64);
 			this.dgTrialBalance.MultiSelect = false;
 			this.dgTrialBalance.Name = "dgTrialBalance";
@@ -701,6 +748,39 @@
 			this.tpIncomeStatement.Text = "Income Statement";
 			this.tpIncomeStatement.UseVisualStyleBackColor = true;
 			// 
+			// label7
+			// 
+			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(300, 59);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(196, 13);
+			this.label7.TabIndex = 6;
+			this.label7.Text = "January 12, 2012 through April 12, 2012";
+			// 
+			// label8
+			// 
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(343, 34);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(93, 13);
+			this.label8.TabIndex = 5;
+			this.label8.Text = "Income Statement";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(346, 9);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(82, 13);
+			this.label9.TabIndex = 4;
+			this.label9.Text = "Company Name";
+			// 
 			// dgIncomeSummary
 			// 
 			this.dgIncomeSummary.AllowUserToAddRows = false;
@@ -712,14 +792,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgIncomeSummary.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgIncomeSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle12;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle3;
 			this.dgIncomeSummary.Location = new System.Drawing.Point(3, 75);
 			this.dgIncomeSummary.MultiSelect = false;
 			this.dgIncomeSummary.Name = "dgIncomeSummary";
@@ -819,93 +899,6 @@
 			this.tpBalanceSheet.Text = "Balance Sheet";
 			this.tpBalanceSheet.UseVisualStyleBackColor = true;
 			// 
-			// toolbarMain
-			// 
-			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnAddAccount});
-			this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-			this.toolbarMain.Location = new System.Drawing.Point(0, 0);
-			this.toolbarMain.Name = "toolbarMain";
-			this.toolbarMain.Size = new System.Drawing.Size(887, 25);
-			this.toolbarMain.TabIndex = 2;
-			this.toolbarMain.Text = "Toolbar";
-			// 
-			// btnAddAccount
-			// 
-			this.btnAddAccount.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAccount.Image")));
-			this.btnAddAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnAddAccount.Name = "btnAddAccount";
-			this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
-			this.btnAddAccount.Text = "&Add Account";
-			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
-			// 
-			// label3
-			// 
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(332, 3);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(82, 13);
-			this.label3.TabIndex = 1;
-			this.label3.Text = "Company Name";
-			// 
-			// label5
-			// 
-			this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(340, 25);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(69, 13);
-			this.label5.TabIndex = 2;
-			this.label5.Text = "Trial Balance";
-			// 
-			// label6
-			// 
-			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(340, 48);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(72, 13);
-			this.label6.TabIndex = 3;
-			this.label6.Text = "April 12, 2012";
-			// 
-			// label7
-			// 
-			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(300, 59);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(196, 13);
-			this.label7.TabIndex = 6;
-			this.label7.Text = "January 12, 2012 through April 12, 2012";
-			// 
-			// label8
-			// 
-			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(343, 34);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(93, 13);
-			this.label8.TabIndex = 5;
-			this.label8.Text = "Income Statement";
-			// 
-			// label9
-			// 
-			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(346, 9);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(82, 13);
-			this.label9.TabIndex = 4;
-			this.label9.Text = "Company Name";
-			// 
 			// label10
 			// 
 			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -938,6 +931,27 @@
 			this.label12.Size = new System.Drawing.Size(82, 13);
 			this.label12.TabIndex = 4;
 			this.label12.Text = "Company Name";
+			// 
+			// toolbarMain
+			// 
+			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnAddAccount});
+			this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+			this.toolbarMain.Location = new System.Drawing.Point(0, 0);
+			this.toolbarMain.Name = "toolbarMain";
+			this.toolbarMain.Size = new System.Drawing.Size(887, 25);
+			this.toolbarMain.TabIndex = 2;
+			this.toolbarMain.Text = "Toolbar";
+			// 
+			// btnAddAccount
+			// 
+			this.btnAddAccount.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAccount.Image")));
+			this.btnAddAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnAddAccount.Name = "btnAddAccount";
+			this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
+			this.btnAddAccount.Text = "&Add Account";
+			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
 			// 
 			// Mainwin
 			// 
@@ -1015,9 +1029,9 @@
 		private System.Windows.Forms.TabPage tpTrialBalance;
         private System.Windows.Forms.DataGridView dgTrialBalance;
         private System.Windows.Forms.TabPage tpAllJournalEntries;
-        private System.Windows.Forms.Button btnRemoveTransaction;
+        private System.Windows.Forms.Button btnDeleteJournalEntry;
         private System.Windows.Forms.Label lblNotes;
-        private System.Windows.Forms.Button btnPostTransaction;
+        private System.Windows.Forms.Button btnPostJournalEntry;
         private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.Label lblTransactionDetails;
         private System.Windows.Forms.DataGridView dgUnpostedJournalEntryTransactions;
@@ -1054,6 +1068,7 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Button btnPostAllJournalEntries;
 
 	}
 }

@@ -27,7 +27,7 @@ namespace App_Domain {
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
 			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
-            dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
+			dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -35,15 +35,14 @@ namespace App_Domain {
 			dgChanges.ScrollBars = ScrollBars.Vertical;
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
-            dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
+			dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
 
 			//Populate datagridviews
 			OnFillAccountCharts();
 			OnFillAccountTypes();
-			OnFillTransactions();//will refresh changes and trial balance
-			OnFillUnpostedJournalEntries();
-            OnFillIncomeSummary();
-            OnFillRE();
+			OnFillTransactions();//will refresh changes, trial balance, and journal entries
+			OnFillIncomeSummary();
+			OnFillRE();
 
 			//Resize columns of main window
 			tabMain_SelectedIndexChanged(this, new EventArgs());
@@ -56,7 +55,7 @@ namespace App_Domain {
 			UnpostedEntriesDT.Columns.Add("Credit");
 			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 
-            cbAccountType.SelectedIndex = 0;
+			cbAccountType.SelectedIndex = 0;
 
 		}
 
@@ -100,14 +99,12 @@ namespace App_Domain {
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width;
-            }
-            else if (tabMain.SelectedTab == tpIncomeStatement)
-            {
-                dgIncomeSummary.Columns[0].Width = 100;
-                dgIncomeSummary.Columns[2].Width = 100;
-                dgIncomeSummary.Columns[3].Width = 100;
-                dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
-            }
+			} else if (tabMain.SelectedTab == tpIncomeStatement) {
+				dgIncomeSummary.Columns[0].Width = 100;
+				dgIncomeSummary.Columns[2].Width = 100;
+				dgIncomeSummary.Columns[3].Width = 100;
+				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
+			}
 		}
 
 		/// <summary>
@@ -162,20 +159,24 @@ namespace App_Domain {
 			foreach (string item in items) {
 				lbUnpostedList.Items.Add(item);
 			}
+			tpAllJournalEntries.Text = "Journal Entries";
+			if (items.Count > 0) {
+				tpAllJournalEntries.Text += " (" + items.Count + ")";//Show # of unposted entries
+				btnPostAllJournalEntries.Enabled = true;
+			}
+
 		}
 
-        public void OnFillIncomeSummary()
-        {
-            dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
-        }
+		public void OnFillIncomeSummary() {
+			dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
+		}
 
-        public void OnFillRE()
-        {
-            double income = Program.sqlcon.GetIncomeDebits() - Program.sqlcon.GetIncomeCredits();
-            numDividends.Maximum = (decimal)income;
-            txtIncome.Text = income.ToString();
-            numDividends_ValueChanged(this, new EventArgs());
-        }
+		public void OnFillRE() {
+			double income = Program.sqlcon.GetIncomeDebits() - Program.sqlcon.GetIncomeCredits();
+			numDividends.Maximum = (decimal)income;
+			txtIncome.Text = income.ToString();
+			numDividends_ValueChanged(this, new EventArgs());
+		}
 
 		public void OnFillAccountChanges() {
 			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
@@ -191,7 +192,7 @@ namespace App_Domain {
 			OnFillAccountChanges();
 			OnFillTrialBalance();
 			OnFillUnpostedJournalEntries();
-            OnFillIncomeSummary();
+			OnFillIncomeSummary();
 		}
 
 		/// <summary>
@@ -310,34 +311,34 @@ namespace App_Domain {
 				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetUnpostedJournalEntryTransactions(refnum);
 				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
 				tabMain_SelectedIndexChanged(this, new EventArgs());
-				btnPostTransaction.Enabled = true;
-				btnRemoveTransaction.Enabled = true;
+				btnPostJournalEntry.Enabled = true;
+				btnDeleteJournalEntry.Enabled = true;
 			}
 		}
 
-		private void btnPostTransaction_Click(object sender, EventArgs e) {
+		private void btnPostJournalEntry_Click(object sender, EventArgs e) {
 			string item = (string)lbUnpostedList.SelectedItem;
 			if (item != null) {
 				string[] split = item.Split(' ');
 				int refnum = Convert.ToInt32(split[split.Length - 1]);
 				Program.sqlcon.PostJournalEntry(refnum);
-				btnPostTransaction.Enabled = false;
-				btnRemoveTransaction.Enabled = false;
+				btnPostJournalEntry.Enabled = false;
+				btnDeleteJournalEntry.Enabled = false;
 				OnFillTransactions();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 				tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
 		}
 
-		private void btnRemoveTransaction_Click(object sender, EventArgs e) {
+		private void btnDeleteJournalEntry_Click(object sender, EventArgs e) {
 			string item = (string)lbUnpostedList.SelectedItem;
 			int refnum;
 			if (item != null) {
 				string[] split = item.Split(' ');
 				refnum = Convert.ToInt32(split[split.Length - 1]);
 				Program.sqlcon.DeleteJournalEntry(refnum);
-				btnPostTransaction.Enabled = false;
-				btnRemoveTransaction.Enabled = false;
+				btnPostJournalEntry.Enabled = false;
+				btnDeleteJournalEntry.Enabled = false;
 				OnFillTransactions();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 				tabMain_SelectedIndexChanged(this, new EventArgs());
@@ -378,23 +379,33 @@ namespace App_Domain {
 			tabMain.TabPages.Remove(tpAccountDetails);
 		}
 
-        private void numDividends_ValueChanged(object sender, EventArgs e)
-        {
-            double income = Convert.ToDouble(txtIncome.Text);
-            double dividends = (double)numDividends.Value;
-            txtRE.Text = (income - dividends).ToString();
-        }
+		private void numDividends_ValueChanged(object sender, EventArgs e) {
+			double income = Convert.ToDouble(txtIncome.Text);
+			double dividends = (double)numDividends.Value;
+			txtRE.Text = (income - dividends).ToString();
+		}
 
-        private void numDividends_Leave(object sender, EventArgs e)
-        {
-            numDividends_ValueChanged(this, new EventArgs());
-        }
+		private void numDividends_Leave(object sender, EventArgs e) {
+			numDividends_ValueChanged(this, new EventArgs());
+		}
 
-        private void btnSaveRE_Click(object sender, EventArgs e)
-        {
-            Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
-            Program.sqlcon.SetDividends((double)numDividends.Value);
-        }
+		private void btnSaveRE_Click(object sender, EventArgs e) {
+			Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
+			Program.sqlcon.SetDividends((double)numDividends.Value);
+		}
+
+		private void btnPostAllJournalEntries_Click(object sender, EventArgs e) {
+			foreach (string each in Program.sqlcon.GetListOfUnpostedJournalEntries()) {
+				string[] split = each.Split(' ');
+				int refnum = Convert.ToInt32(split[split.Length - 1]);
+				Program.sqlcon.PostJournalEntry(refnum);
+			}
+			btnPostAllJournalEntries.Enabled = false;
+			btnDeleteAccount.Enabled = false;
+			btnPostJournalEntry.Enabled = false;
+			OnFillTransactions();
+			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+		}
 
 	}//end Mainwin class
 }//end namespace

@@ -324,11 +324,13 @@ namespace App_Domain {
 		}
 
 		private void lvJournalEntries_SelectedIndexChanged(object sender, EventArgs e) {
+			//Make sure something selected
 			if (lvJournalEntries.SelectedItems.Count > 0) {
+				//Pull info about journal entry into datagridview and textbox
 				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetJournalEntryTransactions(refnum);
 				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
-				//tabMain_SelectedIndexChanged(this, new EventArgs());
+				//enable buttons as needed
 				if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Unposted"]) {
 					btnPostJournalEntry.Enabled = true;
 					btnDeleteJournalEntry.Enabled = true;
@@ -340,28 +342,28 @@ namespace App_Domain {
 		}
 
 		private void btnPostJournalEntry_Click(object sender, EventArgs e) {
+			
 			if (lvJournalEntries.SelectedItems.Count > 0) {
 				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				Program.sqlcon.PostJournalEntry(refnum);
 				btnPostJournalEntry.Enabled = false;
 				btnDeleteJournalEntry.Enabled = false;
-				lvJournalEntries.SelectedItems.Clear();
+				//Refresh
 				OnFillTransactions();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
-				//tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
 		}
 
 		private void btnDeleteJournalEntry_Click(object sender, EventArgs e) {
+			//make sure something is selected still
 			if (lvJournalEntries.SelectedItems.Count > 0) {
 				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				Program.sqlcon.DeleteJournalEntry(refnum);
 				btnPostJournalEntry.Enabled = false;
 				btnDeleteJournalEntry.Enabled = false;
-				lvJournalEntries.SelectedItems.Clear();
-				OnFillTransactions();
+				//Refresh
+				OnFillJournalEntries();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
-				//tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
 		}
 

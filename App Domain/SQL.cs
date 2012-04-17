@@ -220,7 +220,9 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public double GetAccountDebitTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j WHERE j.accountnum = " + accountnum);
+			//JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1
+			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
+			//DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j WHERE j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
@@ -232,7 +234,8 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public double GetAccountCreditTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j WHERE j.accountnum = " + accountnum);
+			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
+			//DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j WHERE j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;

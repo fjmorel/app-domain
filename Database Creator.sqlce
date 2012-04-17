@@ -26,7 +26,8 @@ CREATE TABLE Journal_Transactions(
 	notes NTEXT,
 	datecreated DATETIME DEFAULT GETDATE(),
 	postdate DATETIME,
-	posted BIT DEFAULT 0);
+	posted BIT DEFAULT 0,
+	deleted BIT DEFAULT 0);
 
 CREATE TABLE Account_Changes(
 	id INT IDENTITY(1,1) PRIMARY KEY,

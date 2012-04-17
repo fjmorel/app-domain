@@ -137,7 +137,7 @@ namespace App_Domain {
 		/// <returns></returns>
 		public List<string> GetListOfUnpostedJournalEntries() {
 			List<string> transactions = new List<string>();
-			DataTable dt = ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0");
+			DataTable dt = ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0 AND deleted = 0");
 			if (dt != null) {
 				foreach (DataRow row in dt.Rows) {
 					transactions.Add(Convert.ToString(Convert.ToString(row["datecreated"]) + " ref " + Convert.ToString(row["id"])));
@@ -147,11 +147,36 @@ namespace App_Domain {
 		}
 
 		/// <summary>
+		/// Get a list of all unposted transactions by date and ref number
+		/// </summary>
+		/// <returns></returns>
+		public DataTable GetUnpostedJournalEntries() {
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0 AND deleted != 1");
+		}
+
+		/// <summary>
+		/// Get a list of all posted transactions by date and ref number
+		/// </summary>
+		/// <returns></returns>
+		public DataTable GetPostedJournalEntries() {
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 1 AND deleted != 1");
+		}
+
+		/// <summary>
+		/// Get a list of all deleted transactions by date and ref number
+		/// </summary>
+		/// <returns></returns>
+		public DataTable GetDeletedJournalEntries() {
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE deleted = 1");
+			
+		}
+
+		/// <summary>
 		/// Get journal entries by ref number
 		/// </summary>
 		/// <param name="refnum"></param>
 		/// <returns></returns>
-		public DataTable GetUnpostedJournalEntryTransactions(int refnum) {
+		public DataTable GetJournalEntryTransactions(int refnum) {
 			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description], j.dammount AS [Debit], j.cammount AS [Credit] FROM journal_Transactions jt JOIN Journal j ON (jt.id = j.ref) JOIN Chart_of_Accounts ca ON (j.accountnum = ca.accountnum) WHERE jt.id = " + refnum.ToString());
 		}
 
@@ -412,7 +437,7 @@ namespace App_Domain {
 			int refnum = Convert.ToInt32(ExecuteQuery("SELECT next_ref_id FROM Settings").Rows[0][0]);
 			ExecuteNonQuery("UPDATE Settings SET next_ref_id = " + (refnum + 1).ToString());
 			//insert journal transaction notes and ref
-			ExecuteNonQuery("INSERT INTO Journal_Transactions (id, notes) VALUES(" + refnum.ToString() + ",'" + journal.notes + "')");
+			ExecuteNonQuery("INSERT INTO Journal_Transactions (id, notes, deleted) VALUES(" + refnum.ToString() + ",'" + journal.notes + "', 0)");
 			foreach (Entry e in journal.Transactions) {
 				string[] DorC = new string[] { "c", "Credi" };
 				if (e.IsDebitNotCredit)//Use debit instead of credit
@@ -435,13 +460,18 @@ namespace App_Domain {
 			AddAccountChange(refnum, "Posted journal entry");
 		}
 
+		public void setAllNotDeleted() {
+			ExecuteNonQuery("UPDATE Journal_Transactions SET deleted = 0");
+		}
+
 		/// <summary>
 		/// remove an unposted journal transaction
 		/// </summary>
 		/// <param name="refnum"></param>
 		public void DeleteJournalEntry(int refnum) {
-			ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum);
-			ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum);
+			//ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum);
+			//ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum);
+			ExecuteNonQuery("UPDATE Journal_Transactions SET deleted = 1 WHERE id = " + refnum);
 			AddAccountChange(refnum, "Deleted unposted journal entry");
 		}
 

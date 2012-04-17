@@ -32,6 +32,9 @@
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
+			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Unposted", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Posted Entries", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Deleted Journal Entries", System.Windows.Forms.HorizontalAlignment.Left);
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
@@ -66,8 +69,6 @@
 			this.txtNotes = new System.Windows.Forms.TextBox();
 			this.lblTransactionDetails = new System.Windows.Forms.Label();
 			this.dgUnpostedJournalEntryTransactions = new System.Windows.Forms.DataGridView();
-			this.lbUnpostedList = new System.Windows.Forms.ListBox();
-			this.lbltransactions = new System.Windows.Forms.Label();
 			this.tpAllTransactions = new System.Windows.Forms.TabPage();
 			this.dgJournal = new System.Windows.Forms.DataGridView();
 			this.tpAllChanges = new System.Windows.Forms.TabPage();
@@ -96,6 +97,9 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
+			this.lvJournalEntries = new System.Windows.Forms.ListView();
+			this.jeReference = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.jeDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -458,6 +462,7 @@
 			// 
 			// tpAllJournalEntries
 			// 
+			this.tpAllJournalEntries.Controls.Add(this.lvJournalEntries);
 			this.tpAllJournalEntries.Controls.Add(this.btnPostAllJournalEntries);
 			this.tpAllJournalEntries.Controls.Add(this.btnAddJournalEntry);
 			this.tpAllJournalEntries.Controls.Add(this.btnDeleteJournalEntry);
@@ -466,8 +471,6 @@
 			this.tpAllJournalEntries.Controls.Add(this.txtNotes);
 			this.tpAllJournalEntries.Controls.Add(this.lblTransactionDetails);
 			this.tpAllJournalEntries.Controls.Add(this.dgUnpostedJournalEntryTransactions);
-			this.tpAllJournalEntries.Controls.Add(this.lbUnpostedList);
-			this.tpAllJournalEntries.Controls.Add(this.lbltransactions);
 			this.tpAllJournalEntries.Location = new System.Drawing.Point(124, 4);
 			this.tpAllJournalEntries.Name = "tpAllJournalEntries";
 			this.tpAllJournalEntries.Size = new System.Drawing.Size(759, 426);
@@ -546,7 +549,7 @@
 			// lblTransactionDetails
 			// 
 			this.lblTransactionDetails.AutoSize = true;
-			this.lblTransactionDetails.Location = new System.Drawing.Point(206, 2);
+			this.lblTransactionDetails.Location = new System.Drawing.Point(206, 3);
 			this.lblTransactionDetails.Name = "lblTransactionDetails";
 			this.lblTransactionDetails.Size = new System.Drawing.Size(68, 13);
 			this.lblTransactionDetails.TabIndex = 3;
@@ -563,32 +566,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgUnpostedJournalEntryTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgUnpostedJournalEntryTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgUnpostedJournalEntryTransactions.Location = new System.Drawing.Point(209, 18);
+			this.dgUnpostedJournalEntryTransactions.Location = new System.Drawing.Point(209, 19);
 			this.dgUnpostedJournalEntryTransactions.Name = "dgUnpostedJournalEntryTransactions";
 			this.dgUnpostedJournalEntryTransactions.RowHeadersVisible = false;
 			this.dgUnpostedJournalEntryTransactions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.dgUnpostedJournalEntryTransactions.Size = new System.Drawing.Size(547, 233);
+			this.dgUnpostedJournalEntryTransactions.Size = new System.Drawing.Size(547, 232);
 			this.dgUnpostedJournalEntryTransactions.TabIndex = 2;
-			// 
-			// lbUnpostedList
-			// 
-			this.lbUnpostedList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.lbUnpostedList.FormattingEnabled = true;
-			this.lbUnpostedList.Location = new System.Drawing.Point(3, 18);
-			this.lbUnpostedList.Name = "lbUnpostedList";
-			this.lbUnpostedList.Size = new System.Drawing.Size(200, 368);
-			this.lbUnpostedList.TabIndex = 1;
-			this.lbUnpostedList.SelectedIndexChanged += new System.EventHandler(this.lbUnpostedList_SelectedIndexChanged);
-			// 
-			// lbltransactions
-			// 
-			this.lbltransactions.AutoSize = true;
-			this.lbltransactions.Location = new System.Drawing.Point(3, 2);
-			this.lbltransactions.Name = "lbltransactions";
-			this.lbltransactions.Size = new System.Drawing.Size(125, 13);
-			this.lbltransactions.TabIndex = 0;
-			this.lbltransactions.Text = "Unposted Journal Entries";
 			// 
 			// tpAllTransactions
 			// 
@@ -953,6 +936,42 @@
 			this.btnAddAccount.Text = "&Add Account";
 			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
 			// 
+			// lvJournalEntries
+			// 
+			this.lvJournalEntries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.jeReference,
+            this.jeDate});
+			this.lvJournalEntries.FullRowSelect = true;
+			listViewGroup1.Header = "Unposted";
+			listViewGroup1.Name = "Unposted";
+			listViewGroup2.Header = "Posted Entries";
+			listViewGroup2.Name = "Posted";
+			listViewGroup3.Header = "Deleted Journal Entries";
+			listViewGroup3.Name = "Deleted";
+			this.lvJournalEntries.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
+			this.lvJournalEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvJournalEntries.HideSelection = false;
+			this.lvJournalEntries.Location = new System.Drawing.Point(3, 3);
+			this.lvJournalEntries.Name = "lvJournalEntries";
+			this.lvJournalEntries.Size = new System.Drawing.Size(200, 383);
+			this.lvJournalEntries.TabIndex = 10;
+			this.lvJournalEntries.UseCompatibleStateImageBehavior = false;
+			this.lvJournalEntries.View = System.Windows.Forms.View.Details;
+			this.lvJournalEntries.SelectedIndexChanged += new System.EventHandler(this.lvJournalEntries_SelectedIndexChanged);
+			// 
+			// jeReference
+			// 
+			this.jeReference.Text = "Ref";
+			this.jeReference.Width = 50;
+			// 
+			// jeDate
+			// 
+			this.jeDate.Text = "Date Created";
+			this.jeDate.Width = 129;
+			// 
 			// Mainwin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1034,9 +1053,7 @@
         private System.Windows.Forms.Button btnPostJournalEntry;
         private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.Label lblTransactionDetails;
-        private System.Windows.Forms.DataGridView dgUnpostedJournalEntryTransactions;
-        private System.Windows.Forms.ListBox lbUnpostedList;
-		private System.Windows.Forms.Label lbltransactions;
+		private System.Windows.Forms.DataGridView dgUnpostedJournalEntryTransactions;
 		private System.Windows.Forms.Button btnAddJournalEntry;
 		private System.Windows.Forms.TextBox txtAccountTypeDescription;
 		private System.Windows.Forms.TextBox txtAccountTypeName;
@@ -1069,6 +1086,9 @@
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Button btnPostAllJournalEntries;
+		private System.Windows.Forms.ListView lvJournalEntries;
+		private System.Windows.Forms.ColumnHeader jeReference;
+		private System.Windows.Forms.ColumnHeader jeDate;
 
 	}
 }

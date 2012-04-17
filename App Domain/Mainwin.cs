@@ -153,18 +153,39 @@ namespace App_Domain {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
 		}
 
-		public void OnFillUnpostedJournalEntries() {
-			List<string> items = Program.sqlcon.GetListOfUnpostedJournalEntries();
-			lbUnpostedList.Items.Clear();
-			foreach (string item in items) {
-				lbUnpostedList.Items.Add(item);
-			}
+		public void OnFillJournalEntries() {
+			lvJournalEntries.Items.Clear();
+			DataTable dt = Program.sqlcon.GetUnpostedJournalEntries();
 			tpAllJournalEntries.Text = "Journal Entries";
-			if (items.Count > 0) {
-				tpAllJournalEntries.Text += " (" + items.Count + ")";//Show # of unposted entries
-				btnPostAllJournalEntries.Enabled = true;
+			if (dt != null) {
+				if (dt.Rows.Count > 0) {
+					tpAllJournalEntries.Text += " (" + dt.Rows.Count + ")";//Show # of unposted entries
+					btnPostAllJournalEntries.Enabled = true;
+				}
+
+				foreach (DataRow each in dt.Rows) {
+					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
+				}
+			}
+			dt = null;
+			dt = Program.sqlcon.GetDeletedJournalEntries();
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]));
+				}
+			}
+			dt = null;
+			dt = Program.sqlcon.GetPostedJournalEntries();
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]));
+				}
 			}
 
+			if (lvJournalEntries.Groups["Unposted"].Items.Count == 0)
+				btnPostAllJournalEntries.Enabled = false;
+			else
+				btnPostAllJournalEntries.Enabled = true;
 		}
 
 		public void OnFillIncomeSummary() {
@@ -191,7 +212,7 @@ namespace App_Domain {
 			dgJournal.ClearSelection();
 			OnFillAccountChanges();
 			OnFillTrialBalance();
-			OnFillUnpostedJournalEntries();
+			OnFillJournalEntries();
 			OnFillIncomeSummary();
 		}
 
@@ -302,46 +323,45 @@ namespace App_Domain {
 			OnFillAccountCharts();
 		}
 
-		private void lbUnpostedList_SelectedIndexChanged(object sender, EventArgs e) {
-			string item = (string)lbUnpostedList.SelectedItem;
-			int refnum;
-			if (item != null) {
-				string[] split = item.Split(' ');
-				refnum = Convert.ToInt32(split[split.Length - 1]);
-				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetUnpostedJournalEntryTransactions(refnum);
+		private void lvJournalEntries_SelectedIndexChanged(object sender, EventArgs e) {
+			if (lvJournalEntries.SelectedItems.Count > 0) {
+				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
+				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetJournalEntryTransactions(refnum);
 				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
-				tabMain_SelectedIndexChanged(this, new EventArgs());
-				btnPostJournalEntry.Enabled = true;
-				btnDeleteJournalEntry.Enabled = true;
+				//tabMain_SelectedIndexChanged(this, new EventArgs());
+				if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Unposted"]) {
+					btnPostJournalEntry.Enabled = true;
+					btnDeleteJournalEntry.Enabled = true;
+				} else {
+					btnPostJournalEntry.Enabled = false;
+					btnDeleteJournalEntry.Enabled = false;
+				}
 			}
 		}
 
 		private void btnPostJournalEntry_Click(object sender, EventArgs e) {
-			string item = (string)lbUnpostedList.SelectedItem;
-			if (item != null) {
-				string[] split = item.Split(' ');
-				int refnum = Convert.ToInt32(split[split.Length - 1]);
+			if (lvJournalEntries.SelectedItems.Count > 0) {
+				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				Program.sqlcon.PostJournalEntry(refnum);
 				btnPostJournalEntry.Enabled = false;
 				btnDeleteJournalEntry.Enabled = false;
+				lvJournalEntries.SelectedItems.Clear();
 				OnFillTransactions();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
-				tabMain_SelectedIndexChanged(this, new EventArgs());
+				//tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
 		}
 
 		private void btnDeleteJournalEntry_Click(object sender, EventArgs e) {
-			string item = (string)lbUnpostedList.SelectedItem;
-			int refnum;
-			if (item != null) {
-				string[] split = item.Split(' ');
-				refnum = Convert.ToInt32(split[split.Length - 1]);
+			if (lvJournalEntries.SelectedItems.Count > 0) {
+				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				Program.sqlcon.DeleteJournalEntry(refnum);
 				btnPostJournalEntry.Enabled = false;
 				btnDeleteJournalEntry.Enabled = false;
+				lvJournalEntries.SelectedItems.Clear();
 				OnFillTransactions();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
-				tabMain_SelectedIndexChanged(this, new EventArgs());
+				//tabMain_SelectedIndexChanged(this, new EventArgs());
 			}
 		}
 

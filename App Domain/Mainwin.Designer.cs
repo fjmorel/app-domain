@@ -100,6 +100,8 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
+			this.numAccountNumber = new System.Windows.Forms.NumericUpDown();
+			this.btnUpdateAccountNumber = new System.Windows.Forms.Button();
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -122,6 +124,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numDividends)).BeginInit();
 			this.tpBalanceSheet.SuspendLayout();
 			this.toolbarMain.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numAccountNumber)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabMain
@@ -287,6 +290,8 @@
 			this.gbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.gbAccount.Controls.Add(this.btnUpdateAccountNumber);
+			this.gbAccount.Controls.Add(this.numAccountNumber);
 			this.gbAccount.Controls.Add(this.btnDeleteAccount);
 			this.gbAccount.Controls.Add(this.lblBalance);
 			this.gbAccount.Controls.Add(this.dgAccountTransactions);
@@ -312,7 +317,7 @@
 			// lblBalance
 			// 
 			this.lblBalance.AutoSize = true;
-			this.lblBalance.Location = new System.Drawing.Point(225, 20);
+			this.lblBalance.Location = new System.Drawing.Point(103, 20);
 			this.lblBalance.Name = "lblBalance";
 			this.lblBalance.Size = new System.Drawing.Size(49, 13);
 			this.lblBalance.TabIndex = 6;
@@ -977,6 +982,25 @@
 			this.btnAddAccount.Text = "&Add Account";
 			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
 			// 
+			// numAccountNumber
+			// 
+			this.numAccountNumber.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.numAccountNumber.Location = new System.Drawing.Point(314, 12);
+			this.numAccountNumber.Name = "numAccountNumber";
+			this.numAccountNumber.Size = new System.Drawing.Size(92, 20);
+			this.numAccountNumber.TabIndex = 8;
+			// 
+			// btnUpdateAccountNumber
+			// 
+			this.btnUpdateAccountNumber.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.btnUpdateAccountNumber.Location = new System.Drawing.Point(412, 9);
+			this.btnUpdateAccountNumber.Name = "btnUpdateAccountNumber";
+			this.btnUpdateAccountNumber.Size = new System.Drawing.Size(180, 23);
+			this.btnUpdateAccountNumber.TabIndex = 9;
+			this.btnUpdateAccountNumber.Text = "Change Account Number";
+			this.btnUpdateAccountNumber.UseVisualStyleBackColor = true;
+			this.btnUpdateAccountNumber.Click += new System.EventHandler(this.btnUpdateAccountNumber_Click);
+			// 
 			// Mainwin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1022,6 +1046,7 @@
 			this.tpBalanceSheet.PerformLayout();
 			this.toolbarMain.ResumeLayout(false);
 			this.toolbarMain.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numAccountNumber)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1094,6 +1119,8 @@
 		private System.Windows.Forms.ListView lvJournalEntries;
 		private System.Windows.Forms.ColumnHeader jeReference;
 		private System.Windows.Forms.ColumnHeader jeDate;
+		private System.Windows.Forms.Button btnUpdateAccountNumber;
+		private System.Windows.Forms.NumericUpDown numAccountNumber;
 
 	}
 }

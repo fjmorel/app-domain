@@ -8,8 +8,14 @@ using System.Data.SqlServerCe;
 
 namespace App_Domain {
 
+	/// <summary>
+	/// Takes care of all things related to the database
+	/// </summary>
 	class SQL {
 
+		/// <summary>
+		/// Connection being used for all the methods
+		/// </summary>
 		private SqlCeConnection con = null;
 
 		/// <summary>
@@ -32,7 +38,6 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="accountnum">Account to get balance for</param>
 		/// <returns></returns>
- 
 		public double GetAccountBalance(int accountnum) {
 			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
 				return GetAccountDebitTotal(accountnum) - GetAccountCreditTotal(accountnum);
@@ -41,6 +46,10 @@ namespace App_Domain {
 
 		}
 
+		/// <summary>
+		/// Return accounts with balances
+		/// </summary>
+		/// <returns></returns>
 		public DataTable GetTrialBalance() {
 			DataTable accounts = ExecuteQuery("SELECT accountnum, descript FROM Chart_of_Accounts WHERE active = 1");
 			DataTable dt = new DataTable();
@@ -64,7 +73,7 @@ namespace App_Domain {
 				}
 			}
 
-			dt.Rows.Add("Totals", "", String.Format("{0:C}", Math.Abs(getTotalDebit())), String.Format("{0:C}", Math.Abs(getTotalCredit())));
+			dt.Rows.Add("Totals", "", String.Format("{0:C}", getTotalDebit()), String.Format("{0:C}", getTotalCredit()));
 
 			return dt;
 		}
@@ -233,10 +242,6 @@ namespace App_Domain {
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
-		}
-
-		public int GetJournalEntryReferenceFromTransaction(int transactionID) {
-			return 0;
 		}
 
 		/// <summary>
@@ -451,10 +456,6 @@ namespace App_Domain {
 			AddAccountChange(refnum, "Posted journal entry");
 		}
 
-		public void setAllNotDeleted() {
-			ExecuteNonQuery("UPDATE Journal_Transactions SET deleted = 0");
-		}
-
 		/// <summary>
 		/// remove an unposted journal transaction
 		/// </summary>
@@ -488,6 +489,14 @@ namespace App_Domain {
 				AddAccountChange(accountnum, "Closed account");
 		}
 
+		/// <summary>
+		/// Change the number of an account
+		/// </summary>
+		/// <param name="oldNum"></param>
+		/// <param name="newNum"></param>
+		public void ChangeAccountNumberByNumber(int oldNum, int newNum) {
+			ExecuteNonQuery("UPDATE Chart_of_Accounts SET accountnum = " + newNum + " WHERE accountNum = " + oldNum);
+		}
 
 		#region Generic methods for other methods
 
@@ -547,7 +556,6 @@ namespace App_Domain {
 		~SQL() { Close(); }
 
 		#endregion
-
 
 	}//end SQL class
 }//end namespace

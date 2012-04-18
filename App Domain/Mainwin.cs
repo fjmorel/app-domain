@@ -6,15 +6,31 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace App_Domain {
+
+	/// <summary>
+	/// Main window of the application
+	/// </summary>
 	public partial class Mainwin : Form {
 
-		private DataTable UnpostedEntriesDT;
+		/// <summary>
+		/// Used to set up columns in dgv when no transactions are loaded
+		/// </summary>
+		private DataTable EmptyTransactionTable;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public Mainwin() { InitializeComponent(); }
 
+		/// <summary>
+		/// Initialize some stuff
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
 			cbAccountType.SelectedIndex = 0;
+			numAccountNumber.Maximum = decimal.MaxValue;
 			lvJournalEntries.MultiSelect = false;
 			tabMain.TabPages.Remove(tpAccountDetails);
 
@@ -49,12 +65,12 @@ namespace App_Domain {
 			tabMain_SelectedIndexChanged(this, new EventArgs());
 
 			//setup unposted datagridview - need columns to be able to resize them
-			UnpostedEntriesDT = new DataTable();
-			UnpostedEntriesDT.Columns.Add("Account");
-			UnpostedEntriesDT.Columns.Add("Description");
-			UnpostedEntriesDT.Columns.Add("Debit");
-			UnpostedEntriesDT.Columns.Add("Credit");
-			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+			EmptyTransactionTable = new DataTable();
+			EmptyTransactionTable.Columns.Add("Account");
+			EmptyTransactionTable.Columns.Add("Description");
+			EmptyTransactionTable.Columns.Add("Debit");
+			EmptyTransactionTable.Columns.Add("Credit");
+			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 
 			cbAccountType.SelectedIndex = 0;
 
@@ -152,10 +168,16 @@ namespace App_Domain {
 			cbxTypes.SelectedIndex = 0;
 		}
 
+		/// <summary>
+		/// Refresh trial balance
+		/// </summary>
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
 		}
 
+		/// <summary>
+		/// Refresh journal entries
+		/// </summary>
 		public void OnFillJournalEntries() {
 			lvJournalEntries.Items.Clear();
 			DataTable dt = Program.sqlcon.GetUnpostedJournalEntries();
@@ -200,10 +222,16 @@ namespace App_Domain {
 				btnPostAllJournalEntries.Enabled = true;
 		}
 
+		/// <summary>
+		/// Refresh income statement
+		/// </summary>
 		public void OnFillIncomeSummary() {
 			dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
 		}
 
+		/// <summary>
+		/// Refresh income, dividends, and retained earnings
+		/// </summary>
 		public void OnFillRE() {
 			double income = Program.sqlcon.GetIncomeDebits() - Program.sqlcon.GetIncomeCredits();
 			numDividends.Maximum = (decimal)income;
@@ -211,6 +239,9 @@ namespace App_Domain {
 			numDividends_ValueChanged(this, new EventArgs());
 		}
 
+		/// <summary>
+		/// Refresh account changes dgv
+		/// </summary>
 		public void OnFillAccountChanges() {
 			dgChanges.DataSource = Program.sqlcon.GetAccountChanges();
 			dgChanges.ClearSelection();
@@ -292,6 +323,11 @@ namespace App_Domain {
 			}
 		}
 
+		/// <summary>
+		/// Draw tabs
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void tabMain_DrawItem(object sender, DrawItemEventArgs e) {
 			Graphics g = e.Graphics;
 			Brush _textBrush;
@@ -322,12 +358,22 @@ namespace App_Domain {
 			g.DrawString(_tabPage.Text, _tabFont, _textBrush, _tabBounds, new StringFormat(_stringFlags));
 		}
 
+		/// <summary>
+		/// Change active status of an account
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void cbAccountActive_CheckedChanged(object sender, EventArgs e) {
 			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
 			Program.sqlcon.ChangeAccountStatusByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), cbAccountActive.Checked);
 			OnFillAccountCharts();
 		}
 
+		/// <summary>
+		/// Enable delete/post buttons as needed when different journal entries are selected. Load JE data into tab
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void lvJournalEntries_SelectedIndexChanged(object sender, EventArgs e) {
 			//Make sure something selected
 			if (lvJournalEntries.SelectedItems.Count > 0) {
@@ -346,6 +392,11 @@ namespace App_Domain {
 			}
 		}
 
+		/// <summary>
+		/// Post selected journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnPostJournalEntry_Click(object sender, EventArgs e) {
 			//make sure something is selected still
 			if (lvJournalEntries.SelectedItems.Count > 0) {
@@ -355,10 +406,15 @@ namespace App_Domain {
 				btnDeleteJournalEntry.Enabled = false;
 				//Refresh
 				OnFillTransactions();
-				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+				dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 			}
 		}
 
+		/// <summary>
+		/// Delete selected journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnDeleteJournalEntry_Click(object sender, EventArgs e) {
 			//make sure something is selected still
 			if (lvJournalEntries.SelectedItems.Count > 0) {
@@ -368,10 +424,15 @@ namespace App_Domain {
 				btnDeleteJournalEntry.Enabled = false;
 				//Refresh
 				OnFillJournalEntries();
-				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+				dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 			}
 		}
 
+		/// <summary>
+		/// Post all unposted journal entries that are not deleted
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnPostAllJournalEntries_Click(object sender, EventArgs e) {
 			foreach (ListViewItem each in lvJournalEntries.Groups["Unposted"].Items) {
 				Program.sqlcon.PostJournalEntry(Convert.ToInt32(each.Text));
@@ -379,8 +440,9 @@ namespace App_Domain {
 			btnPostAllJournalEntries.Enabled = false;
 			btnDeleteAccount.Enabled = false;
 			btnPostJournalEntry.Enabled = false;
+			//Refresh
 			OnFillTransactions();
-			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
+			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 		}
 
 		/// <summary>
@@ -392,6 +454,11 @@ namespace App_Domain {
 			new frmAddJournalEntry(this.OnFillTransactions).ShowDialog();
 		}
 
+		/// <summary>
+		/// Create a new account type
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnAddAccountType_Click(object sender, EventArgs e) {
 			if (txtAccountTypeName.Text != "" && txtAccountTypeDescription.Text != "") {
 				DataTable dt = Program.sqlcon.GetAccountTypeByName(txtAccountTypeName.Text);
@@ -407,6 +474,11 @@ namespace App_Domain {
 				MessageBox.Show("Please enter a name and description for this new account type.");
 		}
 
+		/// <summary>
+		/// Delete an account (only available when account has no transactions
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnDeleteAccount_Click(object sender, EventArgs e) {
 			//Delete Account
 			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
@@ -417,21 +489,41 @@ namespace App_Domain {
 			tabMain.TabPages.Remove(tpAccountDetails);
 		}
 
+		/// <summary>
+		/// Update displayed numbers for dividends and retained earnings
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void numDividends_ValueChanged(object sender, EventArgs e) {
 			double income = Convert.ToDouble(txtIncome.Text);
 			double dividends = (double)numDividends.Value;
 			txtRE.Text = (income - dividends).ToString();
 		}
 
+		/// <summary>
+		/// Update displayed numbers for dividends and retained earnings
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void numDividends_Leave(object sender, EventArgs e) {
 			numDividends_ValueChanged(this, new EventArgs());
 		}
 
+		/// <summary>
+		/// Save dividends
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnSaveRE_Click(object sender, EventArgs e) {
 			Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
 			Program.sqlcon.SetDividends((double)numDividends.Value);
 		}
 
+		/// <summary>
+		/// Double-clicking a transaction pulls up the relevant journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void dgAccountTransactions_DoubleClick(object sender, EventArgs e) {
 			if (dgAccountTransactions.SelectedRows.Count > 0) {
 				string refnum = dgAccountTransactions.SelectedRows[0].Cells[0].Value.ToString();
@@ -444,6 +536,11 @@ namespace App_Domain {
 			}
 		}
 
+		/// <summary>
+		/// Double-clicking a transaction pulls up the relevant journal entry
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void dgJournal_DoubleClick(object sender, EventArgs e) {
 			if (dgJournal.SelectedRows.Count > 0) {
 				string refnum = dgJournal.SelectedRows[0].Cells[0].Value.ToString();
@@ -454,6 +551,19 @@ namespace App_Domain {
 				}
 				lvJournalEntries.Select();
 			}
+		}
+
+		/// <summary>
+		/// Try to update the number of an account
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btnUpdateAccountNumber_Click(object sender, EventArgs e) {
+			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
+			Program.sqlcon.ChangeAccountNumberByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), Convert.ToInt32(numAccountNumber.Value));
+			OnFillAccountCharts();
+			//Refresh tab
+			tabMain.SelectTab(tpAccountDetails);
 		}
 		
 	}//end Mainwin class

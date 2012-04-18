@@ -27,9 +27,18 @@ namespace App_Domain {
 			}
 		}
 
-		//TODO: Make this always positive by reading which side is increase/decrease. Or just Math.Abs?
+		/// <summary>
+		/// Returns balance of an accounts (takes care of figuring out positive side of account)
+		/// </summary>
+		/// <param name="accountnum">Account to get balance for</param>
+		/// <returns></returns>
+ 
 		public double GetAccountBalance(int accountnum) {
-			return GetAccountDebitTotal(accountnum) - GetAccountCreditTotal(accountnum);
+			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
+				return GetAccountDebitTotal(accountnum) - GetAccountCreditTotal(accountnum);
+			else
+				return GetAccountCreditTotal(accountnum) - GetAccountDebitTotal(accountnum);
+
 		}
 
 		public DataTable GetTrialBalance() {
@@ -45,17 +54,20 @@ namespace App_Domain {
 				string account = row[1].ToString();
 				double amount = GetAccountBalance(accountnum);
 				if (amount != 0) {
-					string debit = amount > 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
-					string credit = amount < 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
+					string debit = "", credit = "";
+					if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1) {
+						debit = String.Format("{0:C}", amount);
+					} else {
+						credit = String.Format("{0:C}", amount);
+					}
 					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
 				}
 			}
-            
-            dt.Rows.Add("Totals", "", String.Format("{0:C}", Math.Abs(getTotalDebit())), String.Format("{0:C}", Math.Abs(getTotalCredit())));
+
+			dt.Rows.Add("Totals", "", String.Format("{0:C}", Math.Abs(getTotalDebit())), String.Format("{0:C}", Math.Abs(getTotalCredit())));
 
 			return dt;
 		}
-
 
 		/// <summary>
 		/// Retrieves a subset of all Accounts.
@@ -130,22 +142,7 @@ namespace App_Domain {
 			}
 			return accounts;
 		}
-
-		/// <summary>
-		/// Get a list of all unposted transactions by date and ref number
-		/// </summary>
-		/// <returns></returns>
-		public List<string> GetListOfUnpostedJournalEntries() {
-			List<string> transactions = new List<string>();
-			DataTable dt = ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0 AND deleted = 0");
-			if (dt != null) {
-				foreach (DataRow row in dt.Rows) {
-					transactions.Add(Convert.ToString(Convert.ToString(row["datecreated"]) + " ref " + Convert.ToString(row["id"])));
-				}
-			}
-			return transactions;
-		}
-
+		
 		/// <summary>
 		/// Get a list of all unposted transactions by date and ref number
 		/// </summary>
@@ -168,7 +165,7 @@ namespace App_Domain {
 		/// <returns></returns>
 		public DataTable GetDeletedJournalEntries() {
 			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE deleted = 1");
-			
+
 		}
 
 		/// <summary>
@@ -211,7 +208,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public DataTable GetAccountLedger(int accountnum) {
-			return ExecuteQuery("SELECT jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Transactions jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
+			return ExecuteQuery("SELECT jt.id AS [Ref], jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Transactions jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
 		}
 
 		/// <summary>
@@ -220,9 +217,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public double GetAccountDebitTotal(int accountnum) {
-			//JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1
 			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
-			//DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j WHERE j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
@@ -235,10 +230,13 @@ namespace App_Domain {
 		/// <returns></returns>
 		public double GetAccountCreditTotal(int accountnum) {
 			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
-			//DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j WHERE j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
+		}
+
+		public int GetJournalEntryReferenceFromTransaction(int transactionID) {
+			return 0;
 		}
 
 		/// <summary>
@@ -246,7 +244,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetJournal() {
-			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(12), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
+			return ExecuteQuery("SELECT jt.id AS [Ref], j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(12), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
 		}
 
 		/// <summary>
@@ -268,7 +266,7 @@ namespace App_Domain {
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
 					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountCreditTotal(a) - GetAccountDebitTotal(a);
+					total += GetAccountBalance(a);
 				}
 			}
 			return total;
@@ -284,98 +282,90 @@ namespace App_Domain {
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
 					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
+					total += GetAccountBalance(a);
 				}
 			}
 			return total;
 		}
 
-        /// <summary>
-        /// Get the total of all revenues
-        /// </summary>
-        /// <returns></returns>
-        public double GetIncomeDebits()
-        {
-            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3");
-            double total = 0;
-            if (dt != null)
-            {
-                foreach (DataRow each in dt.Rows)
-                {
-                    int a = Convert.ToInt32(each["accountnum"]);
-                    total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
-                }
-            }
-            return Math.Abs(total);
-        }
+		/// <summary>
+		/// Get the total of all revenues
+		/// </summary>
+		/// <returns></returns>
+		public double GetIncomeDebits() {
+			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3");
+			double total = 0;
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					int a = Convert.ToInt32(each["accountnum"]);
+					total += GetAccountBalance(a);
+				}
+			}
+			return Math.Abs(total);
+		}
 
-        /// <summary>
-        /// Get the total of all expenses
-        /// </summary>
-        /// <returns></returns>
-        public double GetIncomeCredits()
-        {
-            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2");
-            double total = 0;
-            if (dt != null)
-            {
-                foreach (DataRow each in dt.Rows)
-                {
-                    int a = Convert.ToInt32(each["accountnum"]);
-                    total += GetAccountDebitTotal(a) - GetAccountCreditTotal(a);
-                }
-            }
-            return Math.Abs(total);
-        }
+		/// <summary>
+		/// Get the total of all expenses
+		/// </summary>
+		/// <returns></returns>
+		public double GetIncomeCredits() {
+			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2");
+			double total = 0;
+			if (dt != null) {
+				foreach (DataRow each in dt.Rows) {
+					int a = Convert.ToInt32(each["accountnum"]);
+					total += GetAccountBalance(a);
+				}
+			}
+			return Math.Abs(total);
+		}
 
-        /// <summary>
-        /// get income statement
-        /// </summary>
-        /// <returns></returns>
-        public DataTable GetIncome()
-        {
-            DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 2 OR at.account_type = 3 ORDER BY at.account_type DESC");
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Account", typeof(string));
-            dt.Columns.Add("Description", typeof(string));
-            dt.Columns.Add("Debits", typeof(string));
-            dt.Columns.Add("Credits", typeof(string));
+		/// <summary>
+		/// get income statement
+		/// </summary>
+		/// <returns></returns>
+		public DataTable GetIncome() {
+			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 2 OR at.account_type = 3 ORDER BY at.account_type DESC");
+			DataTable dt = new DataTable();
+			dt.Columns.Add("Account", typeof(string));
+			dt.Columns.Add("Description", typeof(string));
+			dt.Columns.Add("Debits", typeof(string));
+			dt.Columns.Add("Credits", typeof(string));
 
-            foreach (DataRow row in accounts.Rows)
-            {
-                int accountnum = Convert.ToInt32(row[0].ToString());
-                string account = row[1].ToString();
-                double amount = GetAccountBalance(accountnum);
-                if (amount != 0)
-                {
-                    string debit = amount < 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
-                    string credit = amount > 0 ? String.Format("{0:C}", Math.Abs(amount)) : "";
-                    dt.Rows.Add(accountnum.ToString(), account, debit, credit);
-                }
-            }
+			foreach (DataRow row in accounts.Rows) {
+				int accountnum = Convert.ToInt32(row[0].ToString());
+				string account = row[1].ToString();
+				double amount = GetAccountBalance(accountnum);
+				if (amount != 0) {
+					string debit = "", credit = "";
+					if(IsDebitThePositiveSide(accountnum) == 1)
+						debit = String.Format("{0:C}", amount);
+					else
+						credit = String.Format("{0:C}", amount);
+					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
+				}
+			}
 
-            dt.Rows.Add("Total Income", String.Format("{0:C}", GetIncomeDebits() - GetIncomeCredits()), "", "" );
+			dt.Rows.Add("Total Income", String.Format("{0:C}", GetIncomeDebits() - GetIncomeCredits()), "", "");
 
-            return dt;
-        }
+			return dt;
+		}
 
-        /// <summary>
-        /// set retained earnings
-        /// </summary>
-        /// <param name="re"></param>
-        public void SetRE(double re)
-        {
-            ExecuteNonQuery("UPDATE settings SET retained_earnings = " + re.ToString());
-        }
+		/// <summary>
+		/// set retained earnings
+		/// </summary>
+		/// <param name="re"></param>
+		public void SetRE(double re) {
+			ExecuteNonQuery("UPDATE settings SET retained_earnings = " + re.ToString());
+		}
 
-        /// <summary>
-        /// set dividends
-        /// </summary>
-        /// <param name="div"></param>
-        public void SetDividends(double div)
-        {
-            ExecuteNonQuery("UPDATE settings SET dividens = " + div.ToString());
-        }
+		/// <summary>
+		/// set dividends
+		/// </summary>
+		/// <param name="div"></param>
+		public void SetDividends(double div) {
+			ExecuteNonQuery("UPDATE settings SET dividens = " + div.ToString());
+		}
 
 		/// <summary>
 		/// Finds whether an account increases on debit or credit side
@@ -448,8 +438,6 @@ namespace App_Domain {
 				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Journal (accountnum," + DorC[0] + "ammount, ref) VALUES (" + e.AccountNumber + "," + e.Amount + ", " + refnum.ToString() + ")", con);
 				//cmd.Parameters.AddWithValue("@datePost", journal.time);
 				cmd.ExecuteNonQuery();
-				//Transactions show in their own table, only journal entries will show up in changelog
-				//AddAccountChange(e.AccountNumber, String.Format(DorC[1] + "ted account by {0:C} on " + journal.time.ToString("M/d/yyyy"), e.Amount));
 			}
 		}
 

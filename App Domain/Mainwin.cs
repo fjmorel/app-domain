@@ -15,6 +15,7 @@ namespace App_Domain {
 		private void Mainwin_Load(object sender, EventArgs e) {
 			cbSortBy.SelectedIndex = 0;
 			cbAccountType.SelectedIndex = 0;
+			lvJournalEntries.MultiSelect = false;
 			tabMain.TabPages.Remove(tpAccountDetails);
 
 			//Style datagridviews
@@ -71,19 +72,21 @@ namespace App_Domain {
 				dgChartAccounts.Columns[3].Width = 200;
 				dgChartAccounts.Columns[1].Width = dgChartAccounts.Width - dgChartAccounts.Columns[0].Width - dgChartAccounts.Columns[2].Width - dgChartAccounts.Columns[3].Width - 20;
 			} else if (tabMain.SelectedTab == tpAccountDetails) {
-				dgAccountTransactions.Columns[1].Width = 120;
+				dgAccountTransactions.Columns[0].Width = 80;
 				dgAccountTransactions.Columns[2].Width = 120;
-				dgAccountTransactions.Columns[0].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[1].Width;
+				dgAccountTransactions.Columns[3].Width = 120;
+				dgAccountTransactions.Columns[1].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[3].Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[0].Width;
 			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
-				dgAccountTypes.Columns[0].Width = 120;
+				dgAccountTypes.Columns[0].Width = 160;
 				dgAccountTypes.Columns[2].Width = 120;
 				dgAccountTypes.Columns[1].Width = dgAccountTypes.Width - dgAccountTypes.Columns[0].Width - dgAccountTypes.Columns[2].Width - 20;
 			} else if (tabMain.SelectedTab == tpAllTransactions) {
-				dgJournal.Columns[0].Width = 120;
-				dgJournal.Columns[2].Width = 120;
+				dgJournal.Columns[0].Width = 80;
+				dgJournal.Columns[1].Width = 80;
 				dgJournal.Columns[3].Width = 120;
-				dgJournal.Columns[4].Width = 150;
-				dgJournal.Columns[1].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[2].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width;
+				dgJournal.Columns[4].Width = 120;
+				dgJournal.Columns[5].Width = 150;
+				dgJournal.Columns[2].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[1].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width - dgJournal.Columns[5].Width;
 			} else if (tabMain.SelectedTab == tpAllChanges) {
 				dgChanges.Columns[0].Width = 120;
 				dgChanges.Columns[2].Width = 120;
@@ -164,21 +167,30 @@ namespace App_Domain {
 				}
 
 				foreach (DataRow each in dt.Rows) {
-					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
+					; ; lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]);
+					item.Name = each["id"].ToString();
+					lvJournalEntries.Items.Add(item);
 				}
 			}
 			dt = null;
 			dt = Program.sqlcon.GetDeletedJournalEntries();
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
-					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]));
+					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]));
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]);
+					item.Name = each["id"].ToString();
+					lvJournalEntries.Items.Add(item);
 				}
 			}
 			dt = null;
 			dt = Program.sqlcon.GetPostedJournalEntries();
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
-					lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]));
+					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]));
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]);
+					item.Name = each["id"].ToString();
+					lvJournalEntries.Items.Add(item);
 				}
 			}
 
@@ -221,16 +233,9 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="accountnum"></param>
 		private void OnFillAccountTransactions(int accountnum) {
-			//TODO: Ref number for journal entry
 			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgAccountTransactions.ClearSelection();
-			double balance;
-			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
-				balance = Program.sqlcon.GetAccountDebitTotal(accountnum) - Program.sqlcon.GetAccountCreditTotal(accountnum);
-			else
-				balance = Program.sqlcon.GetAccountCreditTotal(accountnum) - Program.sqlcon.GetAccountDebitTotal(accountnum);
-
-			lblBalance.Text = String.Format("Balance: {0:C}", balance);
+			lblBalance.Text = String.Format("Balance: {0:C}", Program.sqlcon.GetAccountBalance(accountnum));
 		}
 
 		/// <summary>
@@ -342,7 +347,7 @@ namespace App_Domain {
 		}
 
 		private void btnPostJournalEntry_Click(object sender, EventArgs e) {
-			
+			//make sure something is selected still
 			if (lvJournalEntries.SelectedItems.Count > 0) {
 				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
 				Program.sqlcon.PostJournalEntry(refnum);
@@ -365,6 +370,17 @@ namespace App_Domain {
 				OnFillJournalEntries();
 				dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 			}
+		}
+
+		private void btnPostAllJournalEntries_Click(object sender, EventArgs e) {
+			foreach (ListViewItem each in lvJournalEntries.Groups["Unposted"].Items) {
+				Program.sqlcon.PostJournalEntry(Convert.ToInt32(each.Text));
+			}
+			btnPostAllJournalEntries.Enabled = false;
+			btnDeleteAccount.Enabled = false;
+			btnPostJournalEntry.Enabled = false;
+			OnFillTransactions();
+			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 		}
 
 		/// <summary>
@@ -416,18 +432,29 @@ namespace App_Domain {
 			Program.sqlcon.SetDividends((double)numDividends.Value);
 		}
 
-		private void btnPostAllJournalEntries_Click(object sender, EventArgs e) {
-			foreach (string each in Program.sqlcon.GetListOfUnpostedJournalEntries()) {
-				string[] split = each.Split(' ');
-				int refnum = Convert.ToInt32(split[split.Length - 1]);
-				Program.sqlcon.PostJournalEntry(refnum);
+		private void dgAccountTransactions_DoubleClick(object sender, EventArgs e) {
+			if (dgAccountTransactions.SelectedRows.Count > 0) {
+				string refnum = dgAccountTransactions.SelectedRows[0].Cells[0].Value.ToString();
+				tabMain.SelectTab(tpAllJournalEntries);
+				if (lvJournalEntries.Items[refnum] != null) {
+					lvJournalEntries.Items[refnum].Selected = true;
+					lvJournalEntries.Items[refnum].EnsureVisible();
+				}
+				lvJournalEntries.Select();
 			}
-			btnPostAllJournalEntries.Enabled = false;
-			btnDeleteAccount.Enabled = false;
-			btnPostJournalEntry.Enabled = false;
-			OnFillTransactions();
-			dgUnpostedJournalEntryTransactions.DataSource = UnpostedEntriesDT;
 		}
 
+		private void dgJournal_DoubleClick(object sender, EventArgs e) {
+			if (dgJournal.SelectedRows.Count > 0) {
+				string refnum = dgJournal.SelectedRows[0].Cells[0].Value.ToString();
+				tabMain.SelectTab(tpAllJournalEntries);
+				if (lvJournalEntries.Items[refnum] != null) {
+					lvJournalEntries.Items[refnum].Selected = true;
+					lvJournalEntries.Items[refnum].EnsureVisible();
+				}
+				lvJournalEntries.Select();
+			}
+		}
+		
 	}//end Mainwin class
 }//end namespace

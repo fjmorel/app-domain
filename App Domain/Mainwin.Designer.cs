@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Unposted", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Posted Entries", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Deleted Journal Entries", System.Windows.Forms.HorizontalAlignment.Left);
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
-			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Unposted", System.Windows.Forms.HorizontalAlignment.Left);
-			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Posted Entries", System.Windows.Forms.HorizontalAlignment.Left);
-			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Deleted Journal Entries", System.Windows.Forms.HorizontalAlignment.Left);
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
@@ -61,6 +61,9 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.dgAccountTypes = new System.Windows.Forms.DataGridView();
 			this.tpAllJournalEntries = new System.Windows.Forms.TabPage();
+			this.lvJournalEntries = new System.Windows.Forms.ListView();
+			this.jeReference = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.jeDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnPostAllJournalEntries = new System.Windows.Forms.Button();
 			this.btnAddJournalEntry = new System.Windows.Forms.Button();
 			this.btnDeleteJournalEntry = new System.Windows.Forms.Button();
@@ -97,9 +100,6 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.toolbarMain = new System.Windows.Forms.ToolStrip();
 			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
-			this.lvJournalEntries = new System.Windows.Forms.ListView();
-			this.jeReference = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.jeDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -300,6 +300,7 @@
 			// 
 			// btnDeleteAccount
 			// 
+			this.btnDeleteAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnDeleteAccount.Location = new System.Drawing.Point(598, 9);
 			this.btnDeleteAccount.Name = "btnDeleteAccount";
 			this.btnDeleteAccount.Size = new System.Drawing.Size(148, 23);
@@ -335,10 +336,10 @@
 			this.dgAccountTransactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgAccountTransactions.Size = new System.Drawing.Size(744, 384);
 			this.dgAccountTransactions.TabIndex = 5;
+			this.dgAccountTransactions.DoubleClick += new System.EventHandler(this.dgAccountTransactions_DoubleClick);
 			// 
 			// cbAccountActive
 			// 
-			this.cbAccountActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbAccountActive.AutoSize = true;
 			this.cbAccountActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cbAccountActive.Location = new System.Drawing.Point(6, 19);
@@ -478,8 +479,47 @@
 			this.tpAllJournalEntries.Text = "Journal Entries";
 			this.tpAllJournalEntries.UseVisualStyleBackColor = true;
 			// 
+			// lvJournalEntries
+			// 
+			this.lvJournalEntries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.lvJournalEntries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.jeReference,
+            this.jeDate});
+			this.lvJournalEntries.FullRowSelect = true;
+			listViewGroup1.Header = "Unposted";
+			listViewGroup1.Name = "Unposted";
+			listViewGroup2.Header = "Posted Entries";
+			listViewGroup2.Name = "Posted";
+			listViewGroup3.Header = "Deleted Journal Entries";
+			listViewGroup3.Name = "Deleted";
+			this.lvJournalEntries.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
+			this.lvJournalEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvJournalEntries.HideSelection = false;
+			this.lvJournalEntries.Location = new System.Drawing.Point(3, 3);
+			this.lvJournalEntries.Name = "lvJournalEntries";
+			this.lvJournalEntries.Size = new System.Drawing.Size(200, 383);
+			this.lvJournalEntries.TabIndex = 10;
+			this.lvJournalEntries.UseCompatibleStateImageBehavior = false;
+			this.lvJournalEntries.View = System.Windows.Forms.View.Details;
+			this.lvJournalEntries.SelectedIndexChanged += new System.EventHandler(this.lvJournalEntries_SelectedIndexChanged);
+			// 
+			// jeReference
+			// 
+			this.jeReference.Text = "Ref";
+			this.jeReference.Width = 50;
+			// 
+			// jeDate
+			// 
+			this.jeDate.Text = "Date Created";
+			this.jeDate.Width = 129;
+			// 
 			// btnPostAllJournalEntries
 			// 
+			this.btnPostAllJournalEntries.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPostAllJournalEntries.Enabled = false;
 			this.btnPostAllJournalEntries.Location = new System.Drawing.Point(634, 395);
 			this.btnPostAllJournalEntries.Name = "btnPostAllJournalEntries";
@@ -611,6 +651,7 @@
 			this.dgJournal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgJournal.Size = new System.Drawing.Size(753, 420);
 			this.dgJournal.TabIndex = 0;
+			this.dgJournal.DoubleClick += new System.EventHandler(this.dgJournal_DoubleClick);
 			// 
 			// tpAllChanges
 			// 
@@ -935,42 +976,6 @@
 			this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
 			this.btnAddAccount.Text = "&Add Account";
 			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
-			// 
-			// lvJournalEntries
-			// 
-			this.lvJournalEntries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.jeReference,
-            this.jeDate});
-			this.lvJournalEntries.FullRowSelect = true;
-			listViewGroup1.Header = "Unposted";
-			listViewGroup1.Name = "Unposted";
-			listViewGroup2.Header = "Posted Entries";
-			listViewGroup2.Name = "Posted";
-			listViewGroup3.Header = "Deleted Journal Entries";
-			listViewGroup3.Name = "Deleted";
-			this.lvJournalEntries.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2,
-            listViewGroup3});
-			this.lvJournalEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvJournalEntries.HideSelection = false;
-			this.lvJournalEntries.Location = new System.Drawing.Point(3, 3);
-			this.lvJournalEntries.Name = "lvJournalEntries";
-			this.lvJournalEntries.Size = new System.Drawing.Size(200, 383);
-			this.lvJournalEntries.TabIndex = 10;
-			this.lvJournalEntries.UseCompatibleStateImageBehavior = false;
-			this.lvJournalEntries.View = System.Windows.Forms.View.Details;
-			this.lvJournalEntries.SelectedIndexChanged += new System.EventHandler(this.lvJournalEntries_SelectedIndexChanged);
-			// 
-			// jeReference
-			// 
-			this.jeReference.Text = "Ref";
-			this.jeReference.Width = 50;
-			// 
-			// jeDate
-			// 
-			this.jeDate.Text = "Date Created";
-			this.jeDate.Width = 129;
 			// 
 			// Mainwin
 			// 

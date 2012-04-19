@@ -198,7 +198,7 @@ namespace App_Domain {
 				}
 
 				foreach (DataRow each in dt.Rows) {
-					; ; lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
+					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
 					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]);
 					item.Name = each["id"].ToString();
 					lvJournalEntries.Items.Add(item);

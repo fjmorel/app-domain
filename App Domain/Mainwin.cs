@@ -182,7 +182,32 @@ namespace App_Domain {
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
             dgBalanceSheet.DataSource = Program.sqlcon.GetTrialBalance();
+            OnFillRatios();
 		}
+
+        /// <summary>
+        /// Refresh ratio reports
+        /// </summary>
+        public void OnFillRatios()
+        {
+            double assests = Program.sqlcon.GetAccountTypeTotal(0);
+            double liabilities = Program.sqlcon.GetAccountTypeTotal(1);
+            double equity = Program.sqlcon.GetAccountTypeTotal(4);
+            double revenue = Program.sqlcon.GetAccountTypeTotal(3);
+            double expenses = Program.sqlcon.GetAccountTypeTotal(2);
+            double ratio;
+
+            if (liabilities != 0)
+            {
+                ratio = Math.Abs(assests / liabilities);
+                txtCurRatio.Text = ratio.ToString();
+            }
+            else
+            {
+                txtCurRatio.Text = "Zero liabilities";
+            }
+             
+        }
 
 		/// <summary>
 		/// Refresh journal entries

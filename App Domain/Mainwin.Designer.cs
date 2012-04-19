@@ -34,8 +34,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tpAllAccounts = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
@@ -98,12 +98,15 @@
             this.lblRetainedEarnings = new System.Windows.Forms.Label();
             this.lblIncome = new System.Windows.Forms.Label();
             this.tpBalanceSheet = new System.Windows.Forms.TabPage();
+            this.dgBalanceSheet = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.toolbarMain = new System.Windows.Forms.ToolStrip();
             this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
-            this.dgBalanceSheet = new System.Windows.Forms.DataGridView();
+            this.tpRatios = new System.Windows.Forms.TabPage();
+            this.lblCurrentRatio = new System.Windows.Forms.Label();
+            this.txtCurRatio = new System.Windows.Forms.TextBox();
             this.tabMain.SuspendLayout();
             this.tpAllAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -126,8 +129,9 @@
             this.tpRetainedEarnings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDividends)).BeginInit();
             this.tpBalanceSheet.SuspendLayout();
-            this.toolbarMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBalanceSheet)).BeginInit();
+            this.toolbarMain.SuspendLayout();
+            this.tpRatios.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -146,6 +150,7 @@
             this.tabMain.Controls.Add(this.tpIncomeStatement);
             this.tabMain.Controls.Add(this.tpRetainedEarnings);
             this.tabMain.Controls.Add(this.tpBalanceSheet);
+            this.tabMain.Controls.Add(this.tpRatios);
             this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabMain.ItemSize = new System.Drawing.Size(30, 120);
             this.tabMain.Location = new System.Drawing.Point(0, 28);
@@ -951,6 +956,35 @@
             this.tpBalanceSheet.Text = "Balance Sheet";
             this.tpBalanceSheet.UseVisualStyleBackColor = true;
             // 
+            // dgBalanceSheet
+            // 
+            this.dgBalanceSheet.AllowUserToAddRows = false;
+            this.dgBalanceSheet.AllowUserToDeleteRows = false;
+            this.dgBalanceSheet.AllowUserToResizeColumns = false;
+            this.dgBalanceSheet.AllowUserToResizeRows = false;
+            this.dgBalanceSheet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgBalanceSheet.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.dgBalanceSheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgBalanceSheet.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgBalanceSheet.Location = new System.Drawing.Point(3, 71);
+            this.dgBalanceSheet.MultiSelect = false;
+            this.dgBalanceSheet.Name = "dgBalanceSheet";
+            this.dgBalanceSheet.ReadOnly = true;
+            this.dgBalanceSheet.RowHeadersVisible = false;
+            this.dgBalanceSheet.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgBalanceSheet.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgBalanceSheet.Size = new System.Drawing.Size(753, 352);
+            this.dgBalanceSheet.TabIndex = 7;
+            // 
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1005,34 +1039,33 @@
             this.btnAddAccount.Text = "&Add Account";
             this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
             // 
-            // dgBalanceSheet
+            // tpRatios
             // 
-            this.dgBalanceSheet.AllowUserToAddRows = false;
-            this.dgBalanceSheet.AllowUserToDeleteRows = false;
-            this.dgBalanceSheet.AllowUserToResizeColumns = false;
-            this.dgBalanceSheet.AllowUserToResizeRows = false;
-            this.dgBalanceSheet.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgBalanceSheet.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.dgBalanceSheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgBalanceSheet.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgBalanceSheet.Location = new System.Drawing.Point(3, 71);
-            this.dgBalanceSheet.MultiSelect = false;
-            this.dgBalanceSheet.Name = "dgBalanceSheet";
-            this.dgBalanceSheet.ReadOnly = true;
-            this.dgBalanceSheet.RowHeadersVisible = false;
-            this.dgBalanceSheet.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgBalanceSheet.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgBalanceSheet.Size = new System.Drawing.Size(753, 352);
-            this.dgBalanceSheet.TabIndex = 7;
+            this.tpRatios.Controls.Add(this.txtCurRatio);
+            this.tpRatios.Controls.Add(this.lblCurrentRatio);
+            this.tpRatios.Location = new System.Drawing.Point(124, 4);
+            this.tpRatios.Name = "tpRatios";
+            this.tpRatios.Size = new System.Drawing.Size(759, 426);
+            this.tpRatios.TabIndex = 10;
+            this.tpRatios.Text = "Ratios Report";
+            this.tpRatios.UseVisualStyleBackColor = true;
+            // 
+            // lblCurrentRatio
+            // 
+            this.lblCurrentRatio.AutoSize = true;
+            this.lblCurrentRatio.Location = new System.Drawing.Point(5, 7);
+            this.lblCurrentRatio.Name = "lblCurrentRatio";
+            this.lblCurrentRatio.Size = new System.Drawing.Size(69, 13);
+            this.lblCurrentRatio.TabIndex = 0;
+            this.lblCurrentRatio.Text = "Current Ratio";
+            // 
+            // txtCurRatio
+            // 
+            this.txtCurRatio.Enabled = false;
+            this.txtCurRatio.Location = new System.Drawing.Point(80, 4);
+            this.txtCurRatio.Name = "txtCurRatio";
+            this.txtCurRatio.Size = new System.Drawing.Size(162, 20);
+            this.txtCurRatio.TabIndex = 1;
             // 
             // Mainwin
             // 
@@ -1078,9 +1111,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numDividends)).EndInit();
             this.tpBalanceSheet.ResumeLayout(false);
             this.tpBalanceSheet.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBalanceSheet)).EndInit();
             this.toolbarMain.ResumeLayout(false);
             this.toolbarMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgBalanceSheet)).EndInit();
+            this.tpRatios.ResumeLayout(false);
+            this.tpRatios.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1156,6 +1191,9 @@
 		private System.Windows.Forms.Button btnUpdateAccountNumber;
 		private System.Windows.Forms.NumericUpDown numAccountNumber;
         private System.Windows.Forms.DataGridView dgBalanceSheet;
+        private System.Windows.Forms.TabPage tpRatios;
+        private System.Windows.Forms.TextBox txtCurRatio;
+        private System.Windows.Forms.Label lblCurrentRatio;
 
 	}
 }

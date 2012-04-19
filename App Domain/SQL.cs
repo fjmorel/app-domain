@@ -293,6 +293,25 @@ namespace App_Domain {
 			return total;
 		}
 
+        /// <summary>
+        /// Gets the balance of the sum of accounts with type
+        /// </summary>
+        /// <param name="accounttype"></param>
+        /// <returns></returns>
+        public double GetAccountTypeTotal(int accounttype) {
+            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = " + accounttype.ToString());
+            double total = 0;
+            if (dt != null)
+            {
+                foreach (DataRow each in dt.Rows)
+                {
+                    int a = Convert.ToInt32(each["accountnum"]);
+                    total += GetAccountBalance(a);
+                }
+            }
+            return total;
+        }
+
 		/// <summary>
 		/// Get the total of all revenues
 		/// </summary>

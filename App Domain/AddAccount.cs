@@ -25,6 +25,9 @@ namespace App_Domain {
 		/// <param name="callback"></param>
 		public AddAccount(FillChartOfAccountsHandler callback, FillChangesHandler callback2) {
 			InitializeComponent();
+			
+			numInitialBalance.Maximum = decimal.MaxValue;
+			numInitialBalance.Minimum = decimal.MinValue;
 
 			txtType.entireList = Program.sqlcon.GetAccountTypesList();
 
@@ -54,7 +57,7 @@ namespace App_Domain {
 					DataTable dt2 = Program.sqlcon.GetAccountTypeByName(txtType.Text);
 					if (dt2 != null && dt2.Rows.Count == 1) {
 						int active = checkActive.Checked ? 1 : 0;//1 for active, 0 for inactive
-						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), txtOwner.Text, Convert.ToInt32(txtAccountnum.Text));
+						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), Convert.ToInt32(txtAccountnum.Text),numInitialBalance.Value);
 						FillAccount();
 						FillChanges();
 						this.Close();

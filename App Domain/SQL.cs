@@ -31,6 +31,7 @@ namespace App_Domain {
 				MessageBox.Show("Could not connect. Make sure appdomain.sdf is in the same folder as this program.");
 				Console.WriteLine(ex.Message);
 			}
+			ExecuteNonQuery("INSERT INTO Settings (next_ref_id) VALUES (1)");
 		}
 
 		/// <summary>
@@ -151,13 +152,13 @@ namespace App_Domain {
 			}
 			return accounts;
 		}
-		
+
 		/// <summary>
 		/// Get a list of all unposted transactions by date and ref number
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetUnpostedJournalEntries() {
-			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 0 AND deleted != 1");
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Entries WHERE posted = 0 AND deleted != 1");
 		}
 
 		/// <summary>
@@ -165,7 +166,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetPostedJournalEntries() {
-			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE posted = 1 AND deleted != 1");
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Entries WHERE posted = 1 AND deleted != 1");
 		}
 
 		/// <summary>
@@ -173,7 +174,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetDeletedJournalEntries() {
-			return ExecuteQuery("SELECT id, datecreated FROM Journal_Transactions WHERE deleted = 1");
+			return ExecuteQuery("SELECT id, datecreated FROM Journal_Entries WHERE deleted = 1");
 
 		}
 
@@ -183,7 +184,7 @@ namespace App_Domain {
 		/// <param name="refnum"></param>
 		/// <returns></returns>
 		public DataTable GetJournalEntryTransactions(int refnum) {
-			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description], j.dammount AS [Debit], j.cammount AS [Credit] FROM journal_Transactions jt JOIN Journal j ON (jt.id = j.ref) JOIN Chart_of_Accounts ca ON (j.accountnum = ca.accountnum) WHERE jt.id = " + refnum.ToString());
+			return ExecuteQuery("SELECT j.accountnum AS [Account], ca.descript AS [Description], j.dammount AS [Debit], j.cammount AS [Credit] FROM Journal_Entries jt JOIN Transactions j ON (jt.id = j.ref) JOIN Chart_of_Accounts ca ON (j.accountnum = ca.accountnum) WHERE jt.id = " + refnum.ToString());
 		}
 
 		/// <summary>
@@ -192,7 +193,7 @@ namespace App_Domain {
 		/// <param name="refnum"></param>
 		/// <returns></returns>
 		public string GetJournalEntryNote(int refnum) {
-			return Convert.ToString(ExecuteQuery("SELECT notes FROM Journal_Transactions WHERE id = " + refnum.ToString()).Rows[0][0]);
+			return Convert.ToString(ExecuteQuery("SELECT notes FROM Journal_Entries WHERE id = " + refnum.ToString()).Rows[0][0]);
 		}
 
 		/// <summary>
@@ -217,7 +218,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public DataTable GetAccountLedger(int accountnum) {
-			return ExecuteQuery("SELECT jt.id AS [Ref], jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Journal j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Transactions jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
+			return ExecuteQuery("SELECT jt.id AS [Ref], jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Transactions j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Entries jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
 		}
 
 		/// <summary>
@@ -226,7 +227,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public double GetAccountDebitTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
+			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Transactions j JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
@@ -238,7 +239,7 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public double GetAccountCreditTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Journal j JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
+			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Transactions j JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
 			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
 				return Convert.ToDouble(dt.Rows[0][0].ToString());
 			else return 0;
@@ -249,7 +250,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetJournal() {
-			return ExecuteQuery("SELECT jt.id AS [Ref], j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(12), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Journal as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Transactions AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
+			return ExecuteQuery("SELECT jt.id AS [Ref], j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(12), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Transactions as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
 		}
 
 		/// <summary>
@@ -343,7 +344,7 @@ namespace App_Domain {
 				double amount = GetAccountBalance(accountnum);
 				if (amount != 0) {
 					string debit = "", credit = "";
-					if(IsDebitThePositiveSide(accountnum) == 1)
+					if (IsDebitThePositiveSide(accountnum) == 1)
 						debit = String.Format("{0:C}", amount);
 					else
 						credit = String.Format("{0:C}", amount);
@@ -361,7 +362,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="re"></param>
 		public void SetRE(double re) {
-			ExecuteNonQuery("UPDATE settings SET retained_earnings = " + re.ToString());
+			ExecuteNonQuery("UPDATE Settings SET retained_earnings = " + re.ToString());
 		}
 
 		/// <summary>
@@ -369,7 +370,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="div"></param>
 		public void SetDividends(double div) {
-			ExecuteNonQuery("UPDATE settings SET dividens = " + div.ToString());
+			ExecuteNonQuery("UPDATE Settings SET dividens = " + div.ToString());
 		}
 
 		/// <summary>
@@ -410,8 +411,14 @@ namespace App_Domain {
 		/// <param name="active"></param>
 		/// <param name="typeid"></param>
 		/// <param name="owner"></param>
-		public void AddAccount(string description, int active, int typeid, string owner, int accountnum) {
+		public void AddAccount(string description, int active, int typeid, int accountnum, decimal initialBalance) {
 			ExecuteNonQuery("INSERT INTO Chart_of_Accounts (descript, active, typeid, datecreated, accountnum) VALUES('" + description + "', '" + active + "', '" + typeid + "', GETDATE(), " + accountnum + ")");
+			/*
+			string[] DorC = new string[] { "c", "Credi" };
+			if (IsDebitThePositiveSide(accountnum) == 1)//Use debit instead of credit
+				DorC = new string[] { "d", "Debi" };
+			ExecuteNonQuery("INSERT INTO Transactions (accountnum," + DorC[0] + "ammount, ref) VALUES (" + accountnum + "," + initialBalance + ", 0)");
+			*/
 			AddAccountChange(accountnum, "Created new account: " + description);
 		}
 
@@ -431,17 +438,16 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="j"></param>
 		public void AddJournalEntry(JournalEntry journal) {
-			//get ref id
-			int refnum = Convert.ToInt32(ExecuteQuery("SELECT next_ref_id FROM Settings").Rows[0][0]);
-			ExecuteNonQuery("UPDATE Settings SET next_ref_id = " + (refnum + 1).ToString());
+			//ExecuteNonQuery("UPDATE Settings SET next_ref_id = " + (refnum + 1).ToString());
 			//insert journal transaction notes and ref
-			ExecuteNonQuery("INSERT INTO Journal_Transactions (id, notes, deleted) VALUES(" + refnum.ToString() + ",'" + journal.notes + "', 0)");
+
+			ExecuteNonQuery("INSERT INTO Journal_Entries (notes) VALUES('" + journal.notes + "')");
+			int refnum = ExecuteQuery("SELECT * FROM Journal_Entries").Rows.Count;
 			foreach (Entry e in journal.Transactions) {
 				string[] DorC = new string[] { "c", "Credi" };
 				if (e.IsDebitNotCredit)//Use debit instead of credit
 					DorC = new string[] { "d", "Debi" };
-				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Journal (accountnum," + DorC[0] + "ammount, ref) VALUES (" + e.AccountNumber + "," + e.Amount + ", " + refnum.ToString() + ")", con);
-				//cmd.Parameters.AddWithValue("@datePost", journal.time);
+				SqlCeCommand cmd = new SqlCeCommand("INSERT INTO Transactions (accountnum," + DorC[0] + "ammount, ref) VALUES (" + e.AccountNumber + "," + e.Amount + ", " + refnum.ToString() + ")", con);
 				cmd.ExecuteNonQuery();
 			}
 		}
@@ -451,8 +457,8 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="refnum"></param>
 		public void PostJournalEntry(int refnum) {
-			ExecuteNonQuery("UPDATE Journal_Transactions SET posted = 1 WHERE id = " + refnum.ToString());
-			ExecuteNonQuery("UPDATE Journal_Transactions SET postdate = GETDATE() WHERE id = " + refnum.ToString());
+			ExecuteNonQuery("UPDATE Journal_Entries SET posted = 1 WHERE id = " + refnum.ToString());
+			ExecuteNonQuery("UPDATE Journal_Entries SET postdate = GETDATE() WHERE id = " + refnum.ToString());
 			AddAccountChange(refnum, "Posted journal entry");
 		}
 
@@ -461,9 +467,9 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="refnum"></param>
 		public void DeleteJournalEntry(int refnum) {
-			//ExecuteNonQuery("DELETE FROM Journal WHERE ref = " + refnum);
-			//ExecuteNonQuery("DELETE FROM Journal_Transactions WHERE id = " + refnum);
-			ExecuteNonQuery("UPDATE Journal_Transactions SET deleted = 1 WHERE id = " + refnum);
+			//ExecuteNonQuery("DELETE FROM Transactions WHERE ref = " + refnum);
+			//ExecuteNonQuery("DELETE FROM Journal_Entries WHERE id = " + refnum);
+			ExecuteNonQuery("UPDATE Journal_Entries SET deleted = 1 WHERE id = " + refnum);
 			AddAccountChange(refnum, "Deleted unposted journal entry");
 		}
 

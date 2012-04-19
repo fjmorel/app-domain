@@ -1,4 +1,3 @@
-
 CREATE TABLE Account_Types(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	name NVARCHAR(100) NOT NULL,
@@ -14,14 +13,14 @@ CREATE TABLE Chart_of_Accounts(
 	typeid INT NOT NULL,
 	datecreated DATETIME DEFAULT GETDATE());
 
-CREATE TABLE Journal(
+CREATE TABLE Transactions(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	accountnum INT NOT NULL,
 	dammount FLOAT,
 	cammount FLOAT,
 	ref INT NOT NULL);
 
-CREATE TABLE Journal_Transactions(
+CREATE TABLE Journal_Entries(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	notes NTEXT,
 	datecreated DATETIME DEFAULT GETDATE(),
@@ -35,6 +34,14 @@ CREATE TABLE Account_Changes(
 	action NTEXT NOT NULL, 
 	dateofchange DATETIME DEFAULT GETDATE(),
 	userid int NOT NULL
+	);
+
+CREATE TABLE Settings(
+	id int IDENTITY(1,1) PRIMARY KEY,
+	next_ref_id INT DEFAULT 1,
+dividens DECIMAL,
+retained_earnings DECIMAL
+	
 	);
 
 CREATE TABLE Users(
@@ -85,7 +92,7 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(101, 'Cash',
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(102, 'Petty cash', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(103, 'Cash equivalents', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(104, 'Short-term investments', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(105, 'Fair value adjustment, _______ securities (S-T)', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(105, 'Fair value adjustment, Some securities (S-T)', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(106, 'Accounts receivable', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(107, 'Allowance for doubtful accounts', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(108, 'Legal fees receivable', 1);
@@ -93,21 +100,21 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(109, 'Intere
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(110, 'Rent receivable', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(111, 'Notes receivable', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(119, 'Merchandise inventory', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(120, '__________ inventory', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(121, '__________ inventory', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(120, 'Truck inventory', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(121, 'Airplane inventory', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(124, 'Office supplies', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(125, 'Store supplies', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(126, '______ supplies', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(126, 'Truck supplies', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(128, 'Prepaid insurance', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(129, 'Prepaid interest', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(131, 'Prepaid rent', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(132, 'Raw materials inventory', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(133, 'Goods in process inventory, _______', 1);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(134, 'Goods in process inventory, _______', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(133, 'Goods in process inventory, Merchandise', 1);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(134, 'Goods in process inventory, Office', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(135, 'Finished goods inventory', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(141, 'Long-term investments', 2);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(142, 'Fair value adjustment, _______ securities (L-T)', 2);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(144, 'Investment in _______', 2);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(142, 'Fair value adjustment, Some securities (L-T)', 2);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(144, 'Investment in Apple', 2);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(145, 'Bond sinking fund', 2);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(151, 'Automobiles', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(152, 'Accumulated depreciation — Automobiles', 3);
@@ -125,18 +132,18 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(163, 'Office
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(164, 'Accumulated depreciation — Office equipment', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(165, 'Store equipment', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(166, 'Accumulated depreciation — Store equipment', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(167, '_______ equipment', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(168, 'Accumulated depreciation — _______ Equipment', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(167, 'Awesome equipment', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(168, 'Accumulated depreciation — Awesome Equipment', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(169, 'Machinery', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(170, 'Accumulated depreciation — Machinery', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(173, 'Building _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(174, 'Accumulated depreciation — Building _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(175, 'Building _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(176, 'Accumulated depreciation — Building _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(179, 'Land improvements _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(180, 'Accumulated depreciation — Land improvements _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(181, 'Land improvements _______', 3);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(182, 'Accumulated depreciation — Land improvements _______', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(173, 'Building A', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(174, 'Accumulated depreciation — Building A', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(175, 'Building B', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(176, 'Accumulated depreciation — Building B', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(179, 'Land improvements Idaho field', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(180, 'Accumulated depreciation — Land improvements Idaho field', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(181, 'Land improvements Georgia Mountains', 3);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(182, 'Accumulated depreciation — Land improvements Georgia Mountains', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(183, 'Land', 3);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(185, 'Mineral deposit', 4);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(186, 'Accumulated depletion — Mineral deposit', 4);
@@ -146,7 +153,7 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(193, 'Franch
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(194, 'Copyrights', 5);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(195, 'Leasehold improvements', 5);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(196, 'Licenses', 5);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(197, 'Accumulated amortization— _______', 5);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(197, 'Accumulated amortization— Some', 5);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(201, 'Accounts payable', 6);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(202, 'Insurance payable', 6);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(203, 'Interest payable', 6);
@@ -171,10 +178,10 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(226, 'Estima
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(230, 'Unearned consulting fees', 7);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(231, 'Unearned legal fees', 7);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(232, 'Unearned property management fees', 7);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(233, 'Unearned _______ fees', 7);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(234, 'Unearned _______ fees', 7);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(233, 'Unearned talking fees', 7);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(234, 'Unearned listening fees', 7);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(235, 'Unearned janitorial revenue', 7);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(236, 'Unearned _______ revenue', 7);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(236, 'Unearned sales revenue', 7);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(238, 'Unearned rent', 7);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(240, 'Short-term notes payable', 8);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(241, 'Discount on short-term notes payable', 8);
@@ -186,15 +193,15 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(255, 'Bonds 
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(256, 'Discount on bonds payable', 9);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(257, 'Premium on bonds payable', 9);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(258, 'Deferred income tax liability', 9);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(301, '______________, Capital', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(302, '_____________, Withdrawals', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(303, '_____________, Capital', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(304, '_____________, Withdrawals', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(305, '_____________, Capital', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(306, '_____________, Withdrawals', 10);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(307, 'Common stock, $ _______ par value', 11);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(301, 'Bob, Capital', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(302, 'Bob, Withdrawals', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(303, 'John, Capital', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(304, 'John, Withdrawals', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(305, 'Fred, Capital', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(306, 'Fred, Withdrawals', 10);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(307, 'Common stock, $ 100 par value', 11);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(308, 'Common stock, no-par value', 11);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(309, 'Common stock, $ _______ stated value', 11);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(309, 'Common stock, $ 200 stated value', 11);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(310, 'Common stock dividend distributable', 11);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(311, 'Paid-in capital in excess of par value, Common stock', 11);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(312, 'Paid-in capital in excess of stated value,', 11);
@@ -208,14 +215,14 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(320, 'Stock 
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(321, 'Treasury stock, Common', 14);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(322, 'Unrealized gain — Equity', 14);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(323, 'Unrealized loss — Equity', 14);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(401, '______________ fees earned', 15);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(402, '_____________ fees earned', 15);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(403, '_____________ services revenue', 15);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(404, '_____________ services revenue', 15);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(401, 'Talking fees earned', 15);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(402, 'Listening fees earned', 15);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(403, 'Cleaning services revenue', 15);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(404, 'Dirtying services revenue', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(405, 'Commissions earned', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(406, 'Rent revenue (or Rent earned)', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(407, 'Dividends revenue (or Dividend earned)', 15);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(408, 'Earnings from investment in _______', 15);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(408, 'Earnings from investment in Apple', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(409, 'Interest revenue (or Interest earned)', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(410, 'Sinking fund earnings', 15);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(413, 'Sales', 15);
@@ -251,25 +258,25 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(582, 'Direct
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(583, 'Direct labor price variance', 18);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(584, 'Factory overhead volume variance', 18);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(585, 'Factory overhead controllable variance', 18);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(601, 'Amortization expense — _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(602, 'Amortization expense — _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(603, 'Depletion expense — _______', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(601, 'Amortization expense — Truck', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(602, 'Amortization expense — Something', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(603, 'Depletion expense — Fuel', 19);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(604, 'Depreciation expense — Boats', 19);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(605, 'Depreciation expense — Automobiles', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(606, 'Depreciation expense — Building _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(607, 'Depreciation expense — Building _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(608, 'Depreciation expense — Land improvements _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(609, 'Depreciation expense — Land improvements _______', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(606, 'Depreciation expense — Building A', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(607, 'Depreciation expense — Building B', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(608, 'Depreciation expense — Land improvements Idaho field', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(609, 'Depreciation expense — Land improvements Georgia Mountains', 19);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(610, 'Depreciation expense — Law library', 19);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(611, 'Depreciation expense — Trucks', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(612, 'Depreciation expense — _______ equipment', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(613, 'Depreciation expense — _______ equipment', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(614, 'Depreciation expense — _______', 19);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(615, 'Depreciation expense — _______', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(612, 'Depreciation expense — Sea equipment', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(613, 'Depreciation expense — Air equipment', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(614, 'Depreciation expense — Airplanes', 19);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(615, 'Depreciation expense — Trucks', 19);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(620, 'Office salaries expense', 20);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(621, 'Sales salaries expense', 20);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(622, 'Salaries expense', 20);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(623, '______ wages expense', 20);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(623, 'Hourly wages expense', 20);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(624, 'Employees’ benefits expense', 20);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(625, 'Payroll taxes expense', 20);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(630, 'Cash over and short', 21);
@@ -278,17 +285,17 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(632, 'Factor
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(633, 'Interest expense', 21);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(635, 'Insurance expense — Delivery equipment', 22);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(636, 'Insurance expense — Office equipment', 22);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(637, 'Insurance expense — _______', 22);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(637, 'Insurance expense — Airplane', 22);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(640, 'Rent expense', 23);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(641, 'Rent expense — Office space', 23);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(642, 'Rent expense — Selling space', 23);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(643, 'Press rental expense', 23);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(644, 'Truck rental expense', 23);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(645, '______ rental expense', 23);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(645, 'Airplane rental expense', 23);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(650, 'Office supplies expense', 24);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(651, 'Store supplies expense', 24);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(652, '______ supplies expense', 24);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(653, '______ supplies expense', 24);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(652, 'Cleaning supplies expense', 24);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(653, 'Dirtying supplies expense', 24);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(655, 'Advertising expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(656, 'Bad debts expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(657, 'Blueprinting expense', 25);
@@ -312,8 +319,8 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(680, 'Organi
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(681, 'Permits expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(682, 'Postage expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(683, 'Property taxes expense', 25);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(684, 'Repairs expense — _______', 25);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(685, 'Repairs expense — _______', 25);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(684, 'Repairs expense — Refrigerator', 25);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(685, 'Repairs expense — Dishwasher', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(687, 'Selling expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(688, 'Telephone expense', 25);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(689, 'Travel and entertainment expense', 25);
@@ -324,17 +331,17 @@ INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(701, 'Gain o
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(702, 'Gain on sale of machinery', 26);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(703, 'Gain on sale of investments', 26);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(704, 'Gain on sale of trucks', 26);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(705, 'Gain on _______', 26);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(705, 'Gain on sale of airplanes', 26);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(809, 'Unrealized gain — Income', 26);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(811, 'Impairment gain', 26);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(801, 'Loss on disposal of machinery', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(802, 'Loss on exchange of equipment', 27);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(803, 'Loss on exchange of _______', 27);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(803, 'Loss on exchange of trucks', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(804, 'Loss on sale of notes', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(805, 'Loss on retirement of bonds', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(806, 'Loss on sale of investments', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(807, 'Loss on sale of machinery', 27);
-INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(808, 'Loss on _______', 27);
+INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(808, 'Loss on sale of trucks', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(810, 'Unrealized loss — Income', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(812, 'Impairment loss', 27);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(901, 'Income summary', 28);

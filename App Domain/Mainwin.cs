@@ -45,6 +45,7 @@ namespace App_Domain {
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
 			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
 			dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
+            dgBalanceSheet.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -112,7 +113,7 @@ namespace App_Domain {
 				dgTrialBalance.Columns[0].Width = 120;
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
-				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width;
+				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width - 20;
 			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
 				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
@@ -123,7 +124,14 @@ namespace App_Domain {
 				dgIncomeSummary.Columns[2].Width = 100;
 				dgIncomeSummary.Columns[3].Width = 100;
 				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
-			}
+            }
+            else if (tabMain.SelectedTab == tpBalanceSheet)
+            {
+                dgBalanceSheet.Columns[0].Width = 120;
+                dgBalanceSheet.Columns[2].Width = 120;
+                dgBalanceSheet.Columns[3].Width = 120;
+                dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - dgBalanceSheet.Columns[3].Width - 20;
+            }
 		}
 
 		/// <summary>
@@ -173,6 +181,7 @@ namespace App_Domain {
 		/// </summary>
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
+            dgBalanceSheet.DataSource = Program.sqlcon.GetTrialBalance();
 		}
 
 		/// <summary>

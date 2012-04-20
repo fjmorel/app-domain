@@ -11,28 +11,16 @@ namespace App_Domain {
 	public partial class AddAccount : Form {
 
 		/// <summary>
-		/// To refresh accounts
-		/// </summary>
-		private event FillChartOfAccountsHandler FillAccount;
-		/// <summary>
-		/// To refresh account changes
-		/// </summary>
-		private event FillChangesHandler FillChanges;
-
-		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="callback"></param>
-		public AddAccount(FillChartOfAccountsHandler callback, FillChangesHandler callback2) {
+		public AddAccount() {
 			InitializeComponent();
 			
 			numInitialBalance.Maximum = decimal.MaxValue;
 			numInitialBalance.Minimum = decimal.MinValue;
 
 			txtType.entireList = Program.sqlcon.GetAccountTypesList();
-
-			this.FillAccount += callback;
-			this.FillChanges += callback2;
 		}
 
 		void AddAccount_KeyDown(object sender, KeyEventArgs e) {
@@ -58,8 +46,6 @@ namespace App_Domain {
 					if (dt2 != null && dt2.Rows.Count == 1) {
 						int active = checkActive.Checked ? 1 : 0;//1 for active, 0 for inactive
 						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), Convert.ToInt32(txtAccountnum.Text),numInitialBalance.Value);
-						FillAccount();
-						FillChanges();
 						this.Close();
 					} else {
 						MessageBox.Show("Please enter a valid account type.");

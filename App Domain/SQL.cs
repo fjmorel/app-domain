@@ -79,6 +79,38 @@ namespace App_Domain {
 			return dt;
 		}
 
+		public DataTable GetBalance() {
+			//string query = "SELECT ca.accountnum AS [Account], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
+			//"JOIN Account_Types AS at ON (ca.typeid = at.id)";
+			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND (at.account_type = 0 OR at.account_type = 1 OR at.account_type = 4)");
+
+			DataTable dt = new DataTable();
+			dt.Columns.Add("Account", typeof(string));
+			dt.Columns.Add("Description", typeof(string));
+			dt.Columns.Add("Debits", typeof(string));
+			dt.Columns.Add("Credits", typeof(string));
+
+			foreach (DataRow row in accounts.Rows) {
+				int accountnum = Convert.ToInt32(row[0].ToString());
+				string account = row[1].ToString();
+				double amount = GetAccountBalance(accountnum);
+				if (amount != 0) {
+					string debit = "", credit = "";
+					if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1) {
+						debit = String.Format("{0:C}", amount);
+					} else {
+						credit = String.Format("{0:C}", amount);
+					}
+					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
+				}
+			}
+			
+			dt.Rows.Add("Totals", "", String.Format("{0:C}", getTotalDebit()), String.Format("{0:C}", getTotalCredit()));
+
+			return dt;
+		}
+
+
 		/// <summary>
 		/// Retrieves a subset of all Accounts.
 		/// </summary>
@@ -350,7 +382,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetIncome() {
-			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 2 OR at.account_type = 3 ORDER BY at.account_type DESC");
+			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND (at.account_type = 2 OR at.account_type = 3) ORDER BY at.account_type DESC");
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));

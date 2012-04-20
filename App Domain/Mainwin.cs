@@ -55,15 +55,8 @@ namespace App_Domain {
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 			dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
 
-			//Populate datagridviews
-			OnFillAccountCharts();
-			OnFillAccountTypes();
-			OnFillTransactions();//will refresh changes, trial balance, and journal entries
-			OnFillIncomeSummary();
-			OnFillRE();
-
 			//Resize columns of main window
-			tabMain_SelectedIndexChanged(this, new EventArgs());
+			tabMain.SelectTab(tpAllAccounts);
 
 			//setup unposted datagridview - need columns to be able to resize them
 			EmptyTransactionTable = new DataTable();
@@ -83,6 +76,34 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void tabMain_SelectedIndexChanged(object sender, EventArgs e) {
+			if (tabMain.SelectedTab == tpAllAccounts) {
+				OnFillAccountCharts();
+			} else if (tabMain.SelectedTab == tpAccountDetails) {
+
+			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
+				OnFillAccountTypes();
+			} else if (tabMain.SelectedTab == tpAllTransactions) {
+				OnFillTransactions();
+			} else if (tabMain.SelectedTab == tpAllChanges) {
+				OnFillAccountChanges();
+			} else if (tabMain.SelectedTab == tpTrialBalance) {
+				OnFillTrialBalance();
+			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
+				OnFillJournalEntries();
+			} else if (tabMain.SelectedTab == tpIncomeStatement) {
+				OnFillIncomeSummary();
+			} else if (tabMain.SelectedTab == tpBalanceSheet) {
+				OnFillBalance();
+			}
+			resizeDataColumns();
+		}
+		
+			/// <summary>
+		/// Clear Account Search tab when tabbing away
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void resizeDataColumns() {
 			if (tabMain.SelectedTab == tpAllAccounts) {
 				dgChartAccounts.Columns[0].Width = 120;
 				dgChartAccounts.Columns[2].Width = 80;
@@ -181,8 +202,10 @@ namespace App_Domain {
 		/// </summary>
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
-            dgBalanceSheet.DataSource = Program.sqlcon.GetTrialBalance();
-            OnFillRatios();
+		}
+
+		public void OnFillBalance() {
+			dgBalanceSheet.DataSource = Program.sqlcon.GetBalance();
 		}
 
         /// <summary>
@@ -287,10 +310,6 @@ namespace App_Domain {
 		public void OnFillTransactions() {
 			dgJournal.DataSource = Program.sqlcon.GetJournal();
 			dgJournal.ClearSelection();
-			OnFillAccountChanges();
-			OnFillTrialBalance();
-			OnFillJournalEntries();
-			OnFillIncomeSummary();
 		}
 
 		/// <summary>
@@ -316,7 +335,8 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void miAddAccount_Click(object sender, EventArgs e) {
-			new AddAccount(this.OnFillAccountCharts, this.OnFillAccountChanges).ShowDialog();
+			new AddAccount().ShowDialog();
+			tabMain.SelectTab(tabMain.SelectedTab);
 		}
 
 		/// <summary>
@@ -439,7 +459,7 @@ namespace App_Domain {
 				btnPostJournalEntry.Enabled = false;
 				btnDeleteJournalEntry.Enabled = false;
 				//Refresh
-				OnFillTransactions();
+				OnFillJournalEntries();
 				dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 			}
 		}
@@ -475,7 +495,7 @@ namespace App_Domain {
 			btnDeleteAccount.Enabled = false;
 			btnPostJournalEntry.Enabled = false;
 			//Refresh
-			OnFillTransactions();
+			OnFillJournalEntries();
 			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 		}
 
@@ -485,7 +505,9 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void btnAddJournalEntry_Click(object sender, EventArgs e) {
-			new frmAddJournalEntry(this.OnFillTransactions).ShowDialog();
+			new frmAddJournalEntry().ShowDialog();
+			tabMain.SelectTab(tabMain.SelectedTab);
+			OnFillJournalEntries();
 		}
 
 		/// <summary>

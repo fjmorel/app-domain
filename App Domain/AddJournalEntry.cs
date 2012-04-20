@@ -9,7 +9,6 @@ using System.Windows.Forms;
 
 namespace App_Domain {
 	public partial class frmAddJournalEntry : Form {
-		private event FillJournalHandler FillJournal;
 		private JournalEntry je = new JournalEntry();
 		private DataTable entries;
 		private double debits = 0;
@@ -20,9 +19,8 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="callback"></param>
 		/// <param name="callback2"></param>
-		public frmAddJournalEntry(FillJournalHandler callback) {
+		public frmAddJournalEntry() {
 			InitializeComponent();
-			this.FillJournal += callback;
 			this.KeyDown += new KeyEventHandler(frmAddJournalEntry_KeyDown);
 
 			//Add all active accounts as strings to the autocomplete textbox
@@ -133,7 +131,6 @@ namespace App_Domain {
 			} else {
                 je.notes = txtNotes.Text;
 				Program.sqlcon.AddJournalEntry(je);
-				FillJournal();
 				this.Close();
 			}
 		}

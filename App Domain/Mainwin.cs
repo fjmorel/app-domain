@@ -45,7 +45,7 @@ namespace App_Domain {
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
 			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
 			dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
-            dgBalanceSheet.AlternatingRowsDefaultCellStyle = cs;
+			dgBalanceSheet.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
 			dgChartAccounts.ScrollBars = ScrollBars.Vertical;
 			dgAccountTransactions.ScrollBars = ScrollBars.Vertical;
@@ -54,9 +54,6 @@ namespace App_Domain {
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 			dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
-
-			//Resize columns of main window
-			tabMain.SelectTab(tpAllAccounts);
 
 			//setup unposted datagridview - need columns to be able to resize them
 			EmptyTransactionTable = new DataTable();
@@ -67,11 +64,14 @@ namespace App_Domain {
 			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
 
 			cbAccountType.SelectedIndex = 0;
+			//Cheated to make sure accounts show up by selecting types tab first
+			tabMain.SelectTab(tpAllAccountTypes);
+			tabMain.SelectTab(tpAllAccounts);
 
 		}
 
 		/// <summary>
-		/// Clear Account Search tab when tabbing away
+		/// Refill datagridview when selecting a tab
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -79,7 +79,7 @@ namespace App_Domain {
 			if (tabMain.SelectedTab == tpAllAccounts) {
 				OnFillAccountCharts();
 			} else if (tabMain.SelectedTab == tpAccountDetails) {
-
+				//do nothing
 			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
 				OnFillAccountTypes();
 			} else if (tabMain.SelectedTab == tpAllTransactions) {
@@ -97,12 +97,10 @@ namespace App_Domain {
 			}
 			resizeDataColumns();
 		}
-		
-			/// <summary>
-		/// Clear Account Search tab when tabbing away
+
+		/// <summary>
+		/// Resize columns upon resizing
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void resizeDataColumns() {
 			if (tabMain.SelectedTab == tpAllAccounts) {
 				dgChartAccounts.Columns[0].Width = 120;
@@ -145,14 +143,12 @@ namespace App_Domain {
 				dgIncomeSummary.Columns[2].Width = 100;
 				dgIncomeSummary.Columns[3].Width = 100;
 				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
-            }
-            else if (tabMain.SelectedTab == tpBalanceSheet)
-            {
-                dgBalanceSheet.Columns[0].Width = 120;
-                dgBalanceSheet.Columns[2].Width = 120;
-                dgBalanceSheet.Columns[3].Width = 120;
-                dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - dgBalanceSheet.Columns[3].Width - 20;
-            }
+			} else if (tabMain.SelectedTab == tpBalanceSheet) {
+				dgBalanceSheet.Columns[0].Width = 120;
+				dgBalanceSheet.Columns[2].Width = 120;
+				dgBalanceSheet.Columns[3].Width = 120;
+				dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - dgBalanceSheet.Columns[3].Width - 20;
+			}
 		}
 
 		/// <summary>
@@ -204,33 +200,32 @@ namespace App_Domain {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
 		}
 
+		/// <summary>
+		/// Refresh balance sheet
+		/// </summary>
 		public void OnFillBalance() {
 			dgBalanceSheet.DataSource = Program.sqlcon.GetBalance();
 		}
 
-        /// <summary>
-        /// Refresh ratio reports
-        /// </summary>
-        public void OnFillRatios()
-        {
-            double assests = Program.sqlcon.GetAccountTypeTotal(0);
-            double liabilities = Program.sqlcon.GetAccountTypeTotal(1);
-            double equity = Program.sqlcon.GetAccountTypeTotal(4);
-            double revenue = Program.sqlcon.GetAccountTypeTotal(3);
-            double expenses = Program.sqlcon.GetAccountTypeTotal(2);
-            double ratio;
+		/// <summary>
+		/// Refresh ratio reports
+		/// </summary>
+		public void OnFillRatios() {
+			double assests = Program.sqlcon.GetAccountTypeTotal(0);
+			double liabilities = Program.sqlcon.GetAccountTypeTotal(1);
+			double equity = Program.sqlcon.GetAccountTypeTotal(4);
+			double revenue = Program.sqlcon.GetAccountTypeTotal(3);
+			double expenses = Program.sqlcon.GetAccountTypeTotal(2);
+			double ratio;
 
-            if (liabilities != 0)
-            {
-                ratio = Math.Abs(assests / liabilities);
-                txtCurRatio.Text = ratio.ToString();
-            }
-            else
-            {
-                txtCurRatio.Text = "Zero liabilities";
-            }
-             
-        }
+			if (liabilities != 0) {
+				ratio = Math.Round(Math.Abs(assests / liabilities), 2);
+				txtCurRatio.Text = ratio.ToString();
+			} else {
+				txtCurRatio.Text = "Zero liabilities";
+			}
+
+		}
 
 		/// <summary>
 		/// Refresh journal entries
@@ -246,9 +241,8 @@ namespace App_Domain {
 				}
 
 				foreach (DataRow each in dt.Rows) {
-					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]));
-					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Unposted"]);
-					item.Name = each["id"].ToString();
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["postdate"].ToString() }, lvJournalEntries.Groups["Unposted"]);
+					item.Name = each["id"].ToString();//Necessary to look up Journal Entry by key later
 					lvJournalEntries.Items.Add(item);
 				}
 			}
@@ -256,9 +250,8 @@ namespace App_Domain {
 			dt = Program.sqlcon.GetDeletedJournalEntries();
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
-					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]));
-					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Deleted"]);
-					item.Name = each["id"].ToString();
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["postdate"].ToString() }, lvJournalEntries.Groups["Deleted"]);
+					item.Name = each["id"].ToString();//Necessary to look up Journal Entry by key later
 					lvJournalEntries.Items.Add(item);
 				}
 			}
@@ -266,9 +259,8 @@ namespace App_Domain {
 			dt = Program.sqlcon.GetPostedJournalEntries();
 			if (dt != null) {
 				foreach (DataRow each in dt.Rows) {
-					//lvJournalEntries.Items.Add(new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]));
-					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["datecreated"].ToString() }, lvJournalEntries.Groups["Posted"]);
-					item.Name = each["id"].ToString();
+					ListViewItem item = new ListViewItem(new string[] { each["id"].ToString(), each["postdate"].ToString() }, lvJournalEntries.Groups["Posted"]);
+					item.Name = each["id"].ToString();//Necessary to look up Journal Entry by key later
 					lvJournalEntries.Items.Add(item);
 				}
 			}
@@ -358,6 +350,7 @@ namespace App_Domain {
 					cbAccountActive.CheckedChanged -= cbAccountActive_CheckedChanged;//So loading the state is added as a change
 					cbAccountActive.Checked = active == 1 ? true : false;//If active == 1, check the txtAccounts
 					cbAccountActive.CheckedChanged += cbAccountActive_CheckedChanged;//So changes to it will be added as a change
+					numAccountNumber.Value = Convert.ToDecimal(dt.Rows[0]["accountnum"]);
 					if (Program.sqlcon.GetAccountBalance(Convert.ToInt32(dt.Rows[0]["accountnum"])) != 0)
 						cbAccountActive.Enabled = false;
 					else
@@ -436,11 +429,15 @@ namespace App_Domain {
 				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetJournalEntryTransactions(refnum);
 				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
 				//enable buttons as needed
+				dgUnpostedJournalEntryTransactions.Sort(dgUnpostedJournalEntryTransactions.Columns[2], System.ComponentModel.ListSortDirection.Descending);
 				if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Unposted"]) {
 					btnPostJournalEntry.Enabled = true;
 					btnDeleteJournalEntry.Enabled = true;
-				} else {
+				} else if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Posted"]) {
 					btnPostJournalEntry.Enabled = false;
+					btnDeleteJournalEntry.Enabled = false;
+				} else if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Deleted"]) {
+					btnPostJournalEntry.Enabled = true;
 					btnDeleteJournalEntry.Enabled = false;
 				}
 			}
@@ -615,12 +612,24 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void btnUpdateAccountNumber_Click(object sender, EventArgs e) {
-			int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
-			Program.sqlcon.ChangeAccountNumberByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), Convert.ToInt32(numAccountNumber.Value));
-			OnFillAccountCharts();
-			//Refresh tab
-			tabMain.SelectTab(tpAccountDetails);
+			//Check the number's not taken
+			if (Program.sqlcon.GetAccountByNumber(Convert.ToInt32(numAccountNumber.Value)).Rows.Count < 1) {
+				int i = Convert.ToInt32(gbAccount.Text.IndexOf(" "));
+				Program.sqlcon.ChangeAccountNumberByNumber(Convert.ToInt32(gbAccount.Text.Substring(0, i)), Convert.ToInt32(numAccountNumber.Value));
+				gbAccount.Text = numAccountNumber.Value.ToString() + gbAccount.Text.Substring(i);
+			} else {
+				MessageBox.Show("This number is already taken. Please try another.");
+			}
 		}
-		
+
+		/// <summary>
+		/// Resize colummns when window changes size
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Mainwin_Resize(object sender, EventArgs e) {
+			resizeDataColumns();
+		}
+
 	}//end Mainwin class
 }//end namespace

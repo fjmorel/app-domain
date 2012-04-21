@@ -24,7 +24,7 @@ namespace App_Domain {
 			this.KeyDown += new KeyEventHandler(frmAddJournalEntry_KeyDown);
 
 			//Add all active accounts as strings to the autocomplete textbox
-			foreach (Account each in Program.sqlcon.GetFilteredAccountList(true, true, 0))
+			foreach (Account each in Program.sqlcon.GetActiveAccountList())
 				txtAccount.entireList.Add(each.ToString());
 
 			//Style datagridview

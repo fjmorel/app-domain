@@ -38,6 +38,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
+			this.btnNewAccount = new System.Windows.Forms.Button();
 			this.label4 = new System.Windows.Forms.Label();
 			this.txtAccountName = new System.Windows.Forms.TextBox();
 			this.lblName = new System.Windows.Forms.Label();
@@ -105,8 +106,6 @@
 			this.tpRatios = new System.Windows.Forms.TabPage();
 			this.txtCurRatio = new System.Windows.Forms.TextBox();
 			this.lblCurrentRatio = new System.Windows.Forms.Label();
-			this.toolbarMain = new System.Windows.Forms.ToolStrip();
-			this.btnAddAccount = new System.Windows.Forms.ToolStripButton();
 			this.tabMain.SuspendLayout();
 			this.tpAllAccounts.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgChartAccounts)).BeginInit();
@@ -131,7 +130,6 @@
 			this.tpBalanceSheet.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgBalanceSheet)).BeginInit();
 			this.tpRatios.SuspendLayout();
-			this.toolbarMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabMain
@@ -153,13 +151,13 @@
 			this.tabMain.Controls.Add(this.tpRatios);
 			this.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.tabMain.ItemSize = new System.Drawing.Size(30, 120);
-			this.tabMain.Location = new System.Drawing.Point(0, 28);
-			this.tabMain.MinimumSize = new System.Drawing.Size(887, 434);
+			this.tabMain.Location = new System.Drawing.Point(0, 0);
+			this.tabMain.MinimumSize = new System.Drawing.Size(887, 462);
 			this.tabMain.Multiline = true;
 			this.tabMain.Name = "tabMain";
 			this.tabMain.Padding = new System.Drawing.Point(0, 0);
 			this.tabMain.SelectedIndex = 0;
-			this.tabMain.Size = new System.Drawing.Size(887, 434);
+			this.tabMain.Size = new System.Drawing.Size(887, 462);
 			this.tabMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
 			this.tabMain.TabIndex = 1;
 			this.tabMain.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabMain_DrawItem);
@@ -167,6 +165,7 @@
 			// 
 			// tpAllAccounts
 			// 
+			this.tpAllAccounts.Controls.Add(this.btnNewAccount);
 			this.tpAllAccounts.Controls.Add(this.label4);
 			this.tpAllAccounts.Controls.Add(this.txtAccountName);
 			this.tpAllAccounts.Controls.Add(this.lblName);
@@ -178,16 +177,26 @@
 			this.tpAllAccounts.Location = new System.Drawing.Point(124, 4);
 			this.tpAllAccounts.Name = "tpAllAccounts";
 			this.tpAllAccounts.Padding = new System.Windows.Forms.Padding(3);
-			this.tpAllAccounts.Size = new System.Drawing.Size(759, 426);
+			this.tpAllAccounts.Size = new System.Drawing.Size(759, 454);
 			this.tpAllAccounts.TabIndex = 0;
 			this.tpAllAccounts.Text = "Accounts";
 			this.tpAllAccounts.UseVisualStyleBackColor = true;
+			// 
+			// btnNewAccount
+			// 
+			this.btnNewAccount.Location = new System.Drawing.Point(6, 4);
+			this.btnNewAccount.Name = "btnNewAccount";
+			this.btnNewAccount.Size = new System.Drawing.Size(67, 23);
+			this.btnNewAccount.TabIndex = 8;
+			this.btnNewAccount.Text = "New";
+			this.btnNewAccount.UseVisualStyleBackColor = true;
+			this.btnNewAccount.Click += new System.EventHandler(this.btnNewAccount_Click);
 			// 
 			// label4
 			// 
 			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 9);
+			this.label4.Location = new System.Drawing.Point(79, 9);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(47, 13);
 			this.label4.TabIndex = 7;
@@ -196,9 +205,9 @@
 			// txtAccountName
 			// 
 			this.txtAccountName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.txtAccountName.Location = new System.Drawing.Point(117, 6);
+			this.txtAccountName.Location = new System.Drawing.Point(173, 6);
 			this.txtAccountName.Name = "txtAccountName";
-			this.txtAccountName.Size = new System.Drawing.Size(164, 20);
+			this.txtAccountName.Size = new System.Drawing.Size(129, 20);
 			this.txtAccountName.TabIndex = 6;
 			this.txtAccountName.TextChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
@@ -206,7 +215,7 @@
 			// 
 			this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblName.AutoSize = true;
-			this.lblName.Location = new System.Drawing.Point(76, 9);
+			this.lblName.Location = new System.Drawing.Point(132, 9);
 			this.lblName.Name = "lblName";
 			this.lblName.Size = new System.Drawing.Size(35, 13);
 			this.lblName.TabIndex = 5;
@@ -219,9 +228,9 @@
 			this.cbxTypes.FormattingEnabled = true;
 			this.cbxTypes.Items.AddRange(new object[] {
             "All"});
-			this.cbxTypes.Location = new System.Drawing.Point(329, 6);
+			this.cbxTypes.Location = new System.Drawing.Point(350, 6);
 			this.cbxTypes.Name = "cbxTypes";
-			this.cbxTypes.Size = new System.Drawing.Size(236, 21);
+			this.cbxTypes.Size = new System.Drawing.Size(218, 21);
 			this.cbxTypes.TabIndex = 4;
 			this.cbxTypes.SelectedIndexChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
@@ -229,7 +238,7 @@
 			// 
 			this.lblAccountTypes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblAccountTypes.AutoSize = true;
-			this.lblAccountTypes.Location = new System.Drawing.Point(287, 9);
+			this.lblAccountTypes.Location = new System.Drawing.Point(308, 9);
 			this.lblAccountTypes.Name = "lblAccountTypes";
 			this.lblAccountTypes.Size = new System.Drawing.Size(36, 13);
 			this.lblAccountTypes.TabIndex = 3;
@@ -240,7 +249,7 @@
 			this.lblSortBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblSortBy.AutoSize = true;
 			this.lblSortBy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblSortBy.Location = new System.Drawing.Point(571, 7);
+			this.lblSortBy.Location = new System.Drawing.Point(574, 7);
 			this.lblSortBy.Name = "lblSortBy";
 			this.lblSortBy.Size = new System.Drawing.Size(41, 15);
 			this.lblSortBy.TabIndex = 2;
@@ -255,9 +264,9 @@
             "Active and Inactive",
             "Active Only",
             "Inactive Only"});
-			this.cbSortBy.Location = new System.Drawing.Point(618, 6);
+			this.cbSortBy.Location = new System.Drawing.Point(621, 6);
 			this.cbSortBy.Name = "cbSortBy";
-			this.cbSortBy.Size = new System.Drawing.Size(135, 21);
+			this.cbSortBy.Size = new System.Drawing.Size(132, 21);
 			this.cbSortBy.TabIndex = 1;
 			this.cbSortBy.SelectedIndexChanged += new System.EventHandler(this.ChartOfAccounts_FilterChanged);
 			// 
@@ -278,7 +287,7 @@
 			this.dgChartAccounts.ReadOnly = true;
 			this.dgChartAccounts.RowHeadersVisible = false;
 			this.dgChartAccounts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dgChartAccounts.Size = new System.Drawing.Size(753, 390);
+			this.dgChartAccounts.Size = new System.Drawing.Size(753, 418);
 			this.dgChartAccounts.TabIndex = 0;
 			this.dgChartAccounts.DoubleClick += new System.EventHandler(this.dgChartAccounts_DoubleClick);
 			// 
@@ -1046,33 +1055,11 @@
 			this.lblCurrentRatio.TabIndex = 0;
 			this.lblCurrentRatio.Text = "Current Ratio";
 			// 
-			// toolbarMain
-			// 
-			this.toolbarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnAddAccount});
-			this.toolbarMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-			this.toolbarMain.Location = new System.Drawing.Point(0, 0);
-			this.toolbarMain.Name = "toolbarMain";
-			this.toolbarMain.Size = new System.Drawing.Size(887, 25);
-			this.toolbarMain.TabIndex = 2;
-			this.toolbarMain.Text = "Toolbar";
-			// 
-			// btnAddAccount
-			// 
-			this.btnAddAccount.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAccount.Image")));
-			this.btnAddAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnAddAccount.Name = "btnAddAccount";
-			this.btnAddAccount.Size = new System.Drawing.Size(97, 22);
-			this.btnAddAccount.Text = "&Add Account";
-			this.btnAddAccount.Click += new System.EventHandler(this.miAddAccount_Click);
-			// 
 			// Mainwin
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(887, 462);
-			this.Controls.Add(this.toolbarMain);
 			this.Controls.Add(this.tabMain);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(903, 500);
@@ -1114,10 +1101,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgBalanceSheet)).EndInit();
 			this.tpRatios.ResumeLayout(false);
 			this.tpRatios.PerformLayout();
-			this.toolbarMain.ResumeLayout(false);
-			this.toolbarMain.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
         }
 
@@ -1133,7 +1117,6 @@
 		private System.Windows.Forms.TabPage tpAccountDetails;
 		private System.Windows.Forms.GroupBox gbAccount;
 		private System.Windows.Forms.CheckBox cbAccountActive;
-		private System.Windows.Forms.ToolStrip toolbarMain;
 		private System.Windows.Forms.TabPage tpAllChanges;
 		private System.Windows.Forms.DataGridView dgChanges;
         private System.Windows.Forms.TabPage tpAllTransactions;
@@ -1160,7 +1143,6 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button btnAddAccountType;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.ToolStripButton btnAddAccount;
 		private System.Windows.Forms.Button btnDeleteAccount;
         private System.Windows.Forms.TabPage tpIncomeStatement;
         private System.Windows.Forms.DataGridView dgIncomeSummary;
@@ -1194,6 +1176,7 @@
         private System.Windows.Forms.TabPage tpRatios;
         private System.Windows.Forms.TextBox txtCurRatio;
         private System.Windows.Forms.Label lblCurrentRatio;
+		private System.Windows.Forms.Button btnNewAccount;
 
 	}
 }

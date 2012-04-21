@@ -172,13 +172,13 @@ namespace App_Domain {
 		/// <summary>
 		/// Gets a list of a subset of activeAccounts
 		/// </summary>
-		/// <param name="careAboutActive">Whether the second bool is relevant</param>
-		/// <param name="active">true = active activeAccounts, false = inactive activeAccounts</param>
-		/// <param name="type">ID of the type of activeAccounts to get</param>
+		/// 
+		/// 
+		/// 
 		/// <returns>Accounts that match criteria in a list</returns>
-		public List<Account> GetFilteredAccountList(bool careAboutActive, bool active, int type) {
+		public List<Account> GetActiveAccountList() {
 			List<Account> accounts = new List<Account>();
-			DataTable dt = GetFilteredChartOfAccounts(careAboutActive, active, type, "");
+			DataTable dt = GetFilteredChartOfAccounts(true, true, 0, "");
 			if (dt != null) {
 				foreach (DataRow row in dt.Rows) {
 					accounts.Add(new Account(Convert.ToInt32(row["Account"]), Convert.ToString(row["Description"])));
@@ -226,7 +226,7 @@ namespace App_Domain {
 		/// <param name="refnum"></param>
 		/// <returns></returns>
 		public string GetJournalEntryNote(int refnum) {
-			return Convert.ToString(ExecuteQuery("SELECT notes FROM Journal_Entries WHERE id = " + refnum.ToString()).Rows[0][0]);
+			return ExecuteQuery("SELECT notes FROM Journal_Entries WHERE id = " + refnum).Rows[0][0].ToString();
 		}
 
 		/// <summary>
@@ -234,7 +234,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetAccountTypes() {
-			return ExecuteQuery("SELECT name AS [Name], descript AS [Description], CASE debitispositive WHEN 1 THEN 'Debit' WHEN 0 THEN 'Credit' END AS [Positive Side] FROM Account_Types");
+			return ExecuteQuery("SELECT name AS [Name], descript AS [Description], CASE account_type WHEN 0 THEN 'Assets' WHEN 1 THEN 'Liabilities' WHEN 2 THEN 'Expenses' WHEN 3 THEN 'Revenues' WHEN 4 THEN 'Equity' END AS [Type] FROM Account_Types");
 		}
 
 		/// <summary>
@@ -428,14 +428,14 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Finds whether an account increases on debit or credit side
+		/// Finds whether an account increases on debit or credit side. Assets and expenses increase on the debit side
 		/// </summary>
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public int IsDebitThePositiveSide(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT at.debitispositive FROM Account_Types AS at JOIN Chart_of_Accounts AS ca ON ca.typeid = at.id WHERE ca.accountnum = " + accountnum);
+			DataTable dt = ExecuteQuery("SELECT at.account_type AS [Type] FROM Account_Types AS at JOIN Chart_of_Accounts AS ca ON ca.typeid = at.id WHERE ca.accountnum = " + accountnum);
 			if (dt != null)
-				return Convert.ToInt32(dt.Rows[0]["debitispositive"]) == 1 ? 1 : 0;
+				return Convert.ToInt32(dt.Rows[0]["Type"]) == 0 || Convert.ToInt32(dt.Rows[0]["Type"]) == 2 ? 1 : 0;
 			return -1;
 		}
 
@@ -445,7 +445,7 @@ namespace App_Domain {
 		/// <param name="name"></param>
 		/// <returns></returns>
 		public DataTable GetAccountTypeByName(string name) {
-			return ExecuteQuery("SELECT id, name, descript, debitispositive FROM Account_Types WHERE name LIKE '" + name + "'");
+			return ExecuteQuery("SELECT id, name FROM Account_Types WHERE name = '" + name + "'");
 		}
 
 		/// <summary>

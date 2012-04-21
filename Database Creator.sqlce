@@ -2,7 +2,6 @@ CREATE TABLE Account_Types(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	name NVARCHAR(100) NOT NULL,
 	descript NTEXT NOT NULL,
-	debitispositive BIT DEFAULT 1,
 	account_type INT NOT NULL);
 
 CREATE TABLE Chart_of_Accounts(
@@ -39,9 +38,8 @@ CREATE TABLE Account_Changes(
 CREATE TABLE Settings(
 	id int IDENTITY(1,1) PRIMARY KEY,
 	next_ref_id INT DEFAULT 1,
-dividens DECIMAL,
-retained_earnings DECIMAL
-	
+	dividens DECIMAL,
+	retained_earnings DECIMAL
 	);
 
 CREATE TABLE Users(
@@ -59,34 +57,34 @@ INSERT INTO Users (name) VALUES('admin');
 	3 = revenue
 	4 = equity
 */
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Current Assets', 'Current Assets',1,0);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Long-Term Investments', 'Long-Term Investments',1,0);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Plant Assets', 'Plant Assets',1,0);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Natural Resources', 'Natural Resources',1,0);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Intangible Assets', 'Intangible Assets',1,0);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Current Liabilities', 'Current Liabilities',0,1);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Unearned Revenues', 'Unearned Revenues',0,1);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Notes Payable', 'Notes Payable',0,1);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Long-Term Liabilities', 'Long-Term Liabilities',0,1);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Owner’s Equity', 'Owner’s Equity',0,4);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Paid-In Capital', 'Paid-In Capital',0,4);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('No-par common stock', 'No-par common stock',0,4);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Retained Earnings', 'Retained Earnings',1,4);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Other Equity Accounts', 'Other Equity Accounts',0,4);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Revenues', 'Revenues',0,3);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Cost of Goods Sold', 'Cost of Goods Sold',1,3);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Manufacturing', 'Manufacturing',1,3);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Standard Cost Variance', 'Standard Cost Variance',1,3);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Amortization, Depletion, and Depreciation', 'Amortization, Depletion, and Depreciation',0,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Employee-Related Expenses', 'Employee-Related Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Financial Expenses', 'Financial Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Insurance Expenses', 'Insurance Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Rental Expenses', 'Rental Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Supplies Expenses', 'Supplies Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Miscellaneous Expenses', 'Miscellaneous Expenses',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Gains', 'Gains',1,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Losses', 'Losses',0,2);
-INSERT INTO Account_Types (name, descript, debitispositive, account_type) VALUES('Clearing Accounts', 'Clearing Accounts',1,3);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Current Assets', 'Current Assets',0);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Long-Term Investments', 'Long-Term Investments',0);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Plant Assets', 'Plant Assets',0);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Natural Resources', 'Natural Resources',0);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Intangible Assets', 'Intangible Assets',0);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Current Liabilities', 'Current Liabilities',1);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Unearned Revenues', 'Unearned Revenues',1);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Notes Payable', 'Notes Payable',1);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Long-Term Liabilities', 'Long-Term Liabilities',1);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Owner’s Equity', 'Owner’s Equity',4);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Paid-In Capital', 'Paid-In Capital',4);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('No-par common stock', 'No-par common stock',4);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Retained Earnings', 'Retained Earnings',4);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Other Equity Accounts', 'Other Equity Accounts',4);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Revenues', 'Revenues',3);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Cost of Goods Sold', 'Cost of Goods Sold',3);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Manufacturing', 'Manufacturing',3);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Standard Cost Variance', 'Standard Cost Variance',3);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Amortization, Depletion, and Depreciation', 'Amortization, Depletion, and Depreciation',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Employee-Related Expenses', 'Employee-Related Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Financial Expenses', 'Financial Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Insurance Expenses', 'Insurance Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Rental Expenses', 'Rental Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Supplies Expenses', 'Supplies Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Miscellaneous Expenses', 'Miscellaneous Expenses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Gains', 'Gains',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Losses', 'Losses',2);
+INSERT INTO Account_Types (name, descript, account_type) VALUES('Clearing Accounts', 'Clearing Accounts',3);
 
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(101, 'Cash', 1);
 INSERT INTO Chart_of_Accounts (accountnum, descript, typeid) VALUES(102, 'Petty cash', 1);

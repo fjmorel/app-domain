@@ -322,16 +322,6 @@ namespace App_Domain {
 		private void ChartOfAccounts_FilterChanged(object sender, EventArgs e) { OnFillAccountCharts(); }
 
 		/// <summary>
-		/// Add account
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void miAddAccount_Click(object sender, EventArgs e) {
-			new AddAccount().ShowDialog();
-			tabMain.SelectTab(tabMain.SelectedTab);
-		}
-
-		/// <summary>
 		/// Select an account to view information
 		/// </summary>
 		/// <param name="sender"></param>
@@ -629,6 +619,11 @@ namespace App_Domain {
 		/// <param name="e"></param>
 		private void Mainwin_Resize(object sender, EventArgs e) {
 			resizeDataColumns();
+		}
+
+		private void btnNewAccount_Click(object sender, EventArgs e) {
+			new AddAccount().ShowDialog();
+			tabMain.SelectTab(tabMain.SelectedTab);
 		}
 
 	}//end Mainwin class

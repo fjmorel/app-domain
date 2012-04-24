@@ -78,6 +78,18 @@ namespace App_Domain {
 			return dt;
 		}
 
+        /// <summary>
+        /// Get the balance of quick assets
+        /// </summary>
+        /// <returns></returns>
+        public double GetQuickAssetBalance()
+        {
+            double balance = GetAccountBalance(101);
+            balance += GetAccountBalance(102);
+            balance += GetAccountBalance(103);
+            return balance;
+        }
+
 		/// <summary>
 		/// Return balances of only assets, liabilities, and equity
 		/// </summary>

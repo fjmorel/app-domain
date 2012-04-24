@@ -94,7 +94,15 @@ namespace App_Domain {
 				OnFillIncomeSummary();
 			} else if (tabMain.SelectedTab == tpBalanceSheet) {
 				OnFillBalance();
-			}
+            }
+            else if (tabMain.SelectedTab == tpRetainedEarnings)
+            {
+                OnFillRE();
+            }
+            else if (tabMain.SelectedTab == tpRatios)
+            {
+                OnFillRatios();
+            }
 			resizeDataColumns();
 		}
 
@@ -216,13 +224,18 @@ namespace App_Domain {
 			double equity = Program.sqlcon.GetAccountTypeTotal(4);
 			double revenue = Program.sqlcon.GetAccountTypeTotal(3);
 			double expenses = Program.sqlcon.GetAccountTypeTotal(2);
+            double quickassets = Program.sqlcon.GetQuickAssetBalance();
 			double ratio;
 
 			if (liabilities != 0) {
 				ratio = Math.Round(Math.Abs(assests / liabilities), 2);
 				txtCurRatio.Text = ratio.ToString();
+
+                ratio = Math.Round(Math.Abs(quickassets / liabilities), 2);
+                txtQuickRatio.Text = ratio.ToString();
 			} else {
 				txtCurRatio.Text = "Zero liabilities";
+                txtQuickRatio.Text = "Zero liabilities";
 			}
 
 		}

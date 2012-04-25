@@ -58,8 +58,6 @@ namespace App_Domain {
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 			dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
-			
-
 			//setup unposted datagridview - need columns to be able to resize them
 			EmptyTransactionTable = new DataTable();
 			EmptyTransactionTable.Columns.Add("Account");
@@ -148,6 +146,7 @@ namespace App_Domain {
 				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width - 20;
 				lblTBCompany.Left = tpTrialBalance.Width / 2 - lblTBCompany.Width / 2;
 				lblTBTrialBalance.Left = tpTrialBalance.Width / 2 - lblTBTrialBalance.Width / 2;
+				lblTBDate.Text = DateTime.Today.ToLongDateString();
 				lblTBDate.Left = tpTrialBalance.Width / 2 - lblTBDate.Width / 2;
 			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
 				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
@@ -161,6 +160,7 @@ namespace App_Domain {
 				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width - 20;
 				lblISCompany.Left = tpIncomeStatement.Width / 2 - lblISCompany.Width / 2;
 				lblIIncomeStatement.Left = tpIncomeStatement.Width / 2 - lblIIncomeStatement.Width / 2;
+				lblIDate.Text = DateTime.Today.ToLongDateString();
 				lblIDate.Left = tpIncomeStatement.Width / 2 - lblIDate.Width / 2;
 			} else if (tabMain.SelectedTab == tpBalanceSheet) {	
 				dgBalanceSheet.Columns[0].Width = 120;
@@ -168,6 +168,7 @@ namespace App_Domain {
 				dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - 20;
 				lblBCompany.Left = tpBalanceSheet.Width / 2 - lblBCompany.Width / 2;
 				lblBBalance.Left = tpBalanceSheet.Width / 2 - lblBBalance.Width / 2;
+				lblBDate.Text = DateTime.Today.ToLongDateString();
 				lblBDate.Left = tpBalanceSheet.Width / 2 - lblBDate.Width / 2;
 			}
 		}
@@ -225,7 +226,7 @@ namespace App_Domain {
 		/// Refresh balance sheet
 		/// </summary>
 		public void OnFillBalance() {
-			dgBalanceSheet.DataSource = Program.sqlcon.GetBalance();
+			dgBalanceSheet.DataSource = Program.sqlcon.GetBalanceSheet();
 			//Left align some columns
 			dgBalanceSheet.Columns[0].DefaultCellStyle = style;
 			dgBalanceSheet.Columns[1].DefaultCellStyle = style;

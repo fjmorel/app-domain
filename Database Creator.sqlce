@@ -10,19 +10,18 @@ CREATE TABLE Chart_of_Accounts(
 	descript NVARCHAR(100) NOT NULL,
 	active BIT DEFAULT 1,
 	typeid INT NOT NULL,
-	datecreated DATETIME DEFAULT GETDATE());
+	balance float DEFAULT 0);
 
 CREATE TABLE Transactions(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	accountnum INT NOT NULL,
-	dammount FLOAT,
-	cammount FLOAT,
+	dammount FLOAT DEFAULT 0,
+	cammount FLOAT DEFAULT 0,
 	ref INT NOT NULL);
 
 CREATE TABLE Journal_Entries(
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	notes NTEXT,
-	datecreated DATETIME DEFAULT GETDATE(),
 	postdate DATETIME,
 	posted BIT DEFAULT 0,
 	deleted BIT DEFAULT 0);
@@ -48,9 +47,11 @@ CREATE TABLE Users(
 	);
 
 INSERT INTO Users (name) VALUES('admin');
-
 /*
-	for account_type column in account_types table:
+
+UPDATE Chart_of_Accounts SET balance = 0;
+
+for account_type column in account_types table:
 	0 = asset
 	1 = liability
 	2 = expense

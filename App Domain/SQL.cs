@@ -39,11 +39,7 @@ namespace App_Domain {
 		/// <param name="accountnum">Account to get balance for</param>
 		/// <returns></returns>
 		public double GetAccountBalance(int accountnum) {
-			if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1)
-				return GetAccountDebitTotal(accountnum) - GetAccountCreditTotal(accountnum);
-			else
-				return GetAccountCreditTotal(accountnum) - GetAccountDebitTotal(accountnum);
-
+			return Convert.ToDouble(ExecuteQuery("SELECT balance FROM Chart_of_Accounts WHERE accountnum = " + accountnum).Rows[0]["balance"]);
 		}
 
 		/// <summary>
@@ -51,7 +47,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetTrialBalance() {
-			DataTable accounts = ExecuteQuery("SELECT accountnum, descript FROM Chart_of_Accounts WHERE active = 1");
+			DataTable accounts = ExecuteQuery("SELECT accountnum, descript, balance FROM Chart_of_Accounts WHERE active = 1");
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));
@@ -59,9 +55,9 @@ namespace App_Domain {
 			dt.Columns.Add("Credits", typeof(string));
 
 			foreach (DataRow row in accounts.Rows) {
-				int accountnum = Convert.ToInt32(row[0].ToString());
+				int accountnum = Convert.ToInt32(row[0]);
 				string account = row[1].ToString();
-				double amount = GetAccountBalance(accountnum);
+				double amount = Convert.ToDouble(row[2]);
 				if (amount != 0) {
 					string debit = "", credit = "";
 					if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1) {
@@ -78,77 +74,66 @@ namespace App_Domain {
 			return dt;
 		}
 
-        /// <summary>
-        /// Get the balance of quick assets
-        /// </summary>
-        /// <returns></returns>
-        public double GetQuickAssetBalance()
-        {
-            double balance = GetAccountBalance(101);
-            balance += GetAccountBalance(102);
-            balance += GetAccountBalance(103);
-            return balance;
-        }
+		/// <summary>
+		/// Get the balance of quick assets
+		/// </summary>
+		/// <returns></returns>
+		public double GetQuickAssetBalance() {//TODO: Account names, no ids. IDs change
+			return GetAccountBalance(101) + GetAccountBalance(102) + GetAccountBalance(103);
+		}
 
 		/// <summary>
 		/// Return balances of only assets, liabilities, and equity
 		/// </summary>
 		/// <returns></returns>
-		public DataTable GetBalance() {
-			//string query = "SELECT ca.accountnum AS [Account], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
-			//"JOIN Account_Types AS at ON (ca.typeid = at.id)";
-			DataTable assets = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 0");
-			
-			DataTable expenses = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 1");
-			
-			DataTable equity = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 4");
+		public DataTable GetBalanceSheet() {
+			DataTable assets = ExecuteQuery("SELECT ca.accountnum, ca.descript, ca.balance FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 0");
+			DataTable liabilities = ExecuteQuery("SELECT ca.accountnum, ca.descript, ca.balance FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 1");
+			DataTable equity = ExecuteQuery("SELECT ca.accountnum, ca.descript, ca.balance FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 4");
 
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));
-			dt.Columns.Add("Amount", typeof(string));
+			dt.Columns.Add("Balance", typeof(string));
 
-			double total = 0;
+			double totalAssets = 0;
 			foreach (DataRow row in assets.Rows) {
-				int accountnum = Convert.ToInt32(row[0].ToString());
-				string account = row[1].ToString();
-				double amount = GetAccountBalance(accountnum);
-				total += amount;
+				double amount = Convert.ToDouble(row[2].ToString());
 				if (amount != 0) {
-					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
+					totalAssets += amount;
+					dt.Rows.Add(row[0], row[1], String.Format("{0:C}", amount));
 				}
 			}
-			dt.Rows.Add("Total Assets", "", String.Format("{0:C}", total));
+			dt.Rows.Add("Total Assets", "", String.Format("{0:C}", totalAssets));
 			dt.Rows.Add("", "", "");
 
-			total = 0;
-			foreach (DataRow row in expenses.Rows) {
-				int accountnum = Convert.ToInt32(row[0].ToString());
-				string account = row[1].ToString();
-				double amount = GetAccountBalance(accountnum);
-				total += amount;
+			double totalLiabilities = 0;
+			foreach (DataRow row in liabilities.Rows) {
+				double amount = Convert.ToDouble(row[2].ToString());
 				if (amount != 0) {
-					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
+					totalLiabilities += amount;
+					dt.Rows.Add(row[0], row[1], String.Format("{0:C}", amount));
 				}
 			}
-			dt.Rows.Add("Total Expenses", "", String.Format("{0:C}", total));
-			dt.Rows.Add("", "", "");
+			if (totalLiabilities != 0) {
+				dt.Rows.Add("Total Liabilities", "", String.Format("{0:C}", totalLiabilities));
+				dt.Rows.Add("", "", "");
+			}
 
-			total = 0;
+			double totalEquity = 0;
 			foreach (DataRow row in equity.Rows) {
-				int accountnum = Convert.ToInt32(row[0].ToString());
-				string account = row[1].ToString();
-				double amount = GetAccountBalance(accountnum);
-				total += amount;
+				double amount = Convert.ToDouble(row[2].ToString());
 				if (amount != 0) {
-					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
+					totalEquity += amount;
+					dt.Rows.Add(row[0], row[1], String.Format("{0:C}", amount));
 				}
 			}
-			dt.Rows.Add("Total Equity", "", String.Format("{0:C}", total));
-			dt.Rows.Add("", "", "");
+			if (totalEquity != 0) {
+				dt.Rows.Add("Total Equity", "", String.Format("{0:C}", totalEquity));
+				dt.Rows.Add("", "", "");
+			}
 
-			
-			dt.Rows.Add("Total", "", String.Format("{0:C}", getTotalDebit()));
+			dt.Rows.Add("Total Liabilities + Equity", "", String.Format("{0:C}", totalLiabilities + totalEquity));
 
 			return dt;
 		}
@@ -164,8 +149,6 @@ namespace App_Domain {
 		public DataTable GetFilteredChartOfAccounts(bool careAboutActive, bool active, int type, string name) {
 			string query = "SELECT ca.accountnum AS [Account], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
 				"JOIN Account_Types AS at ON (ca.typeid = at.id)";
-			//To get date of account
-			//CAST(DATEPART(month, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(day, ca.datecreated) AS NVARCHAR(2)) + '-' + CAST(DATEPART(year, ca.datecreated) AS NVARCHAR(4)) AS [Created]
 			string whereParam = "";
 			if (careAboutActive) {//Filter active status only if we care about it
 				whereParam += " WHERE ";
@@ -295,30 +278,6 @@ namespace App_Domain {
 		}
 
 		/// <summary>
-		/// Gets the debit total for a specific account
-		/// </summary>
-		/// <param name="accountnum"></param>
-		/// <returns></returns>
-		public double GetAccountDebitTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.dammount) FROM Transactions j JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
-			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
-				return Convert.ToDouble(dt.Rows[0][0].ToString());
-			else return 0;
-		}
-
-		/// <summary>
-		/// gets the credit total for a specific account
-		/// </summary>
-		/// <param name="accountnum"></param>
-		/// <returns></returns>
-		public double GetAccountCreditTotal(int accountnum) {
-			DataTable dt = ExecuteQuery("SELECT SUM(j.cammount) FROM Transactions j JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1 and j.accountnum = " + accountnum);
-			if (!dt.Rows[0][0].ToString().Equals(""))//Make sure there's a value
-				return Convert.ToDouble(dt.Rows[0][0].ToString());
-			else return 0;
-		}
-
-		/// <summary>
 		/// Gets a datatable with all journal entries
 		/// </summary>
 		/// <returns></returns>
@@ -340,15 +299,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public double getTotalCredit() {
-			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 0");
-			double total = 0;
-			if (dt != null) {
-				foreach (DataRow each in dt.Rows) {
-					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountBalance(a);
-				}
-			}
-			return total;
+			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 0").Rows[0][0]);
 		}
 
 		/// <summary>
@@ -356,50 +307,24 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public double getTotalDebit() {
-			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 1");
-			double total = 0;
-			if (dt != null) {
-				foreach (DataRow each in dt.Rows) {
-					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountBalance(a);
-				}
-			}
-			return total;
+			return Convert.ToDouble(ExecuteQuery("SELECT (ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.debitispositive = 1").Rows[0][0]);
 		}
 
-        /// <summary>
-        /// Gets the balance of the sum of accounts with type
-        /// </summary>
-        /// <param name="accounttype"></param>
-        /// <returns></returns>
-        public double GetAccountTypeTotal(int accounttype) {
-            DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = " + accounttype.ToString());
-            double total = 0;
-            if (dt != null)
-            {
-                foreach (DataRow each in dt.Rows)
-                {
-                    int a = Convert.ToInt32(each["accountnum"]);
-                    total += GetAccountBalance(a);
-                }
-            }
-            return total;
-        }
+		/// <summary>
+		/// Gets the balance of the sum of accounts with type
+		/// </summary>
+		/// <param name="accounttype"></param>
+		/// <returns></returns>
+		public double GetAccountTypeTotal(int accounttype) {
+			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = " + accounttype.ToString()).Rows[0][0]);
+		}
 
 		/// <summary>
 		/// Get the total of all revenues
 		/// </summary>
 		/// <returns></returns>
 		public double GetIncomeDebits() {
-			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3");
-			double total = 0;
-			if (dt != null) {
-				foreach (DataRow each in dt.Rows) {
-					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountBalance(a);
-				}
-			}
-			return Math.Abs(total);
+			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3").Rows[0][0]);
 		}
 
 		/// <summary>
@@ -407,15 +332,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public double GetIncomeCredits() {
-			DataTable dt = ExecuteQuery("SELECT accountnum FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2");
-			double total = 0;
-			if (dt != null) {
-				foreach (DataRow each in dt.Rows) {
-					int a = Convert.ToInt32(each["accountnum"]);
-					total += GetAccountBalance(a);
-				}
-			}
-			return Math.Abs(total);
+			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2").Rows[0][0]);
 		}
 
 		/// <summary>
@@ -423,7 +340,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetIncome() {
-			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND (at.account_type = 2 OR at.account_type = 3) ORDER BY at.account_type DESC");
+			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript, ca.balance FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND (at.account_type = 2 OR at.account_type = 3) ORDER BY at.account_type DESC");
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));
@@ -433,7 +350,7 @@ namespace App_Domain {
 			foreach (DataRow row in accounts.Rows) {
 				int accountnum = Convert.ToInt32(row[0].ToString());
 				string account = row[1].ToString();
-				double amount = GetAccountBalance(accountnum);
+				double amount = Convert.ToDouble(row[2]);
 				if (amount != 0) {
 					string debit = "", credit = "";
 					if (IsDebitThePositiveSide(accountnum) == 1)
@@ -445,7 +362,7 @@ namespace App_Domain {
 			}
 			double debits = GetIncomeDebits();
 			double credits = GetIncomeCredits();
-			if(credits > debits)
+			if (credits > debits)
 				dt.Rows.Add("Net Loss", String.Format("{0:C}", debits - credits), "", "");
 			else
 				dt.Rows.Add("Net Income", String.Format("{0:C}", debits - credits), "", "");
@@ -510,7 +427,7 @@ namespace App_Domain {
 		/// <param name="typeid"></param>
 		/// <param name="owner"></param>
 		public void AddAccount(string description, int active, int typeid, int accountnum) {
-			ExecuteNonQuery("INSERT INTO Chart_of_Accounts (descript, active, typeid, datecreated, accountnum) VALUES('" + description + "', '" + active + "', '" + typeid + "', GETDATE(), " + accountnum + ")");
+			ExecuteNonQuery("INSERT INTO Chart_of_Accounts (descript, active, typeid, accountnum) VALUES('" + description + "', '" + active + "', '" + typeid + "', " + accountnum + ")");
 			AddAccountChange(accountnum, "Created new account: " + description);
 		}
 
@@ -550,8 +467,44 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="refnum"></param>
 		public void PostJournalEntry(int refnum) {
-			ExecuteNonQuery("UPDATE Journal_Entries SET posted = 1, deleted = 0 WHERE id = " + refnum.ToString());
+			ExecuteNonQuery("UPDATE Journal_Entries SET posted = 1, deleted = 0 WHERE id = " + refnum);
+			
+			//Update account balances
+			DataTable dt = ExecuteQuery("SELECT accountnum, dammount, cammount, ref FROM Transactions WHERE ref = " + refnum);
+			if (dt != null && dt.Rows.Count > 0) {
+				foreach (DataRow each in dt.Rows) {
+					int accountnum = Convert.ToInt32(each["accountnum"]);
+					double dammount = Convert.ToDouble(each["dammount"]);
+					double cammount = Convert.ToDouble(each["cammount"]);
+					if (IsDebitThePositiveSide(accountnum) == 1) {
+						if (dammount > 0)
+							ChangeAccountBalance(accountnum, dammount, true);
+						else if (cammount > 0)
+							ChangeAccountBalance(accountnum, cammount, false);
+					} else {
+						if (dammount > 0)
+							ChangeAccountBalance(accountnum, dammount, false);
+						else if (cammount > 0)
+							ChangeAccountBalance(accountnum, cammount, true);
+					}
+				}
+			}
+
+
 			AddAccountChange(refnum, "Posted journal entry");
+		}
+
+		/// <summary>
+		/// Add or subtract from the account balance
+		/// </summary>
+		/// <param name="accountnum"></param>
+		/// <param name="ammount"></param>
+		/// <param name="addNotSubtract"></param>
+		public void ChangeAccountBalance(int accountnum, double ammount, Boolean addNotSubtract) {
+			if(addNotSubtract)
+				ExecuteNonQuery("UPDATE Chart_of_Accounts SET balance = " + (GetAccountBalance(accountnum) + ammount) + " WHERE accountnum = " + accountnum);
+			else
+				ExecuteNonQuery("UPDATE Chart_of_Accounts SET balance = " + (GetAccountBalance(accountnum) - ammount) + " WHERE accountnum = " + accountnum);
 		}
 
 		/// <summary>

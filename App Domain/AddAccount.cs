@@ -17,9 +17,6 @@ namespace App_Domain {
 		public AddAccount() {
 			InitializeComponent();
 			
-			numInitialBalance.Maximum = decimal.MaxValue;
-			numInitialBalance.Minimum = decimal.MinValue;
-
 			txtType.entireList = Program.sqlcon.GetAccountTypesList();
 		}
 
@@ -45,7 +42,7 @@ namespace App_Domain {
 					DataTable dt2 = Program.sqlcon.GetAccountTypeByName(txtType.Text);
 					if (dt2 != null && dt2.Rows.Count == 1) {
 						int active = checkActive.Checked ? 1 : 0;//1 for active, 0 for inactive
-						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), Convert.ToInt32(txtAccountnum.Text),numInitialBalance.Value);
+						Program.sqlcon.AddAccount(txtDescription.Text, active, Convert.ToInt32(dt2.Rows[0]["id"]), Convert.ToInt32(txtAccountnum.Text));
 						this.Close();
 					} else {
 						MessageBox.Show("Please enter a valid account type.");

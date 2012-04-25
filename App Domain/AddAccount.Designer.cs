@@ -37,10 +37,7 @@
 			this.txtAccountnum = new System.Windows.Forms.TextBox();
 			this.lblAccountnum = new System.Windows.Forms.Label();
 			this.checkActive = new System.Windows.Forms.CheckBox();
-			this.lblInitialBalance = new System.Windows.Forms.Label();
-			this.numInitialBalance = new System.Windows.Forms.NumericUpDown();
 			this.txtType = new App_Domain.AutoCompleteTextbox();
-			((System.ComponentModel.ISupportInitialize)(this.numInitialBalance)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// txtDescription
@@ -75,7 +72,7 @@
 			// 
 			this.bAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.bAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bAdd.Location = new System.Drawing.Point(177, 195);
+			this.bAdd.Location = new System.Drawing.Point(177, 150);
 			this.bAdd.Name = "bAdd";
 			this.bAdd.Size = new System.Drawing.Size(105, 30);
 			this.bAdd.TabIndex = 6;
@@ -87,7 +84,7 @@
 			// 
 			this.bCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.bCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.bCancel.Location = new System.Drawing.Point(96, 195);
+			this.bCancel.Location = new System.Drawing.Point(96, 150);
 			this.bCancel.Name = "bCancel";
 			this.bCancel.Size = new System.Drawing.Size(75, 30);
 			this.bCancel.TabIndex = 7;
@@ -120,32 +117,12 @@
 			this.checkActive.AutoSize = true;
 			this.checkActive.Checked = true;
 			this.checkActive.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkActive.Location = new System.Drawing.Point(15, 195);
+			this.checkActive.Location = new System.Drawing.Point(15, 150);
 			this.checkActive.Name = "checkActive";
 			this.checkActive.Size = new System.Drawing.Size(56, 17);
 			this.checkActive.TabIndex = 5;
 			this.checkActive.Text = "Active";
 			this.checkActive.UseVisualStyleBackColor = true;
-			// 
-			// lblInitialBalance
-			// 
-			this.lblInitialBalance.AutoSize = true;
-			this.lblInitialBalance.Location = new System.Drawing.Point(15, 150);
-			this.lblInitialBalance.Name = "lblInitialBalance";
-			this.lblInitialBalance.Size = new System.Drawing.Size(73, 13);
-			this.lblInitialBalance.TabIndex = 12;
-			this.lblInitialBalance.Text = "Initial Balance";
-			// 
-			// numInitialBalance
-			// 
-			this.numInitialBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.numInitialBalance.DecimalPlaces = 2;
-			this.numInitialBalance.Location = new System.Drawing.Point(15, 165);
-			this.numInitialBalance.Name = "numInitialBalance";
-			this.numInitialBalance.Size = new System.Drawing.Size(267, 20);
-			this.numInitialBalance.TabIndex = 4;
-			this.numInitialBalance.ThousandsSeparator = true;
 			// 
 			// txtType
 			// 
@@ -162,9 +139,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(294, 237);
-			this.Controls.Add(this.numInitialBalance);
-			this.Controls.Add(this.lblInitialBalance);
+			this.ClientSize = new System.Drawing.Size(294, 192);
 			this.Controls.Add(this.txtType);
 			this.Controls.Add(this.checkActive);
 			this.Controls.Add(this.lblAccountnum);
@@ -183,7 +158,6 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AddAccount";
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddAccount_KeyDown);
-			((System.ComponentModel.ISupportInitialize)(this.numInitialBalance)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -200,7 +174,5 @@
         private System.Windows.Forms.Label lblAccountnum;
 		private System.Windows.Forms.CheckBox checkActive;
 		private AutoCompleteTextbox txtType;
-		private System.Windows.Forms.Label lblInitialBalance;
-		private System.Windows.Forms.NumericUpDown numInitialBalance;
     }
 }

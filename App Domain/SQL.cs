@@ -97,30 +97,58 @@ namespace App_Domain {
 		public DataTable GetBalance() {
 			//string query = "SELECT ca.accountnum AS [Account], ca.descript AS [Description],CASE ca.active WHEN 1 THEN 'Yes' WHEN 0 THEN 'No' END AS [Active], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
 			//"JOIN Account_Types AS at ON (ca.typeid = at.id)";
-			DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND (at.account_type = 0 OR at.account_type = 1 OR at.account_type = 4)");
+			DataTable assets = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 0");
+			
+			DataTable expenses = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 1");
+			
+			DataTable equity = ExecuteQuery("SELECT ca.accountnum, ca.descript FROM Chart_of_Accounts as ca JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1 AND at.account_type = 4");
 
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));
-			dt.Columns.Add("Debits", typeof(string));
-			dt.Columns.Add("Credits", typeof(string));
+			dt.Columns.Add("Amount", typeof(string));
 
-			foreach (DataRow row in accounts.Rows) {
+			double total = 0;
+			foreach (DataRow row in assets.Rows) {
 				int accountnum = Convert.ToInt32(row[0].ToString());
 				string account = row[1].ToString();
 				double amount = GetAccountBalance(accountnum);
+				total += amount;
 				if (amount != 0) {
-					string debit = "", credit = "";
-					if (Program.sqlcon.IsDebitThePositiveSide(accountnum) == 1) {
-						debit = String.Format("{0:C}", amount);
-					} else {
-						credit = String.Format("{0:C}", amount);
-					}
-					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
+					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
 				}
 			}
+			dt.Rows.Add("Total Assets", "", String.Format("{0:C}", total));
+			dt.Rows.Add("", "", "");
+
+			total = 0;
+			foreach (DataRow row in expenses.Rows) {
+				int accountnum = Convert.ToInt32(row[0].ToString());
+				string account = row[1].ToString();
+				double amount = GetAccountBalance(accountnum);
+				total += amount;
+				if (amount != 0) {
+					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
+				}
+			}
+			dt.Rows.Add("Total Expenses", "", String.Format("{0:C}", total));
+			dt.Rows.Add("", "", "");
+
+			total = 0;
+			foreach (DataRow row in equity.Rows) {
+				int accountnum = Convert.ToInt32(row[0].ToString());
+				string account = row[1].ToString();
+				double amount = GetAccountBalance(accountnum);
+				total += amount;
+				if (amount != 0) {
+					dt.Rows.Add(accountnum.ToString(), account, String.Format("{0:C}", amount));
+				}
+			}
+			dt.Rows.Add("Total Equity", "", String.Format("{0:C}", total));
+			dt.Rows.Add("", "", "");
+
 			
-			dt.Rows.Add("Totals", "", String.Format("{0:C}", getTotalDebit()), String.Format("{0:C}", getTotalCredit()));
+			dt.Rows.Add("Total", "", String.Format("{0:C}", getTotalDebit()));
 
 			return dt;
 		}
@@ -415,8 +443,12 @@ namespace App_Domain {
 					dt.Rows.Add(accountnum.ToString(), account, debit, credit);
 				}
 			}
-
-			dt.Rows.Add("Total Income", String.Format("{0:C}", GetIncomeDebits() - GetIncomeCredits()), "", "");
+			double debits = GetIncomeDebits();
+			double credits = GetIncomeCredits();
+			if(credits > debits)
+				dt.Rows.Add("Net Loss", String.Format("{0:C}", debits - credits), "", "");
+			else
+				dt.Rows.Add("Net Income", String.Format("{0:C}", debits - credits), "", "");
 
 			return dt;
 		}
@@ -477,15 +509,8 @@ namespace App_Domain {
 		/// <param name="active"></param>
 		/// <param name="typeid"></param>
 		/// <param name="owner"></param>
-		public void AddAccount(string description, int active, int typeid, int accountnum, decimal initialBalance) {
+		public void AddAccount(string description, int active, int typeid, int accountnum) {
 			ExecuteNonQuery("INSERT INTO Chart_of_Accounts (descript, active, typeid, datecreated, accountnum) VALUES('" + description + "', '" + active + "', '" + typeid + "', GETDATE(), " + accountnum + ")");
-			/*
-			TODO: Initial balance for account
-			string[] DorC = new string[] { "c", "Credi" };
-			if (IsDebitThePositiveSide(accountnum) == 1)//Use debit instead of credit
-				DorC = new string[] { "d", "Debi" };
-			ExecuteNonQuery("INSERT INTO Transactions (accountnum," + DorC[0] + "ammount, ref) VALUES (" + accountnum + "," + initialBalance + ", 0)");
-			*/
 			AddAccountChange(accountnum, "Created new account: " + description);
 		}
 
@@ -495,7 +520,6 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <param name="action"></param>
 		public void AddAccountChange(int accountnum, string action) {
-			//TODO: Actual userid, not just 1 for admin
 			ExecuteNonQuery("INSERT INTO Account_Changes (accountnumber, action, userid) VALUES('" + accountnum + "', '" + action + "', '1')");
 		}
 

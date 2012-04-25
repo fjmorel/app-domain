@@ -17,6 +17,8 @@ namespace App_Domain {
 		/// </summary>
 		private DataTable EmptyTransactionTable;
 
+		private DataGridViewCellStyle style;
+
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -28,6 +30,8 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void Mainwin_Load(object sender, EventArgs e) {
+			style = new DataGridViewCellStyle();
+			style.Alignment = DataGridViewContentAlignment.MiddleLeft;
 			cbSortBy.SelectedIndex = 0;
 			cbAccountType.SelectedIndex = 0;
 			numAccountNumber.Maximum = decimal.MaxValue;
@@ -54,6 +58,7 @@ namespace App_Domain {
 			dgJournal.ScrollBars = ScrollBars.Vertical;
 			dgTrialBalance.ScrollBars = ScrollBars.Vertical;
 			dgIncomeSummary.ScrollBars = ScrollBars.Vertical;
+			
 
 			//setup unposted datagridview - need columns to be able to resize them
 			EmptyTransactionTable = new DataTable();
@@ -119,7 +124,7 @@ namespace App_Domain {
 				dgAccountTransactions.Columns[0].Width = 80;
 				dgAccountTransactions.Columns[2].Width = 120;
 				dgAccountTransactions.Columns[3].Width = 120;
-				dgAccountTransactions.Columns[1].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[3].Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[0].Width;
+				dgAccountTransactions.Columns[1].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[3].Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[0].Width - 20;
 			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
 				dgAccountTypes.Columns[0].Width = 160;
 				dgAccountTypes.Columns[2].Width = 120;
@@ -130,32 +135,40 @@ namespace App_Domain {
 				dgJournal.Columns[3].Width = 120;
 				dgJournal.Columns[4].Width = 120;
 				dgJournal.Columns[5].Width = 150;
-				dgJournal.Columns[2].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[1].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width - dgJournal.Columns[5].Width;
+				dgJournal.Columns[2].Width = dgJournal.Width - dgJournal.Columns[0].Width - dgJournal.Columns[1].Width - dgJournal.Columns[3].Width - dgJournal.Columns[4].Width - dgJournal.Columns[5].Width - 20;
 			} else if (tabMain.SelectedTab == tpAllChanges) {
 				dgChanges.Columns[0].Width = 120;
 				dgChanges.Columns[2].Width = 120;
 				dgChanges.Columns[3].Width = 150;
-				dgChanges.Columns[1].Width = dgChanges.Width - dgChanges.Columns[0].Width - dgChanges.Columns[2].Width - dgChanges.Columns[3].Width;
+				dgChanges.Columns[1].Width = dgChanges.Width - dgChanges.Columns[0].Width - dgChanges.Columns[2].Width - dgChanges.Columns[3].Width - 20;
 			} else if (tabMain.SelectedTab == tpTrialBalance) {
 				dgTrialBalance.Columns[0].Width = 120;
 				dgTrialBalance.Columns[2].Width = 120;
 				dgTrialBalance.Columns[3].Width = 120;
 				dgTrialBalance.Columns[1].Width = dgTrialBalance.Width - dgTrialBalance.Columns[0].Width - dgTrialBalance.Columns[2].Width - dgTrialBalance.Columns[3].Width - 20;
+				lblTBCompany.Left = tpTrialBalance.Width / 2 - lblTBCompany.Width / 2;
+				lblTBTrialBalance.Left = tpTrialBalance.Width / 2 - lblTBTrialBalance.Width / 2;
+				lblTBDate.Left = tpTrialBalance.Width / 2 - lblTBDate.Width / 2;
 			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
 				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
 				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
 				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
-				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width;
+				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width - 20;
 			} else if (tabMain.SelectedTab == tpIncomeStatement) {
 				dgIncomeSummary.Columns[0].Width = 100;
 				dgIncomeSummary.Columns[2].Width = 100;
 				dgIncomeSummary.Columns[3].Width = 100;
-				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width;
-			} else if (tabMain.SelectedTab == tpBalanceSheet) {
+				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width - 20;
+				lblISCompany.Left = tpIncomeStatement.Width / 2 - lblISCompany.Width / 2;
+				lblIIncomeStatement.Left = tpIncomeStatement.Width / 2 - lblIIncomeStatement.Width / 2;
+				lblIDate.Left = tpIncomeStatement.Width / 2 - lblIDate.Width / 2;
+			} else if (tabMain.SelectedTab == tpBalanceSheet) {	
 				dgBalanceSheet.Columns[0].Width = 120;
 				dgBalanceSheet.Columns[2].Width = 120;
-				dgBalanceSheet.Columns[3].Width = 120;
-				dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - dgBalanceSheet.Columns[3].Width - 20;
+				dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - 20;
+				lblBCompany.Left = tpBalanceSheet.Width / 2 - lblBCompany.Width / 2;
+				lblBBalance.Left = tpBalanceSheet.Width / 2 - lblBBalance.Width / 2;
+				lblBDate.Left = tpBalanceSheet.Width / 2 - lblBDate.Width / 2;
 			}
 		}
 
@@ -213,6 +226,9 @@ namespace App_Domain {
 		/// </summary>
 		public void OnFillBalance() {
 			dgBalanceSheet.DataSource = Program.sqlcon.GetBalance();
+			//Left align some columns
+			dgBalanceSheet.Columns[0].DefaultCellStyle = style;
+			dgBalanceSheet.Columns[1].DefaultCellStyle = style;
 		}
 
 		/// <summary>

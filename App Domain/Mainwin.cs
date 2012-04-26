@@ -598,7 +598,7 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void btnSaveRE_Click(object sender, EventArgs e) {
-			Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
+			//Program.sqlcon.SetRE(Convert.ToDouble(txtRE.Text));
 			Program.sqlcon.SetDividends((double)numDividends.Value);
 		}
 

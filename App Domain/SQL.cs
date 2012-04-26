@@ -6,13 +6,12 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Data.SqlServerCe;
 
-/*
-for account_type column in account_types table:
-	0 = asset
-	1 = liability
-	2 = expense
-	3 = revenue
-	4 = equity
+/*Account Types
+0 = asset
+1 = liability
+2 = expense
+3 = revenue
+4 = equity
 */
 namespace App_Domain {
 
@@ -123,6 +122,10 @@ namespace App_Domain {
 			return GetAccountBalance(101) + GetAccountBalance(102) + GetAccountBalance(103);
 		}
 
+		/// <summary>
+		/// Get table of data for printout. Returns accounts and their balance
+		/// </summary>
+		/// <returns></returns>
 		public DataTable GetPrintTable() {
 			return ExecuteQuery("SELECT ca.accountnum AS [Account], ca.descript AS [Description], ca.balance AS [Balance], at.name AS [Type] FROM Chart_of_Accounts AS ca " +
 				"JOIN Account_Types AS at ON (ca.typeid = at.id) WHERE ca.active = 1");
@@ -174,11 +177,18 @@ namespace App_Domain {
 					dt.Rows.Add(row[0], row[1], String.Format("{0:C}", amount));
 				}
 			}
-			double retainedEarnings = GetRevenues() - GetExpenses();
+			double retainedEarnings = GetRetainedEarnings();
 			if (retainedEarnings != 0) {
 				dt.Rows.Add("", "Retained Earnings", String.Format("{0:C}", retainedEarnings));
+				
 				totalEquity += retainedEarnings;
 			}
+			double dividends = GetDividends();
+			if (retainedEarnings != 0) {
+				dt.Rows.Add("", "Dividends", String.Format("{0:C}", dividends));
+				totalEquity += dividends;
+			}
+
 			if (totalEquity != 0) {
 				dt.Rows.Add("", "Total Equity", String.Format("{0:C}", totalEquity));
 				dt.Rows.Add("", "", "");
@@ -439,6 +449,10 @@ namespace App_Domain {
 			AddAccountChange(0, "Updated retained earnings");
 		}
 
+		public double GetRetainedEarnings() {
+			return GetRevenues() - GetExpenses() - GetDividends();
+		}
+
 		/// <summary>
 		/// set dividends
 		/// </summary>
@@ -446,6 +460,12 @@ namespace App_Domain {
 		public void SetDividends(double div) {
 			ExecuteNonQuery("UPDATE Settings SET dividens = " + div.ToString());
 			AddAccountChange(0, "Updated dividends");
+		}
+
+		public double GetDividends() {
+			DataTable dt = ExecuteQuery("SELECT dividens FROM Settings");
+			return Convert.ToDouble(dt.Rows[0][0]);
+
 		}
 
 		/// <summary>

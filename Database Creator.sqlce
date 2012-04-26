@@ -37,8 +37,8 @@ CREATE TABLE Account_Changes(
 CREATE TABLE Settings(
 	id int IDENTITY(1,1) PRIMARY KEY,
 	next_ref_id INT DEFAULT 1,
-	dividens DECIMAL,
-	retained_earnings DECIMAL
+	dividens DECIMAL DEFAULT = 0,
+	retained_earnings DECIMAL DEFAULT = 0
 	);
 
 CREATE TABLE Users(

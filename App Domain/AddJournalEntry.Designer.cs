@@ -61,7 +61,7 @@
 			this.dgEntries.Name = "dgEntries";
 			this.dgEntries.RowHeadersVisible = false;
 			this.dgEntries.Size = new System.Drawing.Size(571, 278);
-			this.dgEntries.TabIndex = 5;
+			this.dgEntries.TabIndex = 9;
 			// 
 			// cbTransType
 			// 
@@ -183,7 +183,7 @@
 			this.txtNotes.Multiline = true;
 			this.txtNotes.Name = "txtNotes";
 			this.txtNotes.Size = new System.Drawing.Size(571, 70);
-			this.txtNotes.TabIndex = 10;
+			this.txtNotes.TabIndex = 5;
 			// 
 			// lblNotes
 			// 

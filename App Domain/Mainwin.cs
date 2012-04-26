@@ -56,7 +56,7 @@ namespace App_Domain {
 			dgChanges.AlternatingRowsDefaultCellStyle = cs;
 			dgJournal.AlternatingRowsDefaultCellStyle = cs;
 			dgTrialBalance.AlternatingRowsDefaultCellStyle = cs;
-			dgUnpostedJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
+			dgJournalEntryTransactions.AlternatingRowsDefaultCellStyle = cs;
 			dgIncomeSummary.AlternatingRowsDefaultCellStyle = cs;
 			dgBalanceSheet.AlternatingRowsDefaultCellStyle = cs;
 			//Add vertical scrollbar
@@ -73,7 +73,7 @@ namespace App_Domain {
 			EmptyTransactionTable.Columns.Add("Description");
 			EmptyTransactionTable.Columns.Add("Debit");
 			EmptyTransactionTable.Columns.Add("Credit");
-			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
+			dgJournalEntryTransactions.DataSource = EmptyTransactionTable;
 
 			cbAccountType.SelectedIndex = 0;
 			//Cheated to make sure accounts show up by selecting types tab first
@@ -88,6 +88,11 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void tabMain_SelectedIndexChanged(object sender, EventArgs e) {
+			if (tabMain.SelectedTab != tpAllJournalEntries) {
+				btnPostJournalEntry.Enabled = false;
+				btnDeleteJournalEntry.Enabled = false;
+			}
+
 			if (tabMain.SelectedTab == tpAllAccounts) {
 				OnFillAccountCharts();
                 mitemPrint.Enabled = true;
@@ -149,7 +154,7 @@ namespace App_Domain {
 				dgAccountTransactions.Columns[0].Width = 80;
 				dgAccountTransactions.Columns[2].Width = 120;
 				dgAccountTransactions.Columns[3].Width = 120;
-				dgAccountTransactions.Columns[1].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[3].Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[0].Width - 20;
+				dgAccountTransactions.Columns[1].Width = dgAccountTransactions.Width - dgAccountTransactions.Columns[3].Width - dgAccountTransactions.Columns[2].Width - dgAccountTransactions.Columns[0].Width;
 			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
 				dgAccountTypes.Columns[0].Width = 160;
 				dgAccountTypes.Columns[2].Width = 120;
@@ -176,10 +181,10 @@ namespace App_Domain {
 				lblTBDate.Text = DateTime.Today.ToLongDateString();
 				lblTBDate.Left = tpTrialBalance.Width / 2 - lblTBDate.Width / 2;
 			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
-				dgUnpostedJournalEntryTransactions.Columns[0].Width = 120;
-				dgUnpostedJournalEntryTransactions.Columns[2].Width = 100;
-				dgUnpostedJournalEntryTransactions.Columns[3].Width = 100;
-				dgUnpostedJournalEntryTransactions.Columns[1].Width = dgUnpostedJournalEntryTransactions.Width - dgUnpostedJournalEntryTransactions.Columns[0].Width - dgUnpostedJournalEntryTransactions.Columns[2].Width - dgUnpostedJournalEntryTransactions.Columns[3].Width - 20;
+				dgJournalEntryTransactions.Columns[0].Width = 120;
+				dgJournalEntryTransactions.Columns[2].Width = 100;
+				dgJournalEntryTransactions.Columns[3].Width = 100;
+				dgJournalEntryTransactions.Columns[1].Width = dgJournalEntryTransactions.Width - dgJournalEntryTransactions.Columns[0].Width - dgJournalEntryTransactions.Columns[2].Width - dgJournalEntryTransactions.Columns[3].Width;
 			} else if (tabMain.SelectedTab == tpIncomeStatement) {
 				dgIncomeSummary.Columns[0].Width = 100;
 				dgIncomeSummary.Columns[2].Width = 100;
@@ -373,13 +378,13 @@ namespace App_Domain {
 		/// </summary>
 		/// <param name="accountnum"></param>
 		private void OnFillAccountTransactions(int accountnum) {
+			lblBalance.Text = String.Format("Balance: {0:C}", Program.sqlcon.GetAccountBalance(accountnum));
 			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgAccountTransactions.ClearSelection();
-			lblBalance.Text = String.Format("Balance: {0:C}", Program.sqlcon.GetAccountBalance(accountnum));
-			dgAccountTransactions.Columns[0].DefaultCellStyle = style;
-			dgAccountTransactions.Columns[1].DefaultCellStyle = style;
-			dgAccountTransactions.Columns[2].DefaultCellStyle = style;
-			dgAccountTransactions.Columns[5].DefaultCellStyle = style;
+			if (dgAccountTransactions.Columns.Count > 0) {
+				dgAccountTransactions.Columns[0].DefaultCellStyle = style;
+				dgAccountTransactions.Columns[1].DefaultCellStyle = style;
+			}
 		}
 
 		/// <summary>
@@ -399,6 +404,10 @@ namespace App_Domain {
 				DataTable dt = Program.sqlcon.GetAccountByNumber(Convert.ToInt32(dgChartAccounts.SelectedRows[0].Cells[0].Value.ToString()));
 
 				if (dt != null && dt.Rows.Count > 0) {
+					//Show tab
+					if (!tabMain.TabPages.Contains(tpAccountDetails)) {
+						tabMain.TabPages.Insert(1, tpAccountDetails);
+					}
 					//Show name in groupbox
 					gbAccount.Text = dt.Rows[0]["accountnum"] + " - " + dt.Rows[0]["descript"];
 					//Show account's transactions
@@ -418,10 +427,6 @@ namespace App_Domain {
 						btnDeleteAccount.Visible = true;
 					else
 						btnDeleteAccount.Visible = false;
-					//Show tab
-					if (!tabMain.TabPages.Contains(tpAccountDetails)) {
-						tabMain.TabPages.Insert(1, tpAccountDetails);
-					}
 					tabMain.SelectedTab = tpAccountDetails;
 				}
 				dgChartAccounts.ClearSelection();
@@ -484,10 +489,10 @@ namespace App_Domain {
 			if (lvJournalEntries.SelectedItems.Count > 0) {
 				//Pull info about journal entry into datagridview and textbox
 				int refnum = Convert.ToInt32(lvJournalEntries.SelectedItems[0].Text);
-				dgUnpostedJournalEntryTransactions.DataSource = Program.sqlcon.GetJournalEntryTransactions(refnum);
+				dgJournalEntryTransactions.DataSource = Program.sqlcon.GetJournalEntryTransactions(refnum);
 				txtNotes.Text = Program.sqlcon.GetJournalEntryNote(refnum);
 				//enable buttons as needed
-				dgUnpostedJournalEntryTransactions.Sort(dgUnpostedJournalEntryTransactions.Columns[2], System.ComponentModel.ListSortDirection.Descending);
+				dgJournalEntryTransactions.Sort(dgJournalEntryTransactions.Columns[2], System.ComponentModel.ListSortDirection.Descending);
 				if (lvJournalEntries.SelectedItems[0].Group == lvJournalEntries.Groups["Unposted"]) {
 					btnPostJournalEntry.Enabled = true;
 					btnDeleteJournalEntry.Enabled = true;
@@ -515,7 +520,7 @@ namespace App_Domain {
 				btnDeleteJournalEntry.Enabled = false;
 				//Refresh
 				OnFillJournalEntries();
-				dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
+				dgJournalEntryTransactions.DataSource = EmptyTransactionTable;
 			}
 		}
 
@@ -533,7 +538,7 @@ namespace App_Domain {
 				btnDeleteJournalEntry.Enabled = false;
 				//Refresh
 				OnFillJournalEntries();
-				dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
+				dgJournalEntryTransactions.DataSource = EmptyTransactionTable;
 			}
 		}
 
@@ -551,7 +556,7 @@ namespace App_Domain {
 			btnPostJournalEntry.Enabled = false;
 			//Refresh
 			OnFillJournalEntries();
-			dgUnpostedJournalEntryTransactions.DataSource = EmptyTransactionTable;
+			dgJournalEntryTransactions.DataSource = EmptyTransactionTable;
 		}
 
 		/// <summary>

@@ -90,26 +90,48 @@ namespace App_Domain {
 		private void tabMain_SelectedIndexChanged(object sender, EventArgs e) {
 			if (tabMain.SelectedTab == tpAllAccounts) {
 				OnFillAccountCharts();
+                mitemPrint.Enabled = true;
+                mitemPreview.Enabled = true;
 			} else if (tabMain.SelectedTab == tpAccountDetails) {
 				//do nothing
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			} else if (tabMain.SelectedTab == tpAllAccountTypes) {
 				OnFillAccountTypes();
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			} else if (tabMain.SelectedTab == tpAllTransactions) {
 				OnFillTransactions();
+                mitemPrint.Enabled = true;
+                mitemPreview.Enabled = true;
 			} else if (tabMain.SelectedTab == tpAllChanges) {
 				OnFillAccountChanges();
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			} else if (tabMain.SelectedTab == tpTrialBalance) {
 				OnFillTrialBalance();
+                mitemPrint.Enabled = true;
+                mitemPreview.Enabled = true;
 			} else if (tabMain.SelectedTab == tpAllJournalEntries) {
 				OnFillJournalEntries();
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			} else if (tabMain.SelectedTab == tpIncomeStatement) {
 				OnFillIncomeSummary();
+                mitemPrint.Enabled = true;
+                mitemPreview.Enabled = true;
 			} else if (tabMain.SelectedTab == tpBalanceSheet) {
 				OnFillBalance();
+                mitemPrint.Enabled = true;
+                mitemPreview.Enabled = true;
 			} else if (tabMain.SelectedTab == tpRetainedEarnings) {
 				OnFillRE();
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			} else if (tabMain.SelectedTab == tpRatios) {
 				OnFillRatios();
+                mitemPrint.Enabled = false;
+                mitemPreview.Enabled = false;
 			}
 			resizeDataColumns();
 		}
@@ -683,7 +705,7 @@ namespace App_Domain {
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void btnPrint_Click(object sender, EventArgs e) {
-			ppPrinterPreview.Document = pdPrinterDoc;
+			ppPrinterPreview.Document = pdChartOfAccounts;
 			ppPrinterPreview.ShowDialog();
 		}
 
@@ -700,24 +722,28 @@ namespace App_Domain {
 			Font pt18B = new Font(FontFamily.GenericSerif, 18);
 
 			int lineY = 100;
-			int textY = 100;
+			int textY = 120;
 			int counter;
 
 			DataTable dt = Program.sqlcon.GetPrintTable();
 
-			if (rowsleft > 44) {
-				counter = 45;
-				rowsleft -= 45;
+			if (rowsleft > 43) {
+				counter = 44;
+				rowsleft -= 44;
 				e.HasMorePages = true;
 			} else {
 				counter = dt.Rows.Count - currow;
 				e.HasMorePages = false;
 			}
 
+            e.Graphics.DrawString("Chart of Accounts", pt18B, BlackBrush, new Point(350, 60));
+            e.Graphics.DrawString("Account", pt12, BlackBrush, new Point(80, 100));
+            e.Graphics.DrawString("Balance", pt12, BlackBrush, new Point(650, 100));
+
 			for (int i = 0; i < counter; i++) {
 				e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
 				e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
-				e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(500, textY));
+				e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(650, textY));
 				//e.Graphics.DrawString(dt.Rows[currow][3].ToString(), pt12, BlackBrush, new Point(550, textY));
 				textY += 20;
 				currow++;
@@ -742,14 +768,292 @@ namespace App_Domain {
 			currow = 0;
 		}
 
-		/// <summary>
-		/// End of print
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void pdPrinterDoc_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e) {
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabMain.SelectedTab == tpAllAccounts)
+            {
+                pdialogPrinter.Document = pdChartOfAccounts;
+                pdialogPrinter.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpAllTransactions)
+            {
+                pdialogPrinter.Document = pdJournaL;
+                pdialogPrinter.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpTrialBalance)
+            {
+                pdialogPrinter.Document = pdTrialBalance;
+                pdialogPrinter.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpBalanceSheet)
+            {
+                pdialogPrinter.Document = pdBalanceSheet;
+                pdialogPrinter.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpIncomeStatement)
+            {
+                pdialogPrinter.Document = pdIncome;
+                pdialogPrinter.ShowDialog();
+            }
+        }
 
-		}
+        private void mitemExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void priToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabMain.SelectedTab == tpAllAccounts)
+            {
+                ppPrinterPreview.Document = pdChartOfAccounts;
+                ppPrinterPreview.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpAllTransactions)
+            {
+                ppPrinterPreview.Document = pdJournaL;
+                ppPrinterPreview.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpTrialBalance)
+            {
+                ppPrinterPreview.Document = pdTrialBalance;
+                ppPrinterPreview.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpBalanceSheet)
+            {
+                ppPrinterPreview.Document = pdBalanceSheet;
+                ppPrinterPreview.ShowDialog();
+            }
+            else if (tabMain.SelectedTab == tpIncomeStatement)
+            {
+                ppPrinterPreview.Document = pdIncome;
+                ppPrinterPreview.ShowDialog();
+            }
+        }
+
+        private void pdTrialBalance_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Pen BlackPen = new Pen(Color.Black);
+            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+
+            Font pt12 = new Font(FontFamily.GenericSerif, 11);
+            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+
+            int lineY = 100;
+            int textY = 120;
+            int counter;
+
+            DataTable dt = Program.sqlcon.GetTrialBalance();
+
+            if (rowsleft > 43)
+            {
+                counter = 44;
+                rowsleft -= 44;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                counter = dt.Rows.Count - currow;
+                e.HasMorePages = false;
+            }
+
+            e.Graphics.DrawString("Trial Balance", pt18B, BlackBrush, new Point(350, 60));
+            e.Graphics.DrawString("Account", pt12, BlackBrush, new Point(80, 100));
+            e.Graphics.DrawString("Debits", pt12, BlackBrush, new Point(500, 100));
+            e.Graphics.DrawString("Credits", pt12, BlackBrush, new Point(625, 100));
+
+            for (int i = 0; i < counter; i++)
+            {
+                e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
+                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(500, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][3]), pt12, BlackBrush, new Point(625, textY));
+                textY += 20;
+                currow++;
+            }
+
+            while (lineY <= 1000)
+            {
+                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+                lineY += 20;
+            }
+            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
+        }
+
+        private void pdTrialBalance_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            rowsleft = Program.sqlcon.GetTrialBalance().Rows.Count;
+            currow = 0;
+        }
+
+        private void pdBalanceSheet_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Pen BlackPen = new Pen(Color.Black);
+            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+
+            Font pt12 = new Font(FontFamily.GenericSerif, 11);
+            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+
+            int lineY = 100;
+            int textY = 120;
+            int counter;
+
+            DataTable dt = Program.sqlcon.GetBalanceSheet();
+
+            if (rowsleft > 43)
+            {
+                counter = 44;
+                rowsleft -= 44;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                counter = dt.Rows.Count - currow;
+                e.HasMorePages = false;
+            }
+
+            e.Graphics.DrawString("Balance Sheet", pt18B, BlackBrush, new Point(350, 60));
+            e.Graphics.DrawString("Account", pt12, BlackBrush, new Point(80, 100));
+            e.Graphics.DrawString("Balance", pt12, BlackBrush, new Point(600, 100));
+
+            for (int i = 0; i < counter; i++)
+            {
+                e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
+                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(600, textY));
+                //e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][3]), pt12, BlackBrush, new Point(625, textY));
+                textY += 20;
+                currow++;
+            }
+
+            while (lineY <= 1000)
+            {
+                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+                lineY += 20;
+            }
+            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
+        }
+
+        private void pdBalanceSheet_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            rowsleft = Program.sqlcon.GetBalanceSheet().Rows.Count;
+            currow = 0;
+        }
+
+        private void pdIncome_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Pen BlackPen = new Pen(Color.Black);
+            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+
+            Font pt12 = new Font(FontFamily.GenericSerif, 11);
+            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+
+            int lineY = 100;
+            int textY = 120;
+            int counter;
+
+            DataTable dt = Program.sqlcon.GetIncomeStatement();
+
+            if (rowsleft > 43)
+            {
+                counter = 44;
+                rowsleft -= 44;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                counter = dt.Rows.Count - currow;
+                e.HasMorePages = false;
+            }
+
+            e.Graphics.DrawString("Income Statement", pt18B, BlackBrush, new Point(350, 60));
+            e.Graphics.DrawString("Account", pt12, BlackBrush, new Point(80, 100));
+            e.Graphics.DrawString("Ammount", pt12, BlackBrush, new Point(600, 100));
+
+            for (int i = 0; i < counter; i++)
+            {
+                e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
+                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(600, textY));
+                //e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][3]), pt12, BlackBrush, new Point(625, textY));
+                textY += 20;
+                currow++;
+            }
+
+            while (lineY <= 1000)
+            {
+                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+                lineY += 20;
+            }
+            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
+        }
+
+        private void pdIncome_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            rowsleft = Program.sqlcon.GetIncomeStatement().Rows.Count;
+            currow = 0;
+        }
+
+        private void pdJournaL_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Pen BlackPen = new Pen(Color.Black);
+            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+
+            Font pt12 = new Font(FontFamily.GenericSerif, 11);
+            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+
+            int lineY = 100;
+            int textY = 120;
+            int counter;
+
+            DataTable dt = Program.sqlcon.GetJournal();
+
+            if (rowsleft > 43)
+            {
+                counter = 44;
+                rowsleft -= 44;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                counter = dt.Rows.Count - currow;
+                e.HasMorePages = false;
+            }
+
+            e.Graphics.DrawString("Journal Entries", pt18B, BlackBrush, new Point(350, 60));
+            e.Graphics.DrawString("Account", pt12, BlackBrush, new Point(80, 100));
+            e.Graphics.DrawString("Debits", pt12, BlackBrush, new Point(400, 100));
+            e.Graphics.DrawString("Credits", pt12, BlackBrush, new Point(510, 100));
+            e.Graphics.DrawString("Date", pt12, BlackBrush, new Point(610, 100));
+
+            for (int i = 0; i < counter; i++)
+            {
+                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(80, textY));
+                e.Graphics.DrawString(dt.Rows[currow][2].ToString(), pt12, BlackBrush, new Point(120, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][3]), pt12, BlackBrush, new Point(400, textY));
+                e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][4]), pt12, BlackBrush, new Point(510, textY));
+                e.Graphics.DrawString(dt.Rows[currow][5].ToString(), pt12, BlackBrush, new Point(610, textY));
+                textY += 20;
+                currow++;
+            }
+
+            while (lineY <= 1000)
+            {
+                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+                lineY += 20;
+            }
+            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
+        }
+
+        private void pdJournaL_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            rowsleft = Program.sqlcon.GetJournal().Rows.Count;
+            currow = 0;
+        }
 
 	}//end Mainwin class
 }//end namespace

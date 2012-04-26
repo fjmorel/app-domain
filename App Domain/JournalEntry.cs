@@ -10,9 +10,21 @@ namespace App_Domain {
 	/// A struct representing a single line in a journal entry.
 	/// </summary>
 	struct Entry {
+		/// <summary>
+		/// Account
+		/// </summary>
 		public string Description { get; set; }
+		/// <summary>
+		/// Account number
+		/// </summary>
 		public int AccountNumber { get; set; }
+		/// <summary>
+		/// Amount of transaction
+		/// </summary>
 		public double Amount { get; set; }
+		/// <summary>
+		/// Debit or credit
+		/// </summary>
 		public bool IsDebitNotCredit { get; set;}
 	}
 
@@ -29,7 +41,14 @@ namespace App_Domain {
 			get { return _transactions; }
 		}
 
+		/// <summary>
+		/// Post date
+		/// </summary>
 		public DateTime time;
+
+		/// <summary>
+		/// Note for journal entry
+		/// </summary>
         public string notes;
 
 		/// <summary>

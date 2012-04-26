@@ -7,20 +7,44 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace App_Domain {
+
+	/// <summary>
+	/// Extension of Textbox that stores a list of strings to do autocomplete matching
+	/// </summary>
 	public class AutoCompleteTextbox : TextBox {
 
-		public List<string> entireList;// list of possibilities
-		public int selectedIndex {// index selected in the listbox
+		/// <summary>
+		/// Entire list of possibilities to check
+		/// </summary>
+		public List<string> entireList;
+		/// <summary>
+		/// index selected in the listbox
+		/// </summary>
+		public int selectedIndex {
 			get { return lboxSuggestions.SelectedIndex; }
 			set { if (lboxSuggestions.Items.Count != 0) { lboxSuggestions.SelectedIndex = value; } }// can't be null
 		}
 
-		private ListBox lboxSuggestions;// the ListBox used for suggestions
-		private Panel panel;// a Panel for displaying
-		private Form ParentForm { get { return this.Parent.FindForm(); } }// the parent Form of this control
-		private List<string> matchingList;// list of matching strings from entireList
+		/// <summary>
+		/// the ListBox used for suggestions
+		/// </summary>
+		private ListBox lboxSuggestions;
+		/// <summary>
+		/// Panel to display listbox
+		/// </summary>
+		private Panel panel;
+		/// <summary>
+		/// Reference to parent form
+		/// </summary>
+		private Form ParentForm { get { return this.Parent.FindForm(); } }
+		/// <summary>
+		/// Matching strings
+		/// </summary>
+		private List<string> matchingList;
 
-		//Constructor
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public AutoCompleteTextbox()
 			: base() {
 
@@ -54,6 +78,11 @@ namespace App_Domain {
 
 		}
 
+		/// <summary>
+		/// When it gains focus, show listbox
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void AutoCompleteTextbox_GotFocus(object sender, EventArgs e) {
 			OnTextChanged(e);
 		}
@@ -71,6 +100,10 @@ namespace App_Domain {
 			}
 		}
 
+		/// <summary>
+		/// Process key events
+		/// </summary>
+		/// <param name="args"></param>
 		protected override void OnKeyDown(KeyEventArgs args) {
 			if (args.KeyCode == Keys.Up) {
 				MoveSelectionInListBox((selectedIndex - 1));// move the selection in listbox one up
@@ -100,7 +133,10 @@ namespace App_Domain {
 			}
 		}
 
-		//Hide panel when the textbox loses focus
+		/// <summary>
+		/// Hide panel when the textbox loses focus
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnLostFocus(System.EventArgs e) {
 			if (!panel.ContainsFocus) {//Make sure the focus isn't in the panel
 				base.OnLostFocus(e);// call the baseclass event
@@ -108,7 +144,10 @@ namespace App_Domain {
 			}
 		}
 
-		// if the input changes, call ShowSuggests()
+		/// <summary>
+		/// if the input changes, call ShowSuggests()
+		/// </summary>
+		/// <param name="args"></param>
 		protected override void OnTextChanged(EventArgs args) {
 			if (!this.DesignMode) {
 				panel.SuspendLayout();// while loading data there is nothing to draw, so suspend layout
@@ -156,8 +195,12 @@ namespace App_Domain {
 			base.OnTextChanged(args);
 		}
 
-		// event for any key pressed in the ListBox
-		private void listBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) {
+		/// <summary>
+		/// event for any key pressed in the ListBox
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+ 		private void listBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) {
 			if (e.KeyCode == Keys.Enter) {
 				SelectItem();
 				e.Handled = true;
@@ -166,11 +209,19 @@ namespace App_Domain {
 			}
 		}
 
-		// Select item when it is clicked
-		private void listBox_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e) {
+		/// <summary>
+		/// Select item when it is clicked
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+ 		private void listBox_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e) {
 			SelectItem();
 		}
 
+		/// <summary>
+		/// Move selection to new index
+		/// </summary>
+		/// <param name="Index"></param>
 		private void MoveSelectionInListBox(int Index) {
 			if (Index <= -1) {// Move to beginning of list
 				selectedIndex = 0;
@@ -181,7 +232,9 @@ namespace App_Domain {
 			}
 		}
 
-		// Selects current item (moves text to textbox) and hides panel
+		/// <summary>
+		/// Selects current item (moves text to textbox) and hides panel
+		/// </summary>
 		private void SelectItem() {
 			if (this.lboxSuggestions.Items.Count > 0 && this.selectedIndex > -1) {
 				this.Text = this.lboxSuggestions.SelectedItem.ToString();

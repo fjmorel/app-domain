@@ -118,7 +118,7 @@ namespace App_Domain {
 		/// Get the balance of quick assets
 		/// </summary>
 		/// <returns></returns>
-		public double GetQuickAssetBalance() {//TODO: Account type, no ids. IDs change
+		public double GetQuickAssetBalance() {
 			return GetAccountBalance(101) + GetAccountBalance(102) + GetAccountBalance(103);
 		}
 
@@ -386,7 +386,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public double GetRevenues() {
-			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 3").Rows[0][0]);
+			return GetAccountTypeTotal(3);
 		}
 
 		/// <summary>
@@ -394,7 +394,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public double GetExpenses() {
-			return Convert.ToDouble(ExecuteQuery("SELECT SUM(ca.balance) FROM Chart_of_Accounts AS ca JOIN Account_Types AS at ON ca.typeid = at.id WHERE at.account_type = 2").Rows[0][0]);
+			return GetAccountTypeTotal(2);
 		}
 
 		/// <summary>
@@ -449,6 +449,10 @@ namespace App_Domain {
 			AddAccountChange(0, "Updated retained earnings");
 		}
 
+		/// <summary>
+		/// Current Retained earnings = Revenues - expenses - dividends
+		/// </summary>
+		/// <returns></returns>
 		public double GetRetainedEarnings() {
 			return GetRevenues() - GetExpenses() - GetDividends();
 		}
@@ -462,6 +466,10 @@ namespace App_Domain {
 			AddAccountChange(0, "Updated dividends");
 		}
 
+		/// <summary>
+		/// Get the set dividends
+		/// </summary>
+		/// <returns></returns>
 		public double GetDividends() {
 			DataTable dt = ExecuteQuery("SELECT dividens FROM Settings");
 			return Convert.ToDouble(dt.Rows[0][0]);

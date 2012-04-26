@@ -9,9 +9,21 @@ using System.Windows.Forms;
 
 namespace App_Domain {
 	public partial class frmAddJournalEntry : Form {
+		/// <summary>
+		/// Journal entry being created
+		/// </summary>
 		private JournalEntry je = new JournalEntry();
+		/// <summary>
+		/// Transactions being created
+		/// </summary>
 		private DataTable entries;
+		/// <summary>
+		/// Total debit
+		/// </summary>
 		private double debits = 0;
+		/// <summary>
+		/// Total credit
+		/// </summary>
 		private double credits = 0;
 
 		/// <summary>
@@ -135,6 +147,11 @@ namespace App_Domain {
 			}
 		}
 
+		/// <summary>
+		/// Date is changed
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void dateTransaction_ValueChanged(object sender, EventArgs e) {
 			je.time = dateTransaction.Value;
 		}

@@ -20,6 +20,11 @@ namespace App_Domain {
 			txtType.entireList = Program.sqlcon.GetAccountTypesList();
 		}
 
+		/// <summary>
+		/// Add account when hitting Enter
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void AddAccount_KeyDown(object sender, KeyEventArgs e) {
 			if (e.KeyCode == Keys.Enter) {
 				if(txtAccountnum.Focused || txtDescription.Focused)

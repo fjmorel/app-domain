@@ -5,6 +5,9 @@ namespace App_Domain {
 
 	static class Program {
 
+		/// <summary>
+		/// SQL connection for the entire program
+		/// </summary>
 		public static SQL sqlcon = new SQL("appdomain.sdf", "admin");
 
 		/// <summary>

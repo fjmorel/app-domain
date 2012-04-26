@@ -17,8 +17,14 @@ namespace App_Domain {
 		/// </summary>
 		private DataTable EmptyTransactionTable;
 
+		/// <summary>
+		/// Default style of cells to left-align some where balances are right-aligned
+		/// </summary>
 		private DataGridViewCellStyle style;
 
+		/// <summary>
+		/// Used for printing
+		/// </summary>
 		private int currow;
 		private int rowsleft;
 
@@ -238,9 +244,9 @@ namespace App_Domain {
 		public void OnFillRatios() {
 			double assests = Program.sqlcon.GetAccountTypeTotal(0);
 			double liabilities = Program.sqlcon.GetAccountTypeTotal(1);
-			double equity = Program.sqlcon.GetAccountTypeTotal(4);
-			double revenue = Program.sqlcon.GetAccountTypeTotal(3);
-			double expenses = Program.sqlcon.GetAccountTypeTotal(2);
+			//double equity = Program.sqlcon.GetAccountTypeTotal(4);
+			//double revenue = Program.sqlcon.GetRevenues();
+			//double expenses = Program.sqlcon.GetExpenses();
 			double quickassets = Program.sqlcon.GetQuickAssetBalance();
 			double ratio;
 
@@ -661,16 +667,31 @@ namespace App_Domain {
 			resizeDataColumns();
 		}
 
+		/// <summary>
+		/// Create a new account in new form
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnNewAccount_Click(object sender, EventArgs e) {
 			new AddAccount().ShowDialog();
 			tabMain.SelectTab(tabMain.SelectedTab);
 		}
 
+		/// <summary>
+		/// Open up print preview
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void btnPrint_Click(object sender, EventArgs e) {
 			ppPrinterPreview.Document = pdPrinterDoc;
 			ppPrinterPreview.ShowDialog();
 		}
 
+		/// <summary>
+		/// Set up document to print
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void pdPrinterDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e) {
 			Pen BlackPen = new Pen(Color.Black);
 			SolidBrush BlackBrush = new SolidBrush(Color.Black);
@@ -711,11 +732,21 @@ namespace App_Domain {
 
 		}
 
+		/// <summary>
+		/// Start printing
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void pdPrinterDoc_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e) {
 			rowsleft = Program.sqlcon.GetPrintTable().Rows.Count;
 			currow = 0;
 		}
 
+		/// <summary>
+		/// End of print
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void pdPrinterDoc_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e) {
 
 		}

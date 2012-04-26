@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Unposted", System.Windows.Forms.HorizontalAlignment.Left);
-			System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Posted Entries", System.Windows.Forms.HorizontalAlignment.Left);
-			System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Deleted Journal Entries", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Unposted", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Posted Entries", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Deleted Journal Entries", System.Windows.Forms.HorizontalAlignment.Left);
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Mainwin));
 			this.tabMain = new System.Windows.Forms.TabControl();
 			this.tpAllAccounts = new System.Windows.Forms.TabPage();
@@ -75,7 +76,7 @@
 			this.btnPostJournalEntry = new System.Windows.Forms.Button();
 			this.txtNotes = new System.Windows.Forms.TextBox();
 			this.lblTransactionDetails = new System.Windows.Forms.Label();
-			this.dgUnpostedJournalEntryTransactions = new System.Windows.Forms.DataGridView();
+			this.dgJournalEntryTransactions = new System.Windows.Forms.DataGridView();
 			this.tpAllTransactions = new System.Windows.Forms.TabPage();
 			this.dgJournal = new System.Windows.Forms.DataGridView();
 			this.tpAllChanges = new System.Windows.Forms.TabPage();
@@ -123,7 +124,7 @@
 			this.tpAllAccountTypes.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).BeginInit();
 			this.tpAllJournalEntries.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgJournalEntryTransactions)).BeginInit();
 			this.tpAllTransactions.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).BeginInit();
 			this.tpAllChanges.SuspendLayout();
@@ -379,6 +380,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgAccountTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgAccountTransactions.DefaultCellStyle = dataGridViewCellStyle1;
 			this.dgAccountTransactions.Location = new System.Drawing.Point(3, 36);
 			this.dgAccountTransactions.Name = "dgAccountTransactions";
 			this.dgAccountTransactions.ReadOnly = true;
@@ -521,7 +530,7 @@
 			this.tpAllJournalEntries.Controls.Add(this.btnPostJournalEntry);
 			this.tpAllJournalEntries.Controls.Add(this.txtNotes);
 			this.tpAllJournalEntries.Controls.Add(this.lblTransactionDetails);
-			this.tpAllJournalEntries.Controls.Add(this.dgUnpostedJournalEntryTransactions);
+			this.tpAllJournalEntries.Controls.Add(this.dgJournalEntryTransactions);
 			this.tpAllJournalEntries.Location = new System.Drawing.Point(124, 4);
 			this.tpAllJournalEntries.Name = "tpAllJournalEntries";
 			this.tpAllJournalEntries.Size = new System.Drawing.Size(759, 454);
@@ -537,16 +546,16 @@
             this.jeReference,
             this.jeDate});
 			this.lvJournalEntries.FullRowSelect = true;
-			listViewGroup4.Header = "Unposted";
-			listViewGroup4.Name = "Unposted";
-			listViewGroup5.Header = "Posted Entries";
-			listViewGroup5.Name = "Posted";
-			listViewGroup6.Header = "Deleted Journal Entries";
-			listViewGroup6.Name = "Deleted";
+			listViewGroup1.Header = "Unposted";
+			listViewGroup1.Name = "Unposted";
+			listViewGroup2.Header = "Posted Entries";
+			listViewGroup2.Name = "Posted";
+			listViewGroup3.Header = "Deleted Journal Entries";
+			listViewGroup3.Name = "Deleted";
 			this.lvJournalEntries.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup4,
-            listViewGroup5,
-            listViewGroup6});
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3});
 			this.lvJournalEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lvJournalEntries.HideSelection = false;
 			this.lvJournalEntries.Location = new System.Drawing.Point(3, 3);
@@ -647,21 +656,21 @@
 			// 
 			// dgUnpostedJournalEntryTransactions
 			// 
-			this.dgUnpostedJournalEntryTransactions.AllowUserToAddRows = false;
-			this.dgUnpostedJournalEntryTransactions.AllowUserToDeleteRows = false;
-			this.dgUnpostedJournalEntryTransactions.AllowUserToResizeColumns = false;
-			this.dgUnpostedJournalEntryTransactions.AllowUserToResizeRows = false;
-			this.dgUnpostedJournalEntryTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.dgJournalEntryTransactions.AllowUserToAddRows = false;
+			this.dgJournalEntryTransactions.AllowUserToDeleteRows = false;
+			this.dgJournalEntryTransactions.AllowUserToResizeColumns = false;
+			this.dgJournalEntryTransactions.AllowUserToResizeRows = false;
+			this.dgJournalEntryTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.dgUnpostedJournalEntryTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
-			this.dgUnpostedJournalEntryTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgUnpostedJournalEntryTransactions.Location = new System.Drawing.Point(209, 19);
-			this.dgUnpostedJournalEntryTransactions.Name = "dgUnpostedJournalEntryTransactions";
-			this.dgUnpostedJournalEntryTransactions.RowHeadersVisible = false;
-			this.dgUnpostedJournalEntryTransactions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.dgUnpostedJournalEntryTransactions.Size = new System.Drawing.Size(547, 232);
-			this.dgUnpostedJournalEntryTransactions.TabIndex = 2;
+			this.dgJournalEntryTransactions.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
+			this.dgJournalEntryTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgJournalEntryTransactions.Location = new System.Drawing.Point(209, 19);
+			this.dgJournalEntryTransactions.Name = "dgUnpostedJournalEntryTransactions";
+			this.dgJournalEntryTransactions.RowHeadersVisible = false;
+			this.dgJournalEntryTransactions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.dgJournalEntryTransactions.Size = new System.Drawing.Size(547, 232);
+			this.dgJournalEntryTransactions.TabIndex = 2;
 			// 
 			// tpAllTransactions
 			// 
@@ -685,14 +694,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgJournal.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgJournal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle5;
+			dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgJournal.DefaultCellStyle = dataGridViewCellStyle2;
 			this.dgJournal.Location = new System.Drawing.Point(3, 3);
 			this.dgJournal.MultiSelect = false;
 			this.dgJournal.Name = "dgJournal";
@@ -792,14 +801,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgTrialBalance.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgTrialBalance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle6;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgTrialBalance.DefaultCellStyle = dataGridViewCellStyle3;
 			this.dgTrialBalance.Location = new System.Drawing.Point(3, 49);
 			this.dgTrialBalance.MultiSelect = false;
 			this.dgTrialBalance.Name = "dgTrialBalance";
@@ -866,14 +875,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgIncomeSummary.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgIncomeSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle7;
+			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgIncomeSummary.DefaultCellStyle = dataGridViewCellStyle4;
 			this.dgIncomeSummary.Location = new System.Drawing.Point(3, 49);
 			this.dgIncomeSummary.MultiSelect = false;
 			this.dgIncomeSummary.Name = "dgIncomeSummary";
@@ -985,14 +994,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dgBalanceSheet.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
 			this.dgBalanceSheet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-			dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-			dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-			dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dgBalanceSheet.DefaultCellStyle = dataGridViewCellStyle8;
+			dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+			dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+			dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+			dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dgBalanceSheet.DefaultCellStyle = dataGridViewCellStyle5;
 			this.dgBalanceSheet.Location = new System.Drawing.Point(3, 49);
 			this.dgBalanceSheet.MultiSelect = false;
 			this.dgBalanceSheet.Name = "dgBalanceSheet";
@@ -1149,7 +1158,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgAccountTypes)).EndInit();
 			this.tpAllJournalEntries.ResumeLayout(false);
 			this.tpAllJournalEntries.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dgUnpostedJournalEntryTransactions)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dgJournalEntryTransactions)).EndInit();
 			this.tpAllTransactions.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgJournal)).EndInit();
 			this.tpAllChanges.ResumeLayout(false);
@@ -1203,7 +1212,7 @@
         private System.Windows.Forms.Button btnPostJournalEntry;
         private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.Label lblTransactionDetails;
-		private System.Windows.Forms.DataGridView dgUnpostedJournalEntryTransactions;
+		private System.Windows.Forms.DataGridView dgJournalEntryTransactions;
 		private System.Windows.Forms.Button btnAddJournalEntry;
 		private System.Windows.Forms.TextBox txtAccountTypeDescription;
 		private System.Windows.Forms.TextBox txtAccountTypeName;

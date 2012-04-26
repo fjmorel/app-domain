@@ -336,7 +336,16 @@ namespace App_Domain {
 		/// <param name="accountnum"></param>
 		/// <returns></returns>
 		public DataTable GetAccountLedger(int accountnum) {
-			return ExecuteQuery("SELECT jt.id AS [Ref], jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Transactions j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Entries jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
+			DataTable dt = ExecuteQuery("SELECT jt.id AS [Ref], jt.postdate AS [Date], j.dammount AS [Debit Amount], j.cammount AS [Credit Amount] FROM Transactions j JOIN Chart_of_Accounts c ON (j.accountnum = c.accountnum) JOIN Journal_Entries jt ON (j.ref = jt.id) WHERE jt.posted = 1 AND c.accountnum = " + accountnum);
+			DataTable dt2 = new DataTable();
+			dt2.Columns.Add("Ref", typeof(string));
+			dt2.Columns.Add("Posted at", typeof(string));
+			dt2.Columns.Add("Debit", typeof(string));
+			dt2.Columns.Add("Credit", typeof(string));
+			foreach (DataRow each in dt.Rows) {
+				dt2.Rows.Add(each[0], each[1], String.Format("{0:C}", Convert.ToDouble(each[2])), String.Format("{0:C}", Convert.ToDouble(each[3])));
+			}
+			return dt2;
 		}
 
 		/// <summary>
@@ -344,7 +353,19 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetJournal() {
-			return ExecuteQuery("SELECT jt.id AS [Ref], j.accountnum AS [Account], ca.descript AS [Description],'$' + CONVERT(NVARCHAR(16), j.dammount) AS [Debit],'$' + CONVERT(NVARCHAR(12), j.cammount) AS [Credit], jt.postdate AS [Transaction Date] FROM Transactions as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
+			DataTable dt = ExecuteQuery("SELECT jt.id AS [Ref], j.accountnum AS [Account], ca.descript AS [Description], j.dammount AS [Debit], j.cammount AS [Credit], jt.postdate AS [Transaction Date] FROM Transactions as j JOIN Chart_of_Accounts AS ca ON (j.accountnum = ca.accountnum) JOIN Journal_Entries AS jt ON (j.ref = jt.id) WHERE jt.posted = 1");
+			DataTable dt2 = new DataTable();
+			dt2.Columns.Add("Ref", typeof(string));
+			dt2.Columns.Add("Account", typeof(string));
+			dt2.Columns.Add("Description", typeof(string));
+			dt2.Columns.Add("Debit", typeof(string));
+			dt2.Columns.Add("Credit", typeof(string));
+			dt2.Columns.Add("Posted at", typeof(string));
+
+			foreach (DataRow each in dt.Rows) {
+				dt2.Rows.Add(each[0], each[1], each[2], String.Format("{0:C}", Convert.ToDouble(each[3])), String.Format("{0:C}", Convert.ToDouble(each[4])), each[5]);
+			}
+			return dt2;
 		}
 
 		/// <summary>

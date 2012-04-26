@@ -19,6 +19,9 @@ namespace App_Domain {
 
 		private DataGridViewCellStyle style;
 
+        private int currow;
+        private int rowsleft;
+
 		/// <summary>
 		/// Constructor
 		/// </summary>
@@ -655,6 +658,69 @@ namespace App_Domain {
 			new AddAccount().ShowDialog();
 			tabMain.SelectTab(tabMain.SelectedTab);
 		}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ppPrinterPreview.Document = pdPrinterDoc;
+            ppPrinterPreview.ShowDialog();
+        }
+
+        private void pdPrinterDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Pen BlackPen = new Pen(Color.Black);
+            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+
+            Font pt12 = new Font(FontFamily.GenericSerif, 11);
+            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+
+            int lineY = 100;
+            int textY = 100;
+            int counter;
+
+            DataTable dt = Program.sqlcon.GetFilteredChartOfAccounts(false, true, 0, "");
+
+            if (rowsleft > 44)
+            {
+                counter = 45;
+                rowsleft -= 45;
+                e.HasMorePages = true;
+            }
+            else
+            {
+                counter = dt.Rows.Count - currow;
+                e.HasMorePages = false;
+            }
+
+            for (int i = 0; i < counter; i++)
+            {
+                e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
+                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
+                //e.Graphics.DrawString(dt.Rows[currow][2].ToString(), pt12, BlackBrush, new Point(500, textY));
+                //e.Graphics.DrawString(dt.Rows[currow][3].ToString(), pt12, BlackBrush, new Point(550, textY));
+                textY += 20;
+                currow++;
+            }
+
+            while (lineY <= 1000)
+            {
+                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+                lineY += 20;
+            }
+            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
+            
+        }
+
+        private void pdPrinterDoc_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+            rowsleft = Program.sqlcon.GetFilteredChartOfAccounts(false, true, 0, "").Rows.Count;
+            currow = 0;
+        }
+
+        private void pdPrinterDoc_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
+        {
+
+        }
 
 	}//end Mainwin class
 }//end namespace

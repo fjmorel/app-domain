@@ -47,7 +47,7 @@ namespace App_Domain {
 		/// </summary>
 		/// <returns></returns>
 		public DataTable GetTrialBalance() {
-			DataTable accounts = ExecuteQuery("SELECT accountnum, descript, balance FROM Chart_of_Accounts WHERE active = 1");
+            DataTable accounts = ExecuteQuery("SELECT ca.accountnum, ca.descript, ca.balance FROM Chart_of_Accounts AS ca JOIN account_types AS at ON (ca.typeid = at.id) WHERE active = 1 AND at.account_type IN (1, 0, 4)");
 			DataTable dt = new DataTable();
 			dt.Columns.Add("Account", typeof(string));
 			dt.Columns.Add("Description", typeof(string));

@@ -19,8 +19,8 @@ namespace App_Domain {
 
 		private DataGridViewCellStyle style;
 
-        private int currow;
-        private int rowsleft;
+		private int currow;
+		private int rowsleft;
 
 		/// <summary>
 		/// Constructor
@@ -100,15 +100,11 @@ namespace App_Domain {
 				OnFillIncomeSummary();
 			} else if (tabMain.SelectedTab == tpBalanceSheet) {
 				OnFillBalance();
-            }
-            else if (tabMain.SelectedTab == tpRetainedEarnings)
-            {
-                OnFillRE();
-            }
-            else if (tabMain.SelectedTab == tpRatios)
-            {
-                OnFillRatios();
-            }
+			} else if (tabMain.SelectedTab == tpRetainedEarnings) {
+				OnFillRE();
+			} else if (tabMain.SelectedTab == tpRatios) {
+				OnFillRatios();
+			}
 			resizeDataColumns();
 		}
 
@@ -159,13 +155,12 @@ namespace App_Domain {
 			} else if (tabMain.SelectedTab == tpIncomeStatement) {
 				dgIncomeSummary.Columns[0].Width = 100;
 				dgIncomeSummary.Columns[2].Width = 100;
-				dgIncomeSummary.Columns[3].Width = 100;
-				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - dgIncomeSummary.Columns[3].Width - 20;
+				dgIncomeSummary.Columns[1].Width = dgIncomeSummary.Width - dgIncomeSummary.Columns[0].Width - dgIncomeSummary.Columns[2].Width - 20;
 				lblISCompany.Left = tpIncomeStatement.Width / 2 - lblISCompany.Width / 2;
 				lblIIncomeStatement.Left = tpIncomeStatement.Width / 2 - lblIIncomeStatement.Width / 2;
 				lblIDate.Text = DateTime.Today.ToLongDateString();
 				lblIDate.Left = tpIncomeStatement.Width / 2 - lblIDate.Width / 2;
-			} else if (tabMain.SelectedTab == tpBalanceSheet) {	
+			} else if (tabMain.SelectedTab == tpBalanceSheet) {
 				dgBalanceSheet.Columns[0].Width = 120;
 				dgBalanceSheet.Columns[2].Width = 120;
 				dgBalanceSheet.Columns[1].Width = dgBalanceSheet.Width - dgBalanceSheet.Columns[0].Width - dgBalanceSheet.Columns[2].Width - 20;
@@ -223,6 +218,8 @@ namespace App_Domain {
 		/// </summary>
 		public void OnFillTrialBalance() {
 			dgTrialBalance.DataSource = Program.sqlcon.GetTrialBalance();
+			dgTrialBalance.Columns[0].DefaultCellStyle = style;
+			dgTrialBalance.Columns[1].DefaultCellStyle = style;
 		}
 
 		/// <summary>
@@ -244,18 +241,18 @@ namespace App_Domain {
 			double equity = Program.sqlcon.GetAccountTypeTotal(4);
 			double revenue = Program.sqlcon.GetAccountTypeTotal(3);
 			double expenses = Program.sqlcon.GetAccountTypeTotal(2);
-            double quickassets = Program.sqlcon.GetQuickAssetBalance();
+			double quickassets = Program.sqlcon.GetQuickAssetBalance();
 			double ratio;
 
 			if (liabilities != 0) {
 				ratio = Math.Round(Math.Abs(assests / liabilities), 2);
 				txtCurRatio.Text = ratio.ToString();
 
-                ratio = Math.Round(Math.Abs(quickassets / liabilities), 2);
-                txtQuickRatio.Text = ratio.ToString();
+				ratio = Math.Round(Math.Abs(quickassets / liabilities), 2);
+				txtQuickRatio.Text = ratio.ToString();
 			} else {
 				txtCurRatio.Text = "Zero liabilities";
-                txtQuickRatio.Text = "Zero liabilities";
+				txtQuickRatio.Text = "Zero liabilities";
 			}
 
 		}
@@ -308,16 +305,18 @@ namespace App_Domain {
 		/// Refresh income statement
 		/// </summary>
 		public void OnFillIncomeSummary() {
-			dgIncomeSummary.DataSource = Program.sqlcon.GetIncome();
+			dgIncomeSummary.DataSource = Program.sqlcon.GetIncomeStatement();
+			dgIncomeSummary.Columns[0].DefaultCellStyle = style;
+			dgIncomeSummary.Columns[1].DefaultCellStyle = style;
 		}
 
 		/// <summary>
 		/// Refresh income, dividends, and retained earnings
 		/// </summary>
 		public void OnFillRE() {
-			double income = Program.sqlcon.GetIncomeDebits() - Program.sqlcon.GetIncomeCredits();
-			numDividends.Maximum = (decimal)income;
+			double income = Program.sqlcon.GetRevenues() - Program.sqlcon.GetExpenses();
 			txtIncome.Text = income.ToString();
+			numDividends.Maximum = income > 0 ? (decimal) income : 0 ;
 			numDividends_ValueChanged(this, new EventArgs());
 		}
 
@@ -335,6 +334,10 @@ namespace App_Domain {
 		public void OnFillTransactions() {
 			dgJournal.DataSource = Program.sqlcon.GetJournal();
 			dgJournal.ClearSelection();
+			dgJournal.Columns[0].DefaultCellStyle = style;
+			dgJournal.Columns[1].DefaultCellStyle = style;
+			dgJournal.Columns[2].DefaultCellStyle = style;
+			dgJournal.Columns[5].DefaultCellStyle = style;
 		}
 
 		/// <summary>
@@ -345,6 +348,10 @@ namespace App_Domain {
 			dgAccountTransactions.DataSource = Program.sqlcon.GetAccountLedger(accountnum);
 			dgAccountTransactions.ClearSelection();
 			lblBalance.Text = String.Format("Balance: {0:C}", Program.sqlcon.GetAccountBalance(accountnum));
+			dgAccountTransactions.Columns[0].DefaultCellStyle = style;
+			dgAccountTransactions.Columns[1].DefaultCellStyle = style;
+			dgAccountTransactions.Columns[2].DefaultCellStyle = style;
+			dgAccountTransactions.Columns[5].DefaultCellStyle = style;
 		}
 
 		/// <summary>
@@ -659,68 +666,59 @@ namespace App_Domain {
 			tabMain.SelectTab(tabMain.SelectedTab);
 		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ppPrinterPreview.Document = pdPrinterDoc;
-            ppPrinterPreview.ShowDialog();
-        }
+		private void btnPrint_Click(object sender, EventArgs e) {
+			ppPrinterPreview.Document = pdPrinterDoc;
+			ppPrinterPreview.ShowDialog();
+		}
 
-        private void pdPrinterDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            Pen BlackPen = new Pen(Color.Black);
-            SolidBrush BlackBrush = new SolidBrush(Color.Black);
+		private void pdPrinterDoc_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e) {
+			Pen BlackPen = new Pen(Color.Black);
+			SolidBrush BlackBrush = new SolidBrush(Color.Black);
 
-            Font pt12 = new Font(FontFamily.GenericSerif, 11);
-            Font pt18B = new Font(FontFamily.GenericSerif, 18);
+			Font pt12 = new Font(FontFamily.GenericSerif, 11);
+			Font pt18B = new Font(FontFamily.GenericSerif, 18);
 
-            int lineY = 100;
-            int textY = 100;
-            int counter;
+			int lineY = 100;
+			int textY = 100;
+			int counter;
 
-            DataTable dt = Program.sqlcon.GetFilteredChartOfAccounts(false, true, 0, "");
+			DataTable dt = Program.sqlcon.GetPrintTable();
 
-            if (rowsleft > 44)
-            {
-                counter = 45;
-                rowsleft -= 45;
-                e.HasMorePages = true;
-            }
-            else
-            {
-                counter = dt.Rows.Count - currow;
-                e.HasMorePages = false;
-            }
+			if (rowsleft > 44) {
+				counter = 45;
+				rowsleft -= 45;
+				e.HasMorePages = true;
+			} else {
+				counter = dt.Rows.Count - currow;
+				e.HasMorePages = false;
+			}
 
-            for (int i = 0; i < counter; i++)
-            {
-                e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
-                e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
-                //e.Graphics.DrawString(dt.Rows[currow][2].ToString(), pt12, BlackBrush, new Point(500, textY));
-                //e.Graphics.DrawString(dt.Rows[currow][3].ToString(), pt12, BlackBrush, new Point(550, textY));
-                textY += 20;
-                currow++;
-            }
+			for (int i = 0; i < counter; i++) {
+				e.Graphics.DrawString(dt.Rows[currow][0].ToString(), pt12, BlackBrush, new Point(80, textY));
+				e.Graphics.DrawString(dt.Rows[currow][1].ToString(), pt12, BlackBrush, new Point(120, textY));
+				e.Graphics.DrawString(String.Format("{0:C}", dt.Rows[currow][2]), pt12, BlackBrush, new Point(500, textY));
+				//e.Graphics.DrawString(dt.Rows[currow][3].ToString(), pt12, BlackBrush, new Point(550, textY));
+				textY += 20;
+				currow++;
+			}
 
-            while (lineY <= 1000)
-            {
-                e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
-                lineY += 20;
-            }
-            e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
-            e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
-            
-        }
+			while (lineY <= 1000) {
+				e.Graphics.DrawLine(BlackPen, new Point(75, lineY), new Point(775, lineY));
+				lineY += 20;
+			}
+			e.Graphics.DrawLine(BlackPen, new Point(75, 100), new Point(75, 1000));
+			e.Graphics.DrawLine(BlackPen, new Point(775, 100), new Point(775, 1000));
 
-        private void pdPrinterDoc_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
-            rowsleft = Program.sqlcon.GetFilteredChartOfAccounts(false, true, 0, "").Rows.Count;
-            currow = 0;
-        }
+		}
 
-        private void pdPrinterDoc_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
+		private void pdPrinterDoc_BeginPrint(object sender, System.Drawing.Printing.PrintEventArgs e) {
+			rowsleft = Program.sqlcon.GetPrintTable().Rows.Count;
+			currow = 0;
+		}
 
-        }
+		private void pdPrinterDoc_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e) {
+
+		}
 
 	}//end Mainwin class
 }//end namespace

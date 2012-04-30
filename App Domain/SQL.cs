@@ -83,7 +83,7 @@ namespace App_Domain {
 					credit += amount;
 				}
 			}
-
+			
 			foreach (DataRow row in revenues.Rows) {
 				double amount = Convert.ToDouble(row[2]);
 				if (amount != 0) {
@@ -91,7 +91,7 @@ namespace App_Domain {
 					credit += amount;
 				}
 			}
-
+			
 			foreach (DataRow row in equity.Rows) {
 				double amount = Convert.ToDouble(row[2]);
 				if (amount != 0) {
@@ -443,6 +443,7 @@ namespace App_Domain {
 			dt.Rows.Add("", "", "");
 
 			double totalRevenues = 0.0;
+			
 			foreach (DataRow row in revenues.Rows) {
 				double amount = Convert.ToDouble(row[2]);
 				if (amount != 0) {
